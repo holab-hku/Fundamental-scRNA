@@ -1,4 +1,4 @@
-book_filename: "bookdown-demo"
+book_filename: "Fundamentals of scRNASeq Analysis"
 language:
   ui:
     chapter_name: "Chapter "
