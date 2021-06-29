@@ -1,6 +1,7 @@
 fig:nice-fig
 tab:nice-tab
-intro
+background
+whats-is-single-cell-rna-sequencingscrna-seq
 literature
 methods
 math-example
