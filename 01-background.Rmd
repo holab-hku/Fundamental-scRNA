@@ -1,6 +1,10 @@
 # Background Knowledge {#background}
 
-## What's is single cell RNA sequencing(scRNA-seq)?
+## single cell RNA sequencing(scRNA-seq)
+
+Single cell RNA sequencing(scRNA-seq) is a high-throughput sequencing technology which can give us gene expression profile of more than 30,000 genes for more than 10,000 cells.
+
+
 
 You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
 
