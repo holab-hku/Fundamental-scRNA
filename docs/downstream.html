@@ -152,9 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
 <li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublet"><i class="fa fa-check"></i><b>2.4</b> Doublet</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
-<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#math-example"><i class="fa fa-check"></i><b>3.1</b> math example</a></li>
-</ul></li>
+<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -178,28 +176,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="downstream" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Downstream Analysis Using Seurat</h1>
-<p>We describe our methods in this chapter.</p>
-<p>Math can be added in body using usual syntax like this</p>
-<div id="math-example" class="section level2">
-<h2><span class="header-section-number">3.1</span> math example</h2>
-<p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span></p>
-<p>You can also use math in footnotes like this<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
-<p>We will approximate standard error to 0.027<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>Need some time to complete. It will be <a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial.html">Seurat basic tutorial</a>(PBMC 3K one) added with <a href="https://satijalab.org/seurat/articles/integration_introduction.html">tutorial about integration of two samples</a>.</p>
+<p>Data used here will be the same data used in the integration tutorial, which are samples of human immune cells (PBMC) in either <a href="https://www.nature.com/articles/nbt.4042">a resting or interferon-stimulated state</a>.</p>
 
-</div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="3">
-<li id="fn3"><p>where we mention <span class="math inline">\(p = \frac{a}{b}\)</span><a href="downstream.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span><a href="downstream.html#fnref4" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
             </section>
 
@@ -258,20 +237,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
