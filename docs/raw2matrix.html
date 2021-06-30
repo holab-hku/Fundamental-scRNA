@@ -243,9 +243,63 @@ Figure 2.3: Overview of the outs folder
 </ul>
 <div id="matrices" class="section level5 unnumbered">
 <h5>Matrices</h5>
+<p>The cellranger pipeline outputs two types of feature-barcode matrices</p>
+<ul>
+<li><p><strong>Unfiltered feature-barcode matrix</strong>: is stored under <code>raw_feature_bc_matrix</code>(1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.</p></li>
+<li><p><strong>Filtered feature-barcode matrix</strong>: is stored under <code>filtered_feature_bc_matrix</code>(1-2) folder. Including only detected cellular barcodes. For Targeted Gene Expression samples, non-targeted genes are removed from the filtered matrix.</p></li>
+</ul>
+<p>Both <code>raw_feature_bc_matrix</code> and <code>filtered_feature_bc_matrix</code> contains three files<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<ul>
+<li>The <strong>features.tsv.gz</strong> file correspond to row indices. It contains three columns:</li>
+</ul>
+<pre><code>feature ID: gene_id in the annotation field of the reference GTF
+name: gene_name in the annotation field of the reference GTF. If no gene_name field is present in the reference GTF, gene name is equivalent to gene ID.
+type of feature: describe features&#39; types, can be one of Gene Expression, Antibody Capture, CRISPR, or CUSTOM. For scRNA-seq data, it will be Gene Expression.</code></pre>
+<ul>
+<li><p>The <strong>barcodes.tsv.gz</strong> corresponds to column indices. It contains the barcode of each column. More details on the barcode sequence format are available in the <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam">barcoded BAM section</a>.</p></li>
+<li><p>The <strong>matrix.mtx.gz</strong> file stores reads count as sparse matrices.</p></li>
+</ul>
 </div>
 <div id="web-summary-.html" class="section level5 unnumbered">
 <h5>Web Summary .html</h5>
+<p>A summary HTML file contains summary metrics and automated secondary analysis results. If an issue was detected during the pipeline run, an alert appears on this page.</p>
+<p>Here is a sample <a href="./web_summary.html">web summary html file</a>.</p>
+<p>This html files includes two parts, <code>SUMMARY</code> and <code>ANALYSIS</code>. You can also click the ‘?’ in the top of each dashboard for more information on each metric.</p>
+<ul>
+<li>The <strong>SUMMARY</strong> metrics describe sequencing quality and various characteristics of the detected cells. It includes the number of cells detected, the mean reads per cell, and the median genes detected per cell are prominently displayed near the top of the page.</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:cellranger4"></span>
+<img src="figs/cells_summary.png" alt="Cells dashboard" width="60%" />
+<p class="caption">
+Figure 2.4: Cells dashboard
+</p>
+</div>
+<p style="padding-left:2em;">
+The Barcode Rank Plot under the “Cells” dashboard shows the distribution of barcode counts and which barcodes were inferred to be associated with cells. The y-axis is the number of UMI counts mapped to each barcode and the x-axis is the number of barcodes below that value. A steep drop-off is indicative of good separation between the cell-associated barcodes and the barcodes associated with empty partitions. Barcodes can be determined to be cell-associated based on their UMI count or by their RNA profiles, therefore some regions of the graph can contain both cell-associated and background-associated barcodes. The color of the graph represents the local density of barcodes that are cell-associated.
+</p>
+<ul>
+<li>The <strong>ANALYSIS</strong> metrics contains the automated secondary analysis including the following:</li>
+</ul>
+<pre><code>A dimensional reduction analysis which projects the cells into a 2-D space (t-SNE)
+An automated clustering analysis which groups together cells that have similar expression profiles
+A list of genes that are differentially expressed between the selected clusters
+A plot showing the effect of decreased sequencing depth on observed library complexity
+A plot showing the effect of decreased sequencing depth on median genes per cell detected</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:cellranger5"></span>
+<img src="figs/seq_map.png" alt="Sequencing and Mapping dashboards" width="60%" />
+<p class="caption">
+Figure 2.5: Sequencing and Mapping dashboards
+</p>
+</div>
+<p>Other numbers used for evaluation<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>:</p>
+<ul>
+<li><p><code>Estimated Number of Cells</code>: 500-10,000</p></li>
+<li><p><code>Mean Reads per Cell</code>: 20,000 reads/cell minimum recommended reads per cell around 10,000</p></li>
+<li><p><code>Valid barcodes</code>: greater than 75%</p></li>
+<li><p><code>Q30 bases in RNA read</code>: ideally greater than 65%<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p></li>
+<li><p><code>Reads mapped confidently to transcriptome</code>: ideally greater than 30%</p></li>
+<li><p><code>Reads mapped antisense to gene</code>: ideally smaller than 10%</p></li>
+</ul>
 </div>
 <div id="bam" class="section level5 unnumbered">
 <h5>BAM</h5>
@@ -268,7 +322,7 @@ Figure 2.3: Overview of the outs folder
 <div class="figure" style="text-align: center"><span id="fig:starsolo"></span>
 <img src="figs/starsolo.png" alt="STARsolo Output" width="100%" />
 <p class="caption">
-Figure 2.4: STARsolo Output
+Figure 2.6: STARsolo Output
 </p>
 </div>
 <ol style="list-style-type: decimal">
@@ -302,6 +356,9 @@ QUAL : read quality</code></pre>
 <hr />
 <ol start="2">
 <li id="fn2"><p>Figures and content in this sub-chapter are modified from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger</a><a href="raw2matrix.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>The <strong>desktop. ini</strong> file is a hidden file used to store information about the arrangement of a Windows folder.<a href="raw2matrix.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>The information here is provided by <a href="https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf" class="uri">https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf</a><a href="raw2matrix.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>Q scores are defined as a property that is logarithmically related to the base calling error probabilities. For more information: <a href="https://www.illumina.com/documents/products/technotes/technote_Q-Scores.pdf" class="uri">https://www.illumina.com/documents/products/technotes/technote_Q-Scores.pdf</a><a href="raw2matrix.html#fnref5" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
