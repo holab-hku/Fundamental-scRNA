@@ -144,10 +144,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing 10X RNA-seq Data</a><ul>
-<li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fasta-format"><i class="fa fa-check"></i><b>2.1</b> FASTA format</a></li>
+<li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fastq-file"><i class="fa fa-check"></i><b>2.1</b> FASTQ file</a></li>
 <li class="chapter" data-level="2.2" data-path="raw2matrix.html"><a href="raw2matrix.html#cell-ranger"><i class="fa fa-check"></i><b>2.2</b> Cell Ranger</a><ul>
-<li class="chapter" data-level="2.2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#basic-pipeline"><i class="fa fa-check"></i><b>2.2.1</b> Basic pipeline</a></li>
+<li class="chapter" data-level="2.2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#general-workflow"><i class="fa fa-check"></i><b>2.2.1</b> General workflow</a></li>
+<li class="chapter" data-level="2.2.2" data-path="raw2matrix.html"><a href="raw2matrix.html#output-file"><i class="fa fa-check"></i><b>2.2.2</b> Output file</a></li>
 </ul></li>
+<li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
+<li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublet"><i class="fa fa-check"></i><b>2.4</b> Doublet</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
 <li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#math-example"><i class="fa fa-check"></i><b>3.1</b> math example</a></li>
@@ -175,13 +178,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="raw2matrix" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Pre-processing 10X RNA-seq Data</h1>
-<div id="fasta-format" class="section level2">
-<h2><span class="header-section-number">2.1</span> FASTA format</h2>
-<p>Raw RNA-sequencing data will be in a fastq file with FASTA format. It is a text-based format used for storing either nucleotide sequences or peptide sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (“&gt;”) symbol and lines of sequence data. Represented in the following format:</p>
+<div id="fastq-file" class="section level2">
+<h2><span class="header-section-number">2.1</span> FASTQ file</h2>
+<p>Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (“&gt;”) symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:</p>
 <pre><code>&gt;ReadID
 READ SEQUENCE
 READ SEQUENCE
-READ SEQUENCE</code></pre>
+READ SEQUENCE
++
+SEQUENCING QUALITY SCORES</code></pre>
 <p>For more details about FASTA format: <a href="https://en.wikipedia.org/wiki/FASTA_format" class="uri">https://en.wikipedia.org/wiki/FASTA_format</a></p>
 <p>Generally fastq files are pre-processed using quality control tools, such as <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>. This outputs a series of metrics assessing the quality of sequence reads. Some of these metrics include:</p>
 <pre><code>1. Per base sequence quality
@@ -204,10 +209,95 @@ READ SEQUENCE</code></pre>
 <li><p><strong>Library</strong> (or <strong>Sequencing Library</strong>): A 10x-barcoded sequencing library prepared from a single <strong>GEM well</strong>. With Feature Barcode or V(D)J assays, it is possible to create multiple libraries from the same <strong>GEM well</strong>. The library types may include Gene Expression, Antibody Capture, CRISPR Guide Capture, TCR-enrichment, etc.</p></li>
 <li><p><strong>Sequencing Run</strong> (or <strong>Flowcell</strong>): A flowcell containing data from one sequencing instrument run.</p></li>
 </ul>
-<div id="basic-pipeline" class="section level3">
-<h3><span class="header-section-number">2.2.1</span> Basic pipeline</h3>
-
+<div id="general-workflow" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> General workflow</h3>
+<p>Single-cell data getting from Chromium 10X pipeline can be processed through following workflow using cellranger.</p>
+<div class="figure" style="text-align: center"><span id="fig:cellranger"></span>
+<img src="figs/cellranger_workflow.png" alt="Cellranger Workflow" width="100%" />
+<p class="caption">
+Figure 2.1: Cellranger Workflow
+</p>
 </div>
+</div>
+<div id="output-file" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Output file</h3>
+<p>Following the output folder we will get from cellranger. The <code>outs</code> folder contains the final pipeline output files which including what we want for downstream analysis.</p>
+<div class="figure" style="text-align: center"><span id="fig:cellranger2"></span>
+<img src="figs/cellranger_output.png" alt="Overview of the folder generate from cellranger" width="100%" />
+<p class="caption">
+Figure 2.2: Overview of the folder generate from cellranger
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:cellranger3"></span>
+<img src="figs/cellranger_output2.png" alt="Overview of the outs folder" width="90%" />
+<p class="caption">
+Figure 2.3: Overview of the outs folder
+</p>
+</div>
+<p>Above is what we can find in the <code>outs</code> folder. It contains some summary information of the sequencing data, the annotated read sequences, and gene expression matrices we commonly work on. Following is some important output files we want to look at.</p>
+<ul>
+<li><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/matrices">Matrices</a></li>
+<li><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/summary">Web Summary .html</a></li>
+<li><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/analysis">Secondary Analysis CSV</a></li>
+<li><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam">BAM</a></li>
+<li><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/molecule_info">Molecule Info (h5)</a></li>
+<li><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/visualization/latest/what-is-loupe-cell-browser">Loupe File (.cloupe)</a></li>
+</ul>
+<div id="matrices" class="section level5 unnumbered">
+<h5>Matrices</h5>
+</div>
+<div id="web-summary-.html" class="section level5 unnumbered">
+<h5>Web Summary .html</h5>
+</div>
+<div id="bam" class="section level5 unnumbered">
+<h5>BAM</h5>
+</div>
+<div id="molecule-info-h5" class="section level5 unnumbered">
+<h5>Molecule Info (h5)</h5>
+</div>
+<div id="secondary-analysis-csv" class="section level5 unnumbered">
+<h5>Secondary Analysis CSV</h5>
+</div>
+<div id="loupe-file-.cloupe" class="section level5 unnumbered">
+<h5>Loupe File (.cloupe)</h5>
+<p>For more information: <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview</a></p>
+</div>
+</div>
+</div>
+<div id="starsolo" class="section level2">
+<h2><span class="header-section-number">2.3</span> STARsolo</h2>
+<p>The STARsolo program outputs a large amount of files reflecting details of the read alignment process. We will only discuss some of the key files important for downstream analysis.</p>
+<div class="figure" style="text-align: center"><span id="fig:starsolo"></span>
+<img src="figs/starsolo.png" alt="STARsolo Output" width="100%" />
+<p class="caption">
+Figure 2.4: STARsolo Output
+</p>
+</div>
+<ol style="list-style-type: decimal">
+<li>The <strong>BAM file</strong>, contains information about mapped reads, in a binary compressed format. When de-compressed into a SAM file, information is stored as a tab seperated table where the columns corresponds to:</li>
+</ol>
+<pre><code>QNAME : read name (generally will include UMI barcode if applicable)
+FLAG : number tag indicating the “type” of alignment, link to explanation of all possible “types”
+RNAME : reference sequence name (i.e. chromosome read is mapped to).
+POS : leftmost mapping position
+MAPQ : Mapping quality
+CIGAR : string indicating the matching/mismatching parts of the read (may include soft-clipping).
+RNEXT : reference name of the mate/next read
+PNEXT : POS for mate/next read
+TLEN : Template length (length of reference region the read is mapped to)
+SEQ : read sequence
+QUAL : read quality</code></pre>
+<p>BAM files can be viewed using SAMtools.</p>
+<pre><code>samtools view output.bam</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><p><strong>Alignment summary files</strong>, Features.stat and Summary.csv, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.</p></li>
+<li><p>The <strong>feature matrix file</strong>, matrix.mtx, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.</p></li>
+<li><p><strong>Auxiliary files</strong>, barcodes.tsv and features.tsv, provide extra metadata important for downstream analysis. These files along with the matrix file are required for analysis in gold standard scRNA-seq data analysis package, seurat.</p></li>
+</ol>
+</div>
+<div id="doublet" class="section level2">
+<h2><span class="header-section-number">2.4</span> Doublet</h2>
+
 </div>
 </div>
 <div class="footnotes">

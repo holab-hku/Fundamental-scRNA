@@ -1,14 +1,16 @@
 # Pre-processing 10X RNA-seq Data {#raw2matrix}
 
-## FASTA format
+## FASTQ file
 
-Raw RNA-sequencing data will be in a fastq file with FASTA format. It is a text-based format used for storing either nucleotide sequences or peptide sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (">") symbol and lines of sequence data. Represented in the following format:
+Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (">") symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:
 
 ```
 >ReadID
 READ SEQUENCE
 READ SEQUENCE
 READ SEQUENCE
++
+SEQUENCING QUALITY SCORES
 ```
 
 For more details about FASTA format: https://en.wikipedia.org/wiki/FASTA_format
@@ -40,4 +42,74 @@ Some concepts:
 
 * **Sequencing Run** (or **Flowcell**): A flowcell containing data from one sequencing instrument run.
 
-### Basic pipeline
+### General workflow
+
+Single-cell data getting from Chromium 10X pipeline can be processed through following workflow using cellranger.
+
+```{r cellranger, fig.cap='Cellranger Workflow', out.width='100%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/cellranger_workflow.png')
+```
+
+### Output file
+
+Following the output folder we will get from cellranger. The `outs` folder contains the final pipeline output files which including what we want for downstream analysis.
+
+```{r cellranger2, fig.cap='Overview of the folder generate from cellranger', out.width='100%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/cellranger_output.png')
+```
+
+```{r cellranger3, fig.cap='Overview of the outs folder', out.width='90%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/cellranger_output2.png')
+```
+
+Above is what we can find in the `outs` folder. It contains some summary information of the sequencing data, the annotated read sequences, and gene expression matrices we commonly work on. Following is some important output files we want to look at.
+
+* [Matrices](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/matrices)
+* [Web Summary .html](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/summary)
+* [Secondary Analysis CSV](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/analysis)
+* [BAM](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam)
+* [Molecule Info (h5)](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/molecule_info)
+* [Loupe File (.cloupe)](https://support.10xgenomics.com/single-cell-gene-expression/software/visualization/latest/what-is-loupe-cell-browser)
+
+##### Matrices {-}
+##### Web Summary .html {-}
+##### BAM {-}
+##### Molecule Info (h5) {-}
+##### Secondary Analysis CSV {-}
+##### Loupe File (.cloupe) {-}
+
+For more information: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview
+
+## STARsolo
+
+The STARsolo program outputs a large amount of files reflecting details of the read alignment process. We will only discuss some of the key files important for downstream analysis.
+
+```{r starsolo, fig.cap='STARsolo Output', out.width='100%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/starsolo.png')
+```
+
+1. The **BAM file**, contains information about mapped reads, in a binary compressed format. When de-compressed into a SAM file, information is stored as a tab seperated table where the columns corresponds to:
+```
+QNAME : read name (generally will include UMI barcode if applicable)
+FLAG : number tag indicating the “type” of alignment, link to explanation of all possible “types”
+RNAME : reference sequence name (i.e. chromosome read is mapped to).
+POS : leftmost mapping position
+MAPQ : Mapping quality
+CIGAR : string indicating the matching/mismatching parts of the read (may include soft-clipping).
+RNEXT : reference name of the mate/next read
+PNEXT : POS for mate/next read
+TLEN : Template length (length of reference region the read is mapped to)
+SEQ : read sequence
+QUAL : read quality
+```
+BAM files can be viewed using SAMtools.
+```
+samtools view output.bam
+```
+2. **Alignment summary files**, Features.stat and Summary.csv, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.
+
+3. The **feature matrix file**, matrix.mtx, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.
+
+4. **Auxiliary files**, barcodes.tsv and features.tsv, provide extra metadata important for downstream analysis. These files along with the matrix file are required for analysis in gold standard scRNA-seq data analysis package, seurat.
+
+## Doublet
