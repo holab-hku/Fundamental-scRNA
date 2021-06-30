@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   
 
-<meta name="author" content="Xinyi Lin, Joshua Ho" />
+<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho" />
 
 
 
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="literature.html"/>
+<link rel="next" href="raw2matrix.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -138,9 +138,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background Knowledge</a><ul>
-<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> single cell RNA sequencing(scRNA-seq)</a></li>
+<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
+<li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
+<li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
+<li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Literature</a></li>
+<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Processing 10X RNA-seq data</a><ul>
+<li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fasta-file"><i class="fa fa-check"></i><b>2.1</b> FASTA file</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a><ul>
 <li class="chapter" data-level="3.1" data-path="methods.html"><a href="methods.html#math-example"><i class="fa fa-check"></i><b>3.1</b> math example</a></li>
 </ul></li>
@@ -152,6 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -172,186 +178,303 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="background" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Background Knowledge</h1>
 <div id="single-cell-rna-sequencingscrna-seq" class="section level2">
-<h2><span class="header-section-number">1.1</span> single cell RNA sequencing(scRNA-seq)</h2>
-<p>Single cell RNA sequencing(scRNA-seq) is a high-throughput sequencing technology which can give us gene expression profile of more than 30,000 genes for more than 10,000 cells.</p>
-<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="#intro"><strong>??</strong></a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="methods.html#methods">3</a>.</p>
-<p>Figures and tables with captions will be placed in <code>figure</code> and <code>table</code> environments, respectively.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="background.html#cb1-1"></a><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">.1</span>, <span class="fl">.1</span>))</span>
-<span id="cb1-2"><a href="background.html#cb1-2"></a><span class="kw">plot</span>(pressure, <span class="dt">type =</span> <span class="st">&#39;b&#39;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:nice-fig"></span>
-<img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/nice-fig-1.png" alt="Here is a nice figure!" width="80%" />
+<h2><span class="header-section-number">1.1</span> Single cell RNA sequencing(scRNA-seq)</h2>
+<p>Single cell RNA sequencing(scRNA-seq) is a sequencing technology which can give us gene expression profile of more than 30,000 genes for more than 10,000 cells.</p>
+<p>Starting from tissue samples we get, we will get the analysis results after following processes.</p>
+<p><br/></p>
+<div class="figure" style="text-align: center"><span id="fig:workflow"></span>
+<img src="figs/workflow.jpg" alt="Single Cell Genome Sequencing Workflow(taken from Wiki). MDA: multiple displacement amplification" width="80%" />
 <p class="caption">
-Figure 1.1: Here is a nice figure!
+Figure 1.1: Single Cell Genome Sequencing Workflow(taken from Wiki). MDA: multiple displacement amplification
 </p>
 </div>
-<p>Reference a figure by its code chunk label with the <code>fig:</code> prefix, e.g., see Figure <a href="background.html#fig:nice-fig">1.1</a>. Similarly, you can reference tables generated from <code>knitr::kable()</code>, e.g., see Table <a href="background.html#tab:nice-tab">1.1</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="background.html#cb2-1"></a>knitr<span class="op">::</span><span class="kw">kable</span>(</span>
-<span id="cb2-2"><a href="background.html#cb2-2"></a>  <span class="kw">head</span>(iris, <span class="dv">20</span>), <span class="dt">caption =</span> <span class="st">&#39;Here is a nice table!&#39;</span>,</span>
-<span id="cb2-3"><a href="background.html#cb2-3"></a>  <span class="dt">booktabs =</span> <span class="ot">TRUE</span></span>
-<span id="cb2-4"><a href="background.html#cb2-4"></a>)</span></code></pre></div>
+<p><br/></p>
+</div>
+<div id="cell-isolation" class="section level2">
+<h2><span class="header-section-number">1.2</span> Cell isolation</h2>
+<p>Droplet-based:</p>
+<ul>
+<li><p>tissue sample must be dissociated into suspension</p></li>
+<li><p>cells will be encapsulated into a water-in-oildroplet individually</p></li>
+<li><p>high-through and low cost</p></li>
+<li><p>related technologies: Drop-seq<span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span>, inDrop<span class="citation">(Klein et al. <a href="#ref-klein2015droplet" role="doc-biblioref">2015</a>)</span>, Chromium 10X<span class="citation">(Zheng et al. <a href="#ref-zheng2017massively" role="doc-biblioref">2017</a>)</span></p></li>
+</ul>
+<p><br/></p>
+<p>Non droplet-based:</p>
+<ul>
+<li><p>Smart-seq2<span class="citation">(Ramsköld et al. <a href="#ref-ramskold2012full" role="doc-biblioref">2012</a>)</span>: manual cell picking with micro capillary pipettes</p></li>
+<li><p>CEL-seq<span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2012cel" role="doc-biblioref">2012</a>)</span>: individual cells are added to tubes; the first one introducing barcodes and pooling of RNA</p></li>
+<li><p>MARS-seq<span class="citation">(Jaitin et al. <a href="#ref-jaitin2014massively" role="doc-biblioref">2014</a>)</span> is the first one using FACS to isolate single cells into individual wells, and the optimized version MARS-seq2<span class="citation">(Keren-Shaul et al. <a href="#ref-keren2019mars" role="doc-biblioref">2019</a>)</span> came out with lower cost, improved reproducibility, reduced well-to-well contamination</p></li>
+</ul>
+<p><br/></p>
+<p>Following shows some common single cell isolaion techniques<span class="citation">(Hwang, Lee, and Bang <a href="#ref-hwang2018single" role="doc-biblioref">2018</a>)</span>.</p>
+<div class="figure" style="text-align: center"><span id="fig:seq-techs"></span>
+<img src="figs/seq_techs.jpg" alt="Single Cell Isolation" width="80%" />
+<p class="caption">
+Figure 1.2: Single Cell Isolation
+</p>
+</div>
+<p>For more information about different cell isolation techniques: <span class="citation">(Hu et al. <a href="#ref-hu2016single" role="doc-biblioref">2016</a>)</span></p>
+</div>
+<div id="barcodes-and-unique-molecular-identifiersumi" class="section level2">
+<h2><span class="header-section-number">1.3</span> Barcodes and Unique molecular identifiers(UMI)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h2>
+<p>The sequencing step is done using paired-end reads where the first read of the pair always coincides with the cell (barcode + UMI) part of the primer.</p>
+<div class="figure" style="text-align: center"><span id="fig:biasedreads"></span>
+<img src="figs/biasedreads.png" alt="Biased paired-end reads" width="80%" />
+<p class="caption">
+Figure 1.3: Biased paired-end reads
+</p>
+</div>
+<p>Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. It is important to recognised the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences.</p>
+<p>We first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.</p>
+<div class="figure" style="text-align: center"><span id="fig:biasedreads2"></span>
+<img src="figs/biasedreads2.png" alt="Biased paired-end reads" width="70%" />
+<p class="caption">
+Figure 1.4: Biased paired-end reads
+</p>
+</div>
+<p>This is the alignment process which we will introduce more in Chapter <a href="raw2matrix.html#raw2matrix">2</a>.</p>
+</div>
+<div id="summary-of-widely-used-scrna-seq-technologies" class="section level2">
+<h2><span class="header-section-number">1.4</span> Summary of widely used scRNA-seq technologies</h2>
+<p>Following is a summary table from <span class="citation">(Chen, Ning, and Shi <a href="#ref-chen2019single" role="doc-biblioref">2019</a>)</span>. It shows different features of widely used scRNA-seq technologies.</p>
 <table>
-<caption><span id="tab:nice-tab">Table 1.1: </span>Here is a nice table!</caption>
+<colgroup>
+<col width="15%" />
+<col width="22%" />
+<col width="16%" />
+<col width="12%" />
+<col width="33%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th align="right">Sepal.Length</th>
-<th align="right">Sepal.Width</th>
-<th align="right">Petal.Length</th>
-<th align="right">Petal.Width</th>
-<th align="left">Species</th>
+<th>Methods</th>
+<th>Transcript
+coverage</th>
+<th>UMI
+possibility</th>
+<th>Strand
+specific</th>
+<th>References</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">5.1</td>
-<td align="right">3.5</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>Tang method</td>
+<td>Nearly full-length</td>
+<td>No</td>
+<td>No</td>
+<td><span class="citation">(Tang et al. <a href="#ref-tang2009mrna" role="doc-biblioref">2009</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">4.9</td>
-<td align="right">3.0</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>Quartz-Seq</td>
+<td>Full-length</td>
+<td>No</td>
+<td>No</td>
+<td><span class="citation">(Sasagawa et al. <a href="#ref-sasagawa2013quartz" role="doc-biblioref">2013</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">4.7</td>
-<td align="right">3.2</td>
-<td align="right">1.3</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>SUPeR-seq</td>
+<td>Full-length</td>
+<td>No</td>
+<td>No</td>
+<td><span class="citation">(X. Fan et al. <a href="#ref-fan2015single" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">4.6</td>
-<td align="right">3.1</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>Smart-seq</td>
+<td>Full-length</td>
+<td>No</td>
+<td>No</td>
+<td><span class="citation">(Ramsköld et al. <a href="#ref-ramskold2012full" role="doc-biblioref">2012</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">5.0</td>
-<td align="right">3.6</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>Smart-seq2</td>
+<td>Full-length</td>
+<td>No</td>
+<td>No</td>
+<td><span class="citation">(Picelli et al. <a href="#ref-picelli2013smart" role="doc-biblioref">2013</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">5.4</td>
-<td align="right">3.9</td>
-<td align="right">1.7</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
+<td>MATQ-seq</td>
+<td>Full-length</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Sheng et al. <a href="#ref-sheng2017effective" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">4.6</td>
-<td align="right">3.4</td>
-<td align="right">1.4</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
+<td>STRT-seq
+STRT/C1</td>
+<td>5′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Islam et al. <a href="#ref-islam2011characterization" role="doc-biblioref">2011</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">5.0</td>
-<td align="right">3.4</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>CEL-seq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2012cel" role="doc-biblioref">2012</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">4.4</td>
-<td align="right">2.9</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>CEL-seq2</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2016cel" role="doc-biblioref">2016</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">4.9</td>
-<td align="right">3.1</td>
-<td align="right">1.5</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
+<td>MARS-seq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Jaitin et al. <a href="#ref-jaitin2014massively" role="doc-biblioref">2014</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">5.4</td>
-<td align="right">3.7</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>CytoSeq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(H. C. Fan, Fu, and Fodor <a href="#ref-fan2015combinatorial" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">4.8</td>
-<td align="right">3.4</td>
-<td align="right">1.6</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>Drop-seq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">4.8</td>
-<td align="right">3.0</td>
-<td align="right">1.4</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
+<td>InDrop</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Klein et al. <a href="#ref-klein2015droplet" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">4.3</td>
-<td align="right">3.0</td>
-<td align="right">1.1</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
+<td>Chromium</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Zheng et al. <a href="#ref-zheng2017massively" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">5.8</td>
-<td align="right">4.0</td>
-<td align="right">1.2</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
+<td>SPLiT-seq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Rosenberg et al. <a href="#ref-rosenberg2018single" role="doc-biblioref">2018</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">5.7</td>
-<td align="right">4.4</td>
-<td align="right">1.5</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
+<td>sci-RNA-seq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Cao et al. <a href="#ref-cao2017comprehensive" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">5.4</td>
-<td align="right">3.9</td>
-<td align="right">1.3</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
+<td>Seq-Well</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Gierahn et al. <a href="#ref-gierahn2017seq" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="even">
-<td align="right">5.1</td>
-<td align="right">3.5</td>
-<td align="right">1.4</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
+<td>DroNC-seq</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Habib et al. <a href="#ref-habib2017massively" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
-<td align="right">5.7</td>
-<td align="right">3.8</td>
-<td align="right">1.7</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.1</td>
-<td align="right">3.8</td>
-<td align="right">1.5</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
+<td>Quartz-Seq2</td>
+<td>3′-only</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><span class="citation">(Sasagawa et al. <a href="#ref-sasagawa2018quartz" role="doc-biblioref">2018</a>)</span></td>
 </tr>
 </tbody>
 </table>
-<p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-bookdown"><strong>???</strong></span>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(Xie <a href="#ref-xie2015" role="doc-biblioref">2015</a>)</span>.</p>
 
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
-<div id="ref-xie2015">
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/">http://yihui.name/knitr/</a>.</p>
+<div id="ref-cao2017comprehensive">
+<p>Cao, Junyue, Jonathan S Packer, Vijay Ramani, Darren A Cusanovich, Chau Huynh, Riza Daza, Xiaojie Qiu, et al. 2017. “Comprehensive Single-Cell Transcriptional Profiling of a Multicellular Organism.” <em>Science</em> 357 (6352): 661–67.</p>
 </div>
+<div id="ref-chen2019single">
+<p>Chen, Geng, Baitang Ning, and Tieliu Shi. 2019. “Single-Cell Rna-Seq Technologies and Related Computational Data Analysis.” <em>Frontiers in Genetics</em> 10: 317.</p>
+</div>
+<div id="ref-fan2015combinatorial">
+<p>Fan, H Christina, Glenn K Fu, and Stephen PA Fodor. 2015. “Combinatorial Labeling of Single Cells for Gene Expression Cytometry.” <em>Science</em> 347 (6222).</p>
+</div>
+<div id="ref-fan2015single">
+<p>Fan, Xiaoying, Xiannian Zhang, Xinglong Wu, Hongshan Guo, Yuqiong Hu, Fuchou Tang, and Yanyi Huang. 2015. “Single-Cell Rna-Seq Transcriptome Analysis of Linear and Circular Rnas in Mouse Preimplantation Embryos.” <em>Genome Biology</em> 16 (1): 1–17.</p>
+</div>
+<div id="ref-gierahn2017seq">
+<p>Gierahn, Todd M, Marc H Wadsworth, Travis K Hughes, Bryan D Bryson, Andrew Butler, Rahul Satija, Sarah Fortune, J Christopher Love, and Alex K Shalek. 2017. “Seq-Well: Portable, Low-Cost Rna Sequencing of Single Cells at High Throughput.” <em>Nature Methods</em> 14 (4): 395–98.</p>
+</div>
+<div id="ref-habib2017massively">
+<p>Habib, Naomi, Inbal Avraham-Davidi, Anindita Basu, Tyler Burks, Karthik Shekhar, Matan Hofree, Sourav R Choudhury, et al. 2017. “Massively Parallel Single-Nucleus Rna-Seq with Dronc-Seq.” <em>Nature Methods</em> 14 (10): 955–58.</p>
+</div>
+<div id="ref-hashimshony2016cel">
+<p>Hashimshony, Tamar, Naftalie Senderovich, Gal Avital, Agnes Klochendler, Yaron De Leeuw, Leon Anavy, Dave Gennert, et al. 2016. “CEL-Seq2: Sensitive Highly-Multiplexed Single-Cell Rna-Seq.” <em>Genome Biology</em> 17 (1): 1–7.</p>
+</div>
+<div id="ref-hashimshony2012cel">
+<p>Hashimshony, Tamar, Florian Wagner, Noa Sher, and Itai Yanai. 2012. “CEL-Seq: Single-Cell Rna-Seq by Multiplexed Linear Amplification.” <em>Cell Reports</em> 2 (3): 666–73.</p>
+</div>
+<div id="ref-hu2016single">
+<p>Hu, Ping, Wenhua Zhang, Hongbo Xin, and Glenn Deng. 2016. “Single Cell Isolation and Analysis.” <em>Frontiers in Cell and Developmental Biology</em> 4: 116.</p>
+</div>
+<div id="ref-hwang2018single">
+<p>Hwang, Byungjin, Ji Hyun Lee, and Duhee Bang. 2018. “Single-Cell Rna Sequencing Technologies and Bioinformatics Pipelines.” <em>Experimental &amp; Molecular Medicine</em> 50 (8): 1–14.</p>
+</div>
+<div id="ref-islam2011characterization">
+<p>Islam, Saiful, Una Kjällquist, Annalena Moliner, Pawel Zajac, Jian-Bing Fan, Peter Lönnerberg, and Sten Linnarsson. 2011. “Characterization of the Single-Cell Transcriptional Landscape by Highly Multiplex Rna-Seq.” <em>Genome Research</em> 21 (7): 1160–7.</p>
+</div>
+<div id="ref-jaitin2014massively">
+<p>Jaitin, Diego Adhemar, Ephraim Kenigsberg, Hadas Keren-Shaul, Naama Elefant, Franziska Paul, Irina Zaretsky, Alexander Mildner, et al. 2014. “Massively Parallel Single-Cell Rna-Seq for Marker-Free Decomposition of Tissues into Cell Types.” <em>Science</em> 343 (6172): 776–79.</p>
+</div>
+<div id="ref-keren2019mars">
+<p>Keren-Shaul, Hadas, Ephraim Kenigsberg, Diego Adhemar Jaitin, Eyal David, Franziska Paul, Amos Tanay, and Ido Amit. 2019. “MARS-Seq2. 0: An Experimental and Analytical Pipeline for Indexed Sorting Combined with Single-Cell Rna Sequencing.” <em>Nature Protocols</em> 14 (6): 1841–62.</p>
+</div>
+<div id="ref-klein2015droplet">
+<p>Klein, Allon M, Linas Mazutis, Ilke Akartuna, Naren Tallapragada, Adrian Veres, Victor Li, Leonid Peshkin, David A Weitz, and Marc W Kirschner. 2015. “Droplet Barcoding for Single-Cell Transcriptomics Applied to Embryonic Stem Cells.” <em>Cell</em> 161 (5): 1187–1201.</p>
+</div>
+<div id="ref-macosko2015highly">
+<p>Macosko, Evan Z, Anindita Basu, Rahul Satija, James Nemesh, Karthik Shekhar, Melissa Goldman, Itay Tirosh, et al. 2015. “Highly Parallel Genome-Wide Expression Profiling of Individual Cells Using Nanoliter Droplets.” <em>Cell</em> 161 (5): 1202–14.</p>
+</div>
+<div id="ref-picelli2013smart">
+<p>Picelli, Simone, Åsa K Björklund, Omid R Faridani, Sven Sagasser, Gösta Winberg, and Rickard Sandberg. 2013. “Smart-Seq2 for Sensitive Full-Length Transcriptome Profiling in Single Cells.” <em>Nature Methods</em> 10 (11): 1096–8.</p>
+</div>
+<div id="ref-ramskold2012full">
+<p>Ramsköld, Daniel, Shujun Luo, Yu-Chieh Wang, Robin Li, Qiaolin Deng, Omid R Faridani, Gregory A Daniels, et al. 2012. “Full-Length mRNA-Seq from Single-Cell Levels of Rna and Individual Circulating Tumor Cells.” <em>Nature Biotechnology</em> 30 (8): 777–82.</p>
+</div>
+<div id="ref-rosenberg2018single">
+<p>Rosenberg, Alexander B, Charles M Roco, Richard A Muscat, Anna Kuchina, Paul Sample, Zizhen Yao, Lucas T Graybuck, et al. 2018. “Single-Cell Profiling of the Developing Mouse Brain and Spinal Cord with Split-Pool Barcoding.” <em>Science</em> 360 (6385): 176–82.</p>
+</div>
+<div id="ref-sasagawa2018quartz">
+<p>Sasagawa, Yohei, Hiroki Danno, Hitomi Takada, Masashi Ebisawa, Kaori Tanaka, Tetsutaro Hayashi, Akira Kurisaki, and Itoshi Nikaido. 2018. “Quartz-Seq2: A High-Throughput Single-Cell Rna-Sequencing Method That Effectively Uses Limited Sequence Reads.” <em>Genome Biology</em> 19 (1): 1–24.</p>
+</div>
+<div id="ref-sasagawa2013quartz">
+<p>Sasagawa, Yohei, Itoshi Nikaido, Tetsutaro Hayashi, Hiroki Danno, Kenichiro D Uno, Takeshi Imai, and Hiroki R Ueda. 2013. “Quartz-Seq: A Highly Reproducible and Sensitive Single-Cell Rna Sequencing Method, Reveals Non-Genetic Gene-Expression Heterogeneity.” <em>Genome Biology</em> 14 (4): 1–17.</p>
+</div>
+<div id="ref-sheng2017effective">
+<p>Sheng, Kuanwei, Wenjian Cao, Yichi Niu, Qing Deng, and Chenghang Zong. 2017. “Effective Detection of Variation in Single-Cell Transcriptomes Using Matq-Seq.” <em>Nature Methods</em> 14 (3): 267–70.</p>
+</div>
+<div id="ref-tang2009mrna">
+<p>Tang, Fuchou, Catalin Barbacioru, Yangzhou Wang, Ellen Nordman, Clarence Lee, Nanlan Xu, Xiaohui Wang, et al. 2009. “MRNA-Seq Whole-Transcriptome Analysis of a Single Cell.” <em>Nature Methods</em> 6 (5): 377–82.</p>
+</div>
+<div id="ref-zheng2017massively">
+<p>Zheng, Grace XY, Jessica M Terry, Phillip Belgrader, Paul Ryvkin, Zachary W Bent, Ryan Wilson, Solongo B Ziraldo, et al. 2017. “Massively Parallel Digital Transcriptional Profiling of Single Cells.” <em>Nature Communications</em> 8 (1): 1–12.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>This part is modified from <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/" class="uri">http://data-science-sequencing.github.io/Win2018/lectures/lecture16/</a><a href="background.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
             </section>
 
@@ -359,7 +482,7 @@ Figure 1.1: Here is a nice figure!
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="literature.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="raw2matrix.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -388,7 +511,7 @@ gitbook.start({
 "fontsettings": {
 "theme": "white",
 "family": "sans",
-"size": 2
+"size": 1
 },
 "edit": {
 "link": null,

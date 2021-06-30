@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   
 
-<meta name="author" content="Xinyi Lin, Joshua Ho" />
+<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho" />
 
 
 
@@ -138,9 +138,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
 <li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background Knowledge</a><ul>
-<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> single cell RNA sequencing(scRNA-seq)</a></li>
+<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
+<li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
+<li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
+<li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Literature</a></li>
+<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Processing 10X RNA-seq data</a><ul>
+<li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fasta-file"><i class="fa fa-check"></i><b>2.1</b> FASTA file</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a><ul>
 <li class="chapter" data-level="3.1" data-path="methods.html"><a href="methods.html#math-example"><i class="fa fa-check"></i><b>3.1</b> math example</a></li>
 </ul></li>
@@ -152,6 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -174,10 +180,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="refs" class="references">
 <div>
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/">http://yihui.name/knitr/</a>.</p>
+<p>Cao, Junyue, Jonathan S Packer, Vijay Ramani, Darren A Cusanovich, Chau Huynh, Riza Daza, Xiaojie Qiu, et al. 2017. “Comprehensive Single-Cell Transcriptional Profiling of a Multicellular Organism.” <em>Science</em> 357 (6352): 661–67.</p>
+</div>
+<div>
+<p>Chen, Geng, Baitang Ning, and Tieliu Shi. 2019. “Single-Cell Rna-Seq Technologies and Related Computational Data Analysis.” <em>Frontiers in Genetics</em> 10: 317.</p>
+</div>
+<div>
+<p>Fan, H Christina, Glenn K Fu, and Stephen PA Fodor. 2015. “Combinatorial Labeling of Single Cells for Gene Expression Cytometry.” <em>Science</em> 347 (6222).</p>
+</div>
+<div>
+<p>Fan, Xiaoying, Xiannian Zhang, Xinglong Wu, Hongshan Guo, Yuqiong Hu, Fuchou Tang, and Yanyi Huang. 2015. “Single-Cell Rna-Seq Transcriptome Analysis of Linear and Circular Rnas in Mouse Preimplantation Embryos.” <em>Genome Biology</em> 16 (1): 1–17.</p>
+</div>
+<div>
+<p>Gierahn, Todd M, Marc H Wadsworth, Travis K Hughes, Bryan D Bryson, Andrew Butler, Rahul Satija, Sarah Fortune, J Christopher Love, and Alex K Shalek. 2017. “Seq-Well: Portable, Low-Cost Rna Sequencing of Single Cells at High Throughput.” <em>Nature Methods</em> 14 (4): 395–98.</p>
+</div>
+<div>
+<p>Habib, Naomi, Inbal Avraham-Davidi, Anindita Basu, Tyler Burks, Karthik Shekhar, Matan Hofree, Sourav R Choudhury, et al. 2017. “Massively Parallel Single-Nucleus Rna-Seq with Dronc-Seq.” <em>Nature Methods</em> 14 (10): 955–58.</p>
+</div>
+<div>
+<p>Hashimshony, Tamar, Naftalie Senderovich, Gal Avital, Agnes Klochendler, Yaron De Leeuw, Leon Anavy, Dave Gennert, et al. 2016. “CEL-Seq2: Sensitive Highly-Multiplexed Single-Cell Rna-Seq.” <em>Genome Biology</em> 17 (1): 1–7.</p>
+</div>
+<div>
+<p>Hashimshony, Tamar, Florian Wagner, Noa Sher, and Itai Yanai. 2012. “CEL-Seq: Single-Cell Rna-Seq by Multiplexed Linear Amplification.” <em>Cell Reports</em> 2 (3): 666–73.</p>
+</div>
+<div>
+<p>Hu, Ping, Wenhua Zhang, Hongbo Xin, and Glenn Deng. 2016. “Single Cell Isolation and Analysis.” <em>Frontiers in Cell and Developmental Biology</em> 4: 116.</p>
+</div>
+<div>
+<p>Hwang, Byungjin, Ji Hyun Lee, and Duhee Bang. 2018. “Single-Cell Rna Sequencing Technologies and Bioinformatics Pipelines.” <em>Experimental &amp; Molecular Medicine</em> 50 (8): 1–14.</p>
+</div>
+<div>
+<p>Islam, Saiful, Una Kjällquist, Annalena Moliner, Pawel Zajac, Jian-Bing Fan, Peter Lönnerberg, and Sten Linnarsson. 2011. “Characterization of the Single-Cell Transcriptional Landscape by Highly Multiplex Rna-Seq.” <em>Genome Research</em> 21 (7): 1160–7.</p>
+</div>
+<div>
+<p>Jaitin, Diego Adhemar, Ephraim Kenigsberg, Hadas Keren-Shaul, Naama Elefant, Franziska Paul, Irina Zaretsky, Alexander Mildner, et al. 2014. “Massively Parallel Single-Cell Rna-Seq for Marker-Free Decomposition of Tissues into Cell Types.” <em>Science</em> 343 (6172): 776–79.</p>
+</div>
+<div>
+<p>Keren-Shaul, Hadas, Ephraim Kenigsberg, Diego Adhemar Jaitin, Eyal David, Franziska Paul, Amos Tanay, and Ido Amit. 2019. “MARS-Seq2. 0: An Experimental and Analytical Pipeline for Indexed Sorting Combined with Single-Cell Rna Sequencing.” <em>Nature Protocols</em> 14 (6): 1841–62.</p>
+</div>
+<div>
+<p>Klein, Allon M, Linas Mazutis, Ilke Akartuna, Naren Tallapragada, Adrian Veres, Victor Li, Leonid Peshkin, David A Weitz, and Marc W Kirschner. 2015. “Droplet Barcoding for Single-Cell Transcriptomics Applied to Embryonic Stem Cells.” <em>Cell</em> 161 (5): 1187–1201.</p>
+</div>
+<div>
+<p>Macosko, Evan Z, Anindita Basu, Rahul Satija, James Nemesh, Karthik Shekhar, Melissa Goldman, Itay Tirosh, et al. 2015. “Highly Parallel Genome-Wide Expression Profiling of Individual Cells Using Nanoliter Droplets.” <em>Cell</em> 161 (5): 1202–14.</p>
+</div>
+<div>
+<p>Picelli, Simone, Åsa K Björklund, Omid R Faridani, Sven Sagasser, Gösta Winberg, and Rickard Sandberg. 2013. “Smart-Seq2 for Sensitive Full-Length Transcriptome Profiling in Single Cells.” <em>Nature Methods</em> 10 (11): 1096–8.</p>
+</div>
+<div>
+<p>Ramsköld, Daniel, Shujun Luo, Yu-Chieh Wang, Robin Li, Qiaolin Deng, Omid R Faridani, Gregory A Daniels, et al. 2012. “Full-Length mRNA-Seq from Single-Cell Levels of Rna and Individual Circulating Tumor Cells.” <em>Nature Biotechnology</em> 30 (8): 777–82.</p>
+</div>
+<div>
+<p>Rosenberg, Alexander B, Charles M Roco, Richard A Muscat, Anna Kuchina, Paul Sample, Zizhen Yao, Lucas T Graybuck, et al. 2018. “Single-Cell Profiling of the Developing Mouse Brain and Spinal Cord with Split-Pool Barcoding.” <em>Science</em> 360 (6385): 176–82.</p>
+</div>
+<div>
+<p>Sasagawa, Yohei, Hiroki Danno, Hitomi Takada, Masashi Ebisawa, Kaori Tanaka, Tetsutaro Hayashi, Akira Kurisaki, and Itoshi Nikaido. 2018. “Quartz-Seq2: A High-Throughput Single-Cell Rna-Sequencing Method That Effectively Uses Limited Sequence Reads.” <em>Genome Biology</em> 19 (1): 1–24.</p>
+</div>
+<div>
+<p>Sasagawa, Yohei, Itoshi Nikaido, Tetsutaro Hayashi, Hiroki Danno, Kenichiro D Uno, Takeshi Imai, and Hiroki R Ueda. 2013. “Quartz-Seq: A Highly Reproducible and Sensitive Single-Cell Rna Sequencing Method, Reveals Non-Genetic Gene-Expression Heterogeneity.” <em>Genome Biology</em> 14 (4): 1–17.</p>
+</div>
+<div>
+<p>Sheng, Kuanwei, Wenjian Cao, Yichi Niu, Qing Deng, and Chenghang Zong. 2017. “Effective Detection of Variation in Single-Cell Transcriptomes Using Matq-Seq.” <em>Nature Methods</em> 14 (3): 267–70.</p>
+</div>
+<div>
+<p>Tang, Fuchou, Catalin Barbacioru, Yangzhou Wang, Ellen Nordman, Clarence Lee, Nanlan Xu, Xiaohui Wang, et al. 2009. “MRNA-Seq Whole-Transcriptome Analysis of a Single Cell.” <em>Nature Methods</em> 6 (5): 377–82.</p>
+</div>
+<div>
+<p>Zheng, Grace XY, Jessica M Terry, Phillip Belgrader, Paul Ryvkin, Zachary W Bent, Ryan Wilson, Solongo B Ziraldo, et al. 2017. “Massively Parallel Digital Transcriptional Profiling of Single Cells.” <em>Nature Communications</em> 8 (1): 1–12.</p>
 </div>
 </div>
 </div>
+
 
 
 
@@ -223,7 +296,7 @@ gitbook.start({
 "fontsettings": {
 "theme": "white",
 "family": "sans",
-"size": 2
+"size": 1
 },
 "edit": {
 "link": null,

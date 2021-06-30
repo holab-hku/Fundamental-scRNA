@@ -1,11 +1,11 @@
 --- 
 title: "Fundamentals of scRNASeq Analysis"
-author: "Xinyi Lin, Joshua Ho"
+author: "Xinyi Lin, Gordon Qian, Joshua Ho"
 date: "2021-06-28 (updated: `r Sys.Date()`)"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
-bibliography: [book.bib]
+bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: linxy29/Fundamental-scRNA

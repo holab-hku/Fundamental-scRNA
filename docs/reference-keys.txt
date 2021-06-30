@@ -1,8 +1,14 @@
-fig:nice-fig
-tab:nice-tab
+fig:workflow
+fig:seq-techs
+fig:biasedreads
+fig:biasedreads2
 background
 single-cell-rna-sequencingscrna-seq
-literature
+cell-isolation
+barcodes-and-unique-molecular-identifiersumi
+summary-of-widely-used-scrna-seq-technologies
+raw2matrix
+fasta-file
 methods
 math-example
 applications
