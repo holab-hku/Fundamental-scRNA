@@ -1,4 +1,4 @@
-# Methods
+# Downstream Analysis Using Seurat {#downstream}
 
 We describe our methods in this chapter.
 

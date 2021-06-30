@@ -1,0 +1,43 @@
+# Pre-processing 10X RNA-seq Data {#raw2matrix}
+
+## FASTA format
+
+Raw RNA-sequencing data will be in a fastq file with FASTA format. It is a text-based format used for storing either nucleotide sequences or peptide sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (">") symbol and lines of sequence data. Represented in the following format:
+
+```
+>ReadID
+READ SEQUENCE
+READ SEQUENCE
+READ SEQUENCE
+```
+
+For more details about FASTA format: https://en.wikipedia.org/wiki/FASTA_format
+
+Generally fastq files are pre-processed using quality control tools, such as [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/). This outputs a series of metrics assessing the quality of sequence reads. Some of these metrics include:
+```
+1. Per base sequence quality
+2. Per sequence quality scores
+3. Per base sequence content
+4. Per sequence GC content
+5. Per base N content
+6. Sequence Duplication Levels
+7. Overrepresented Sequences
+8. Adapter Content
+9. Kmer Content
+```
+
+For more details about FastQC: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+
+## Cell Ranger^[Figures and content in this sub-chapter are modified from https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger]
+
+[Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger) is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+
+Some concepts:
+
+* **GEM well** (formerly **GEM group**): A set of partitioned cells (Gelbeads-in-Emulsion) from a single 10x Chromium™ Chip channel. One or more sequencing **libraries** can be derived from a **GEM well**.
+
+* **Library** (or **Sequencing Library**): A 10x-barcoded sequencing library prepared from a single **GEM well**. With Feature Barcode or V(D)J assays, it is possible to create multiple libraries from the same **GEM well**. The library types may include Gene Expression, Antibody Capture, CRISPR Guide Capture, TCR-enrichment, etc.
+
+* **Sequencing Run** (or **Flowcell**): A flowcell containing data from one sequencing instrument run.
+
+### Basic pipeline

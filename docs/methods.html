@@ -143,8 +143,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
 <li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Processing 10X RNA-seq data</a><ul>
-<li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fasta-file"><i class="fa fa-check"></i><b>2.1</b> FASTA file</a></li>
+<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing 10X RNA-seq data</a><ul>
+<li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fasta-format"><i class="fa fa-check"></i><b>2.1</b> FASTA format</a></li>
+<li class="chapter" data-level="2.2" data-path="raw2matrix.html"><a href="raw2matrix.html#cell-ranger"><i class="fa fa-check"></i><b>2.2</b> Cell Ranger</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#basic-pipeline"><i class="fa fa-check"></i><b>2.2.1</b> Basic pipeline</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a><ul>
 <li class="chapter" data-level="3.1" data-path="methods.html"><a href="methods.html#math-example"><i class="fa fa-check"></i><b>3.1</b> math example</a></li>
@@ -185,19 +188,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[
 SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
 \]</span></p>
-<p>You can also use math in footnotes like this<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
-<p>We will approximate standard error to 0.027<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<p>You can also use math in footnotes like this<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<p>We will approximate standard error to 0.027<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
 
 </div>
 </div>
 <div class="footnotes">
 <hr />
-<ol start="2">
-<li id="fn2"><p>where we mention <span class="math inline">\(p = \frac{a}{b}\)</span><a href="methods.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
+<ol start="3">
+<li id="fn3"><p>where we mention <span class="math inline">\(p = \frac{a}{b}\)</span><a href="methods.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
 <p><span class="math display">\[
 SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span><a href="methods.html#fnref3" class="footnote-back">↩︎</a></p></li>
+\]</span><a href="methods.html#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

@@ -8,10 +8,8 @@ cell-isolation
 barcodes-and-unique-molecular-identifiersumi
 summary-of-widely-used-scrna-seq-technologies
 raw2matrix
-fasta-file
-methods
+fasta-format
+cell-ranger
+basic-pipeline
+downstream
 math-example
-applications
-example-one
-example-two
-final-words
