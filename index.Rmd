@@ -30,3 +30,14 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+
+#### Acknowledgement {-}
+
+Thanks everyone in Ho Lab who gives great comments/suggestions and contributes to this teaching material.
+
+#### Contact Information {-}
+
+Dr HO, Joshua Wing Kei, Associate Professor
+<br>[The University of Hong Kong](https://www.hku.hk/)
+<br>[Lab page](https://holab-hku.github.io/)
+<br>Email: [jwkho@hku.hk](mailto: jwkho@hku.hk)
