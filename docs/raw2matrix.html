@@ -150,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.2" data-path="raw2matrix.html"><a href="raw2matrix.html#output-file"><i class="fa fa-check"></i><b>2.2.2</b> Output file</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
-<li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublet"><i class="fa fa-check"></i><b>2.4</b> Doublet</a></li>
+<li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublets"><i class="fa fa-check"></i><b>2.4</b> Doublets</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -218,7 +218,7 @@ Figure 2.1: Cellranger Workflow
 </div>
 </div>
 <div id="output-file" class="section level3">
-<h3><span class="header-section-number">2.2.2</span> Output file</h3>
+<h3><span class="header-section-number">2.2.2</span> Output file<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></h3>
 <p>Following the output folder we will get from cellranger. The <code>outs</code> folder contains the final pipeline output files which including what we want for downstream analysis.</p>
 <div class="figure" style="text-align: center"><span id="fig:cellranger2"></span>
 <img src="figs/cellranger_output.png" alt="Overview of the folder generate from cellranger" width="100%" />
@@ -248,7 +248,7 @@ Figure 2.3: Overview of the outs folder
 <li><p><strong>Unfiltered feature-barcode matrix</strong>: is stored under <code>raw_feature_bc_matrix</code>(1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.</p></li>
 <li><p><strong>Filtered feature-barcode matrix</strong>: is stored under <code>filtered_feature_bc_matrix</code>(1-2) folder. Including only detected cellular barcodes. For Targeted Gene Expression samples, non-targeted genes are removed from the filtered matrix.</p></li>
 </ul>
-<p>Both <code>raw_feature_bc_matrix</code> and <code>filtered_feature_bc_matrix</code> contains three files<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<p>Both <code>raw_feature_bc_matrix</code> and <code>filtered_feature_bc_matrix</code> contains three files<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <ul>
 <li>The <strong>features.tsv.gz</strong> file correspond to row indices. It contains three columns:</li>
 </ul>
@@ -291,43 +291,20 @@ A plot showing the effect of decreased sequencing depth on median genes per cell
 Figure 2.5: Sequencing and Mapping dashboards
 </p>
 </div>
-<p>Other numbers used for evaluation<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>:</p>
+<p>Other numbers used for evaluation<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>:</p>
 <ul>
 <li><p><code>Estimated Number of Cells</code>: 500-10,000</p></li>
 <li><p><code>Mean Reads per Cell</code>: 20,000 reads/cell minimum recommended reads per cell around 10,000</p></li>
 <li><p><code>Valid barcodes</code>: greater than 75%</p></li>
-<li><p><code>Q30 bases in RNA read</code>: ideally greater than 65%<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p></li>
+<li><p><code>Q30 bases in RNA read</code>: ideally greater than 65%<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p></li>
 <li><p><code>Reads mapped confidently to transcriptome</code>: ideally greater than 30%</p></li>
 <li><p><code>Reads mapped antisense to gene</code>: ideally smaller than 10%</p></li>
 </ul>
 </div>
 <div id="bam" class="section level5 unnumbered">
 <h5>BAM</h5>
-</div>
-<div id="molecule-info-h5" class="section level5 unnumbered">
-<h5>Molecule Info (h5)</h5>
-</div>
-<div id="secondary-analysis-csv" class="section level5 unnumbered">
-<h5>Secondary Analysis CSV</h5>
-</div>
-<div id="loupe-file-.cloupe" class="section level5 unnumbered">
-<h5>Loupe File (.cloupe)</h5>
-<p>For more information: <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview</a></p>
-</div>
-</div>
-</div>
-<div id="starsolo" class="section level2">
-<h2><span class="header-section-number">2.3</span> STARsolo</h2>
-<p>The STARsolo program outputs a large amount of files reflecting details of the read alignment process. We will only discuss some of the key files important for downstream analysis.</p>
-<div class="figure" style="text-align: center"><span id="fig:starsolo"></span>
-<img src="figs/starsolo.png" alt="STARsolo Output" width="100%" />
-<p class="caption">
-Figure 2.6: STARsolo Output
-</p>
-</div>
-<ol style="list-style-type: decimal">
-<li>The <strong>BAM file</strong>, contains information about mapped reads, in a binary compressed format. When de-compressed into a SAM file, information is stored as a tab seperated table where the columns corresponds to:</li>
-</ol>
+<p>The <strong>BAM file</strong>, contains information about mapped reads, in a binary compressed format. It is consisted of a optional header section and an alignment section. If there is a a header section, it is distinguished from the alignment section by ‘@’ in the first column and will be prior to the alignment section.</p>
+<p>When de-compressed into a SAM file, information is stored as a tab seperated table with some standard columns and some generated by the Cell Ranger software specifically. The Cell Ranger specific columns contains information related to <code>BAM Barcode</code>, <code>BAM Alignment</code> and <code>Feature Barcode</code>.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> The standard columns corresponds to:</p>
 <pre><code>QNAME : read name (generally will include UMI barcode if applicable)
 FLAG : number tag indicating the “type” of alignment, link to explanation of all possible “types”
 RNAME : reference sequence name (i.e. chromosome read is mapped to).
@@ -341,24 +318,85 @@ SEQ : read sequence
 QUAL : read quality</code></pre>
 <p>BAM files can be viewed using SAMtools.</p>
 <pre><code>samtools view output.bam</code></pre>
-<ol start="2" style="list-style-type: decimal">
+<p>To do trajectory analysis based on RNA velocity, bam file is needed.</p>
+</div>
+<div id="molecule-info-h5" class="section level5 unnumbered">
+<h5>Molecule Info (h5)</h5>
+<p>It is an HDF5 file containing per-molecule information for all molecules that contain a valid barcode and valid UMI and were assigned with high confidence to a gene or Feature Barcode. This HDF5 file contains data corresponding to the observed molecules, as well as data about the libraries and feature set(s) used. The structure of this file is:</p>
+<div class="figure" style="text-align: center"><span id="fig:cellranger6"></span>
+<img src="figs/hdf5.png" alt="HDF5 File Hierarchy" width="80%" />
+<p class="caption">
+Figure 2.6: HDF5 File Hierarchy
+</p>
+</div>
+</div>
+<div id="secondary-analysis-csv" class="section level5 unnumbered">
+<h5>Secondary Analysis CSV</h5>
+<p>Several CSV files which contain automated secondary analysis results. It contains information about <code>Dimensionality Reduction</code>, <code>t-SNE</code>, <code>UMAP</code>, <code>Clustering</code> and <code>Differential Expression</code>. It is also visualized in the <code>ANALYSIS</code> metrics through <strong>Web Summary .html</strong> file.</p>
+</div>
+<div id="loupe-file-.cloupe" class="section level5 unnumbered">
+<h5>Loupe File (.cloupe)</h5>
+<p>Loupe Browser is a desktop application that provides interactive visualization functionality to analyze data from different 10x Genomics solutions. It can help to <code>Finding Cells of Interest</code>, <code>Finding Significant Genes</code>, <code>Identifying Cell Types</code>, <code>Exploring Substructure</code>, <code>Exploring Cell Subtypes</code>, <code>Integrated Gene Expression and V(D)J Analysis</code>, <code>Sharing Results</code>.</p>
+<p>A Loupe file can be viewed through Loupe Browser. It is embedded with the following information:</p>
+<ul>
+<li><p>Gene expression information for cells in the sample.</p></li>
+<li><p>Various gene expression-based clustering information for the cells, including t-SNE and UMAP projections and differential gene expression.</p></li>
+<li><p>Gene annotation information from the transcriptome reference.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="starsolo" class="section level2">
+<h2><span class="header-section-number">2.3</span> STARsolo</h2>
+<p>The STARsolo<span class="citation">(Kaminow, Yunusov, and Dobin <a href="#ref-kaminow2021starsolo" role="doc-biblioref">2021</a>)</span> is a analysis toool designed for droplet single cell RNA sequencing data (e.g. 10X Genomics Chromium System) built directly into STAR code. The inputs of STARsolo is a FASTQ file, and it can gives nearly identical gene counts in the same format as Cell Ranger but ~10 times faster.</p>
+<p>The STARsolo program outputs a large amount of files reflecting details of the read alignment process. We will only discuss some of the key files here.</p>
+<div class="figure" style="text-align: center"><span id="fig:starsolo"></span>
+<img src="figs/starsolo.png" alt="STARsolo Output" width="100%" />
+<p class="caption">
+Figure 2.7: STARsolo Output
+</p>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>The <strong>BAM file</strong>, contains information about mapped reads wichi is quiet similari to the BAM file generated through Cell Ranger.</p></li>
 <li><p><strong>Alignment summary files</strong>, Features.stat and Summary.csv, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.</p></li>
 <li><p>The <strong>feature matrix file</strong>, matrix.mtx, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.</p></li>
-<li><p><strong>Auxiliary files</strong>, barcodes.tsv and features.tsv, provide extra metadata important for downstream analysis. These files along with the matrix file are required for analysis in gold standard scRNA-seq data analysis package, seurat.</p></li>
+<li><p><strong>Auxiliary files</strong>, barcodes.tsv and features.tsv, provide extra metadata important for downstream analysis. These files along with the matrix file serve the same role as <code>Matrices</code> part in Cell Ranger output and are required for analysis in gold standard scRNA-seq data analysis package, seurat.</p></li>
 </ol>
 </div>
-<div id="doublet" class="section level2">
-<h2><span class="header-section-number">2.4</span> Doublet</h2>
+<div id="doublets" class="section level2">
+<h2><span class="header-section-number">2.4</span> Doublets<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a></h2>
+<p>Doublets are artificial libraries generated from two cells even though it is designed to be generated from only one cell. It usually arise due to errors in cell sorting or capture.</p>
+<p>Several experimental strategies can be used to remove doublets:</p>
+<ul>
+<li><p>based on natural genetic variation between different donor individuals<span class="citation">(Kang et al. <a href="#ref-kang2018multiplexed" role="doc-biblioref">2018</a>)</span>.</p></li>
+<li><p>mark a subset of cells (e.g., all cells from one sample) with an antibody conjugated to a different oligonucleotide. Upon pooling, libraries that are observed to have different oligonucleotides are considered to be doublets and removed<span class="citation">(Bach et al. <a href="#ref-bach2017differentiation" role="doc-biblioref">2017</a>)</span>.</p></li>
+<li><p>infer doublets from the expression profiles alone based on computational approaches like simulation.</p></li>
+</ul>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-bach2017differentiation">
+<p>Bach, Karsten, Sara Pensa, Marta Grzelak, James Hadfield, David J Adams, John C Marioni, and Walid T Khaled. 2017. “Differentiation Dynamics of Mammary Epithelial Cells Revealed by Single-Cell Rna Sequencing.” <em>Nature Communications</em> 8 (1): 1–11.</p>
+</div>
+<div id="ref-kaminow2021starsolo">
+<p>Kaminow, Benjamin, Dinar Yunusov, and Alexander Dobin. 2021. “STARsolo: Accurate, Fast and Versatile Mapping/Quantification of Single-Cell and Single-Nucleus Rna-Seq Data.” <em>bioRxiv</em>.</p>
+</div>
+<div id="ref-kang2018multiplexed">
+<p>Kang, Hyun Min, Meena Subramaniam, Sasha Targ, Michelle Nguyen, Lenka Maliskova, Elizabeth McCarthy, Eunice Wan, et al. 2018. “Multiplexed Droplet Single-Cell Rna-Sequencing Using Natural Genetic Variation.” <em>Nature Biotechnology</em> 36 (1): 89–94.</p>
 </div>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="2">
 <li id="fn2"><p>Figures and content in this sub-chapter are modified from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger</a><a href="raw2matrix.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>The <strong>desktop. ini</strong> file is a hidden file used to store information about the arrangement of a Windows folder.<a href="raw2matrix.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>The information here is provided by <a href="https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf" class="uri">https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf</a><a href="raw2matrix.html#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>Q scores are defined as a property that is logarithmically related to the base calling error probabilities. For more information: <a href="https://www.illumina.com/documents/products/technotes/technote_Q-Scores.pdf" class="uri">https://www.illumina.com/documents/products/technotes/technote_Q-Scores.pdf</a><a href="raw2matrix.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>For more information: <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview</a><a href="raw2matrix.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>The <strong>desktop. ini</strong> file is a hidden file used to store information about the arrangement of a Windows folder.<a href="raw2matrix.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>The information here is provided by <a href="https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf" class="uri">https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf</a><a href="raw2matrix.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>Q scores are defined as a property that is logarithmically related to the base calling error probabilities. For more information: <a href="https://www.illumina.com/documents/products/technotes/technote_Q-Scores.pdf" class="uri">https://www.illumina.com/documents/products/technotes/technote_Q-Scores.pdf</a><a href="raw2matrix.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>For more details: <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam</a><a href="raw2matrix.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>For more information: <a href="https://bioconductor.org/books/release/OSCA/doublet-detection.html" class="uri">https://bioconductor.org/books/release/OSCA/doublet-detection.html</a><a href="raw2matrix.html#fnref8" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

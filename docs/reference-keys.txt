@@ -7,6 +7,7 @@ fig:cellranger2
 fig:cellranger3
 fig:cellranger4
 fig:cellranger5
+fig:cellranger6
 fig:starsolo
 background
 single-cell-rna-sequencingscrna-seq
@@ -19,5 +20,5 @@ cell-ranger
 general-workflow
 output-file
 starsolo
-doublet
+doublets
 downstream
