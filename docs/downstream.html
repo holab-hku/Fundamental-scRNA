@@ -136,7 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Fundamental scRNASeq</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#install-packages"><i class="fa fa-check"></i>Install packages</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#set-working-directory"><i class="fa fa-check"></i>Set working directory</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#download-data"><i class="fa fa-check"></i>Download data</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background Knowledge</a><ul>
 <li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
@@ -152,7 +156,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
 <li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublets"><i class="fa fa-check"></i><b>2.4</b> Doublets</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a></li>
+<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
+<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat Object</a></li>
+<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat Object</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -176,9 +183,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="downstream" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Downstream Analysis Using Seurat</h1>
-<p>Need some time to complete. It will be <a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial.html">Seurat basic tutorial</a>(PBMC 3K one) added with <a href="https://satijalab.org/seurat/articles/integration_introduction.html">tutorial about integration of two samples</a>.</p>
-<p>Data used here will be the same data used in the integration tutorial, which are samples of human immune cells (PBMC) in either <a href="https://www.nature.com/articles/nbt.4042">a resting or interferon-stimulated state</a>.</p>
+<p>In this tutorial, we will learn how to <code>Read 10X sequencing data and change it into a seurat object</code>, <code>Standard pre-processing workflow</code>, <code>QC and selecting cells for further analysis</code>, <code>Create an ‘integrated’ data assay from data coming from two samples</code>, <code>Normalizing the data</code>, <code>Identification of highly variable features (feature selection)</code>, <code>Scaling the data</code>, <code>Perform linear dimensional reduction</code> and <code>Cluster the cells</code>.</p>
+<p>Data used here are samples of human immune cells (PBMC) in either <a href="https://www.nature.com/articles/nbt.4042">a resting or interferon-stimulated state</a>.</p>
+<div id="seurat-object" class="section level2">
+<h2><span class="header-section-number">3.1</span> Seurat Object</h2>
+</div>
+<div id="setup-the-seurat-object" class="section level2">
+<h2><span class="header-section-number">3.2</span> Setup the Seurat Object</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="downstream.html#cb10-1"></a><span class="kw">library</span>(Seurat)</span>
+<span id="cb10-2"><a href="downstream.html#cb10-2"></a><span class="kw">library</span>(SeuratData)</span>
+<span id="cb10-3"><a href="downstream.html#cb10-3"></a><span class="kw">library</span>(patchwork)</span></code></pre></div>
 
+</div>
 </div>
             </section>
 

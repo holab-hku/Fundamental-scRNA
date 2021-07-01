@@ -136,7 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Fundamental scRNASeq</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prerequisites</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#install-packages"><i class="fa fa-check"></i>Install packages</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#set-working-directory"><i class="fa fa-check"></i>Set working directory</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#download-data"><i class="fa fa-check"></i>Download data</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background Knowledge</a><ul>
 <li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
@@ -152,7 +156,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
 <li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublets"><i class="fa fa-check"></i><b>2.4</b> Doublets</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a></li>
+<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
+<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat Object</a></li>
+<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat Object</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -182,10 +189,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="prerequisites" class="section level1 unnumbered">
 <h1>Prerequisites</h1>
 <p>This is the teaching material for <strong>Session 2: Fundamentals of scRNASeq Analysis</strong> of <strong>2021 Single Cell Workshop</strong>.</p>
+<div id="install-packages" class="section level3 unnumbered">
+<h3>Install packages</h3>
 <p>Some packages used in this material can be installed from CRAN or Github:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;bookdown&quot;</span>)</span>
-<span id="cb1-2"><a href="index.html#cb1-2"></a><span class="co"># or the development version</span></span>
-<span id="cb1-3"><a href="index.html#cb1-3"></a><span class="co"># devtools::install_github(&quot;rstudio/bookdown&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;Seurat&#39;</span>)</span>
+<span id="cb1-2"><a href="index.html#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb1-3"><a href="index.html#cb1-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&#39;satijalab/seurat-data&#39;</span>)</span>
+<span id="cb1-4"><a href="index.html#cb1-4"></a><span class="kw">install.packages</span>(<span class="st">&quot;patchwork&quot;</span>)</span>
+<span id="cb1-5"><a href="index.html#cb1-5"></a><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
+</div>
+<div id="set-working-directory" class="section level3 unnumbered">
+<h3>Set working directory</h3>
+<p>Setting a working directory first helps us read and save data in a easier way. To set a working directory:</p>
+<ul>
+<li><p>create a folder named “R-workshop” in your preferred directory</p></li>
+<li><p>create a “data” folder in the <code>R-workshop</code></p></li>
+<li><p>from RStudio, use the menu to change your working directory under Session &gt; Set Working Directory &gt; Choose Directory</p></li>
+<li><p>choose the directory to <code>R-workshop</code></p></li>
+</ul>
+<p><img src="figs/workpath.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>Or you can type in the console:</p>
+<pre><code>setwd(&quot;/yourdirectory/R-workshop&quot;)</code></pre>
+<p>For Windows, the command might look like :</p>
+<pre><code>setwd(&quot;c:/yourdirectory/R-workshop&quot;)</code></pre>
+</div>
+<div id="download-data" class="section level3 unnumbered">
+<h3>Download data</h3>
+<p>Data used in this workshop are samples of human immune cells (PBMC) in either a resting or interferon-stimulated state<span class="citation">(Kang et al. <a href="#ref-kang2018multiplexed" role="doc-biblioref">2018</a>)</span>. The original data comes from: <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96583" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96583</a>.</p>
+<p>To prepare data for this workshop:</p>
+<ul>
+<li><p>download the <code>Exp6_Kang.zip</code> from: <a href="https://drive.google.com/drive/folders/1LuFpvH_LIZnzNYcITFuFP27WaggJZga1?usp=sharing" class="uri">https://drive.google.com/drive/folders/1LuFpvH_LIZnzNYcITFuFP27WaggJZga1?usp=sharing</a></p></li>
+<li><p>unzip the file and put it in the <code>data</code> folder we create before.</p></li>
+<li><p>the structure of the <code>data</code> folder should be look like this:</p></li>
+</ul>
+<p><img src="figs/data_folder.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><br/></p>
 <div id="acknowledgement" class="section level4 unnumbered">
 <h4>Acknowledgement</h4>
 <p>Thanks everyone in Ho Lab who gives great comments/suggestions and contributes to this teaching material.</p>
@@ -197,6 +235,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <br><a href="https://holab-hku.github.io/">Lab page</a>
 <br>Email: <a href="mailto:%20jwkho@hku.hk">jwkho@hku.hk</a></p>
 
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-kang2018multiplexed">
+<p>Kang, Hyun Min, Meena Subramaniam, Sasha Targ, Michelle Nguyen, Lenka Maliskova, Elizabeth McCarthy, Eunice Wan, et al. 2018. “Multiplexed Droplet Single-Cell Rna-Sequencing Using Natural Genetic Variation.” <em>Nature Biotechnology</em> 36 (1): 89–94.</p>
 </div>
 </div>
             </section>

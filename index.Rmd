@@ -16,20 +16,67 @@ description: "This is the teaching materials for Session 2: Fundamentals of scRN
 
 This is the teaching material for **Session 2: Fundamentals of scRNASeq Analysis** of **2021 Single Cell Workshop**.
 
+### Install packages {-}
+
 Some packages used in this material can be installed from CRAN or Github:
 
 ```{r eval=FALSE}
-install.packages("bookdown")
-# or the development version
-# devtools::install_github("rstudio/bookdown")
+install.packages('Seurat')
+install.packages("devtools")
+devtools::install_github('satijalab/seurat-data')
+install.packages("patchwork")
+install.packages("dplyr")
+```
+
+### Set working directory {-}
+
+Setting a working directory first helps us read and save data in a easier way. To set a working directory:
+
+* create a folder named “R-workshop” in your preferred directory
+
+* create a “data” folder in the `R-workshop`
+
+* from RStudio, use the menu to change your working directory under Session > Set Working Directory > Choose Directory
+
+* choose the directory to `R-workshop`
+
+```{r workpath, out.width='80%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/workpath.png')
+```
+
+Or you can type in the console:
+```
+setwd("/yourdirectory/R-workshop")
+```
+For Windows, the command might look like :
+```
+setwd("c:/yourdirectory/R-workshop")
+```
+
+### Download data {-}
+
+Data used in this workshop are samples of human immune cells (PBMC) in either a resting or interferon-stimulated state[@kang2018multiplexed]. The original data comes from: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96583.
+
+To prepare data for this workshop:
+
+* download the `Exp6_Kang.zip` from: https://drive.google.com/drive/folders/1LuFpvH_LIZnzNYcITFuFP27WaggJZga1?usp=sharing 
+
+* unzip the file and put it in the `data` folder we create before.
+
+* the structure of the `data` folder should be look like this:
+
+```{r data, out.width='80%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/data_folder.png')
 ```
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'Seurat', 'devtools', 'patchwork'
 ), 'packages.bib')
 ```
+
+<br/>
 
 #### Acknowledgement {-}
 

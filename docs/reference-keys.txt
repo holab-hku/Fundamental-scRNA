@@ -22,3 +22,5 @@ output-file
 starsolo
 doublets
 downstream
+seurat-object
+setup-the-seurat-object

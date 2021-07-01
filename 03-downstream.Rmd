@@ -1,5 +1,16 @@
 # Downstream Analysis Using Seurat {#downstream}
 
-Need some time to complete. It will be [Seurat basic tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)(PBMC 3K one) added with [tutorial about integration of two samples](https://satijalab.org/seurat/articles/integration_introduction.html).
+In this tutorial, we will learn how to `Read 10X sequencing data and change it into a seurat object`, `Standard pre-processing workflow`, `QC and selecting cells for further analysis`, `Create an ‘integrated’ data assay from data coming from two samples`, `Normalizing the data`, `Identification of highly variable features (feature selection)`, `Scaling the data`, `Perform linear dimensional reduction` and `Cluster the cells`.
 
-Data used here will be the same data used in the integration tutorial, which are samples of human immune cells (PBMC) in either [a resting or interferon-stimulated state](https://www.nature.com/articles/nbt.4042).
+Data used here are samples of human immune cells (PBMC) in either [a resting or interferon-stimulated state](https://www.nature.com/articles/nbt.4042).
+
+## Seurat Object
+
+## Setup the Seurat Object
+
+```{r, warning=FALSE, message=FALSE}
+library(Seurat)
+library(SeuratData)
+library(patchwork)
+```
+
