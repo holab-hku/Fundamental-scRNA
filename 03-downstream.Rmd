@@ -2,11 +2,15 @@
 
 The contents in this chapter are adapted from [Seurat - Guided Clustering Tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html) with little modification. The data we used is a 10k PBMC data getting from [10x Genomics website](https://support.10xgenomics.com/single-cell-gene-expression/datasets)
 
-In this tutorial, we will learn how to `Read 10X sequencing data and change it into a seurat object`, `Standard pre-processing workflow`, `QC and selecting cells for further analysis`, `Normalizing the data`, `Identification of highly variable features (feature selection)`, `Scaling the data`, `Perform linear dimensional reduction` and `Visualization`.
+In this tutorial, we will learn how to `Read 10X sequencing data and change it into a seurat object`, `QC and selecting cells for further analysis`, `Normalizing the data`, `Identification of highly variable features (feature selection)`, `Scaling the data`, `Perform linear dimensional reduction` and `Visualization`.
 
 ## Seurat object
 
 
+
+
+
+## Setup the Seurat object
 
 ```{r, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -14,8 +18,6 @@ library(Seurat)
 library(patchwork)
 library(ggplot2)
 ```
-
-## Setup the Seurat object
 
 We start by reading in the data. Read10X_h5
 
