@@ -8,5 +8,5 @@ bookdown::gitbook:
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     # changing the default
     fontsettings:
-      size: 1
+      size: 2
 
