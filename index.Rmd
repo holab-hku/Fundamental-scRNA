@@ -19,7 +19,7 @@ This is the teaching material for **Session 2: Fundamentals of scRNASeq Analysis
 
 ### Install packages {-}
 
-Some packages used in this material can be installed from CRAN or Github:
+Some packages used in this material can be installed from CRAN:
 
 ```{r eval=FALSE}
 install.packages('Seurat')
@@ -30,7 +30,7 @@ install.packages("ggplot2")
 
 ### Set working directory {-}
 
-Setting a working directory first helps us read and save data in a easier way. To set a working directory:
+Setting a working directory first helps us read and save data in an easier way. To set a working directory:
 
 * create a folder named “R-workshop” in your preferred directory
 
@@ -55,7 +55,7 @@ setwd("c:/yourdirectory/R-workshop")
 
 ### Download data {-}
 
-Data used in this workshop is a 10k PBMC data getting from [10x Genomics website](https://support.10xgenomics.com/single-cell-gene-expression/datasets). 
+Data used in this material is a 10k PBMC data getting from [10x Genomics website](https://support.10xgenomics.com/single-cell-gene-expression/datasets). 
 
 To prepare data for this workshop:
 

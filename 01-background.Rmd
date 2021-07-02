@@ -38,13 +38,13 @@ Non droplet-based:
 
 <br/>
 
-Following shows some common single cell isolaion techniques[@hwang2018single].
+The following figure shows some common single cell isolaion techniques[@hwang2018single].
 
-```{r seq-techs, fig.cap='Single Cell Isolation', out.width='80%', fig.align='center', echo=FALSE}
+```{r seq-techs, fig.cap='Single Cell Isolation(modified from Hwang, Lee, and Bang 2018)', out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/seq_techs.jpg')
 ```
 
-For more information about different cell isolation techniques: [@hu2016single]
+For more information about different cell isolation techniques: @hu2016single
 
 ## Barcodes and Unique molecular identifiers(UMI)^[For more information: http://data-science-sequencing.github.io/Win2018/lectures/lecture16/]
 
@@ -58,13 +58,13 @@ knitr::include_graphics('./figs/biasedreads.png')
 
 Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences. Thus, it is important to recognize the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location.
 
-We first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.
+To get the UMIS' couns, we can first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.
 
-```{r biasedreads2, fig.cap='Grouping barcodes to assign reads to cells(David Tse et.al)', out.width='70%', fig.align='center', echo=FALSE}
+```{r biasedreads2, fig.cap='Grouping barcodes to assign reads to cells(modified from David Tse et.al)', out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/biasedreads2.png')
 ```
 
-Analysis of the cell barcode and UMI is included in the alignment process, and we will introduce more in Chapter \@ref(raw2matrix).
+Analysis of the cell barcodes and UMIs is included in the alignment process, and we will introduce more in Chapter \@ref(raw2matrix).
 
 ```
 **Quiz**
