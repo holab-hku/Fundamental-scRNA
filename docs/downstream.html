@@ -196,27 +196,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this tutorial, we will learn how to <code>Read 10X sequencing data and change it into a seurat object</code>, <code>QC and selecting cells for further analysis</code>, <code>Normalizing the data</code>, <code>Identification of highly variable features (feature selection)</code>, <code>Scaling the data</code>, <code>Perform linear dimensional reduction</code> and <code>Visualization</code>.</p>
 <div id="seurat-object" class="section level2">
 <h2><span class="header-section-number">3.1</span> Seurat object</h2>
+<p>The Seurat object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. Before using Seurat to analyze scRNA-seq data, we can first have some basic understanding about the <code>Seurat object</code> from <a href="https://github.com/satijalab/seurat/wiki/Seurat#object-information">here</a>.</p>
 </div>
 <div id="setup-the-seurat-object" class="section level2">
 <h2><span class="header-section-number">3.2</span> Setup the Seurat object</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="downstream.html#cb11-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb11-2"><a href="downstream.html#cb11-2"></a><span class="kw">library</span>(Seurat)</span>
-<span id="cb11-3"><a href="downstream.html#cb11-3"></a><span class="kw">library</span>(patchwork)</span>
-<span id="cb11-4"><a href="downstream.html#cb11-4"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
-<p>We start by reading in the data. Read10X_h5</p>
-<p>The <code>Read10X()</code> function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).</p>
-<p>We next use the count matrix to create a <code>Seurat</code> object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. For a technical discussion of the Seurat object structure, check out our <a href="https://github.com/satijalab/seurat/wiki">GitHub Wiki</a>.</p>
-<p>The sameple in <code>GSM2560248</code> is the control group which is human immune cells (PBMC) in a resting state, while the sameple in <code>GSM2560249</code> is the human immune cells (PBMC) in a interferon-stimulated state.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="downstream.html#cb12-1"></a><span class="co"># Load the PBMC dataset</span></span>
-<span id="cb12-2"><a href="downstream.html#cb12-2"></a>pbmc.data &lt;-<span class="st"> </span><span class="kw">Read10X_h5</span>(<span class="st">&quot;./data/10k_PBMC.h5&quot;</span>)</span>
-<span id="cb12-3"><a href="downstream.html#cb12-3"></a><span class="co"># Initialize the Seurat object with the raw (non-normalized data).</span></span>
-<span id="cb12-4"><a href="downstream.html#cb12-4"></a>pbmc &lt;-<span class="st"> </span><span class="kw">CreateSeuratObject</span>(<span class="dt">counts =</span> pbmc.data, <span class="dt">project =</span> <span class="st">&quot;pbmc10k&quot;</span>, <span class="dt">min.cells =</span> <span class="dv">3</span>, <span class="dt">min.features =</span> <span class="dv">200</span>)</span>
-<span id="cb12-5"><a href="downstream.html#cb12-5"></a>pbmc</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="downstream.html#cb1-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="downstream.html#cb1-2"></a><span class="kw">library</span>(Seurat)</span>
+<span id="cb1-3"><a href="downstream.html#cb1-3"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb1-4"><a href="downstream.html#cb1-4"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
+<p>We start by reading in the data. The <code>Read10X_h5</code> reads count matrix from 10X CellRanger hdf5 file, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column). It can be used to read both scATAC-seq and scRNA-seq matrices.</p>
+<p>We next use the count matrix to create a <code>Seurat object</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="downstream.html#cb2-1"></a><span class="co"># Load the PBMC dataset</span></span>
+<span id="cb2-2"><a href="downstream.html#cb2-2"></a>pbmc.data &lt;-<span class="st"> </span><span class="kw">Read10X_h5</span>(<span class="st">&quot;./data/10k_PBMC.h5&quot;</span>)</span>
+<span id="cb2-3"><a href="downstream.html#cb2-3"></a><span class="co"># Initialize the Seurat object with the raw (non-normalized data).</span></span>
+<span id="cb2-4"><a href="downstream.html#cb2-4"></a>pbmc &lt;-<span class="st"> </span><span class="kw">CreateSeuratObject</span>(<span class="dt">counts =</span> pbmc.data, <span class="dt">project =</span> <span class="st">&quot;pbmc10k&quot;</span>, <span class="dt">min.cells =</span> <span class="dv">3</span>, <span class="dt">min.features =</span> <span class="dv">200</span>)</span>
+<span id="cb2-5"><a href="downstream.html#cb2-5"></a>pbmc</span></code></pre></div>
 <pre><code>## An object of class Seurat 
 ## 22432 features across 10813 samples within 1 assay 
 ## Active assay: RNA (22432 features, 0 variable features)</code></pre>
 <p>If we want to read data using the output of the cellranger pipeline from 10X directly, we can use <code>Read10X()</code></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="downstream.html#cb14-1"></a><span class="kw">Read10X</span>(data.dir)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="downstream.html#cb4-1"></a><span class="kw">Read10X</span>(data.dir)</span></code></pre></div>
 </div>
 <div id="standard-pre-processing-workflow" class="section level2">
 <h2><span class="header-section-number">3.3</span> Standard pre-processing workflow</h2>
@@ -227,106 +226,106 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>The number of unique genes detected in each cell.
 <ul>
-<li>Low-quality cells or empty droplets will often have very few genes</li>
-<li>Cell doublets or multiplets may exhibit an aberrantly high gene count</li>
-<li>Similarly, the total number of molecules detected within a cell (correlates strongly with unique genes)</li>
+<li>low-quality cells or empty droplets will often have very few genes</li>
+<li>cell doublets or multiplets may exhibit an aberrantly high gene count</li>
+<li>similarly, the total number of molecules detected within a cell (correlates strongly with unique genes)</li>
 </ul></li>
 <li>The percentage of reads that map to the mitochondrial genome
 <ul>
-<li>Low-quality / dying cells often exhibit extensive mitochondrial contamination</li>
-<li>We calculate mitochondrial QC metrics with the PercentageFeatureSet() function, which calculates the percentage of counts originating from a set of features</li>
-<li>We use the set of all genes starting with MT- as a set of mitochondrial genes</li>
+<li>low-quality / dying cells often exhibit extensive mitochondrial contamination</li>
+<li>we calculate mitochondrial QC metrics with the PercentageFeatureSet() function, which calculates the percentage of counts originating from a set of features</li>
+<li>we use the set of all genes starting with MT- as a set of mitochondrial genes</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="downstream.html#cb15-1"></a><span class="co"># The [[ operator can add columns to object metadata. This is a great place to stash QC stats</span></span>
-<span id="cb15-2"><a href="downstream.html#cb15-2"></a>pbmc[[<span class="st">&quot;percent.mt&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">PercentageFeatureSet</span>(pbmc, <span class="dt">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="downstream.html#cb5-1"></a><span class="co"># The [[ operator can add columns to object metadata. This is a great place to stash QC stats</span></span>
+<span id="cb5-2"><a href="downstream.html#cb5-2"></a>pbmc[[<span class="st">&quot;percent.mt&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">PercentageFeatureSet</span>(pbmc, <span class="dt">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span></code></pre></div>
 <p>The number of unique genes and total molecules are automatically calculated during <code>CreateSeuratObject()</code>. They are stored in the object meta data.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="downstream.html#cb16-1"></a><span class="co"># Show QC metrics for the first 5 cells in the control group</span></span>
-<span id="cb16-2"><a href="downstream.html#cb16-2"></a><span class="kw">head</span>(pbmc<span class="op">@</span>meta.data, <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="downstream.html#cb6-1"></a><span class="co"># Show QC metrics for the first 5 cells in the control group</span></span>
+<span id="cb6-2"><a href="downstream.html#cb6-2"></a><span class="kw">head</span>(pbmc<span class="op">@</span>meta.data, <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>##                    orig.ident nCount_RNA nFeature_RNA percent.mt
 ## AAACCCAGTATATGGA-1    pbmc10k        860          350 44.1860465
 ## AAACCCAGTATCGTAC-1    pbmc10k       1548          729  0.4521964
 ## AAACCCAGTCGGTGAA-1    pbmc10k       6387         1827 10.4117739
 ## AAACCCAGTTAGAAAC-1    pbmc10k      16664         3744  5.2808449
 ## AAACCCAGTTATCTTC-1    pbmc10k       3352         1464 13.8424821</code></pre>
-<p>We can visualize the <code>nFeature_RNA</code>, <code>nCount_RNA</code> and <code>percent.mt</code> we used for QC metrics</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="downstream.html#cb18-1"></a><span class="co"># Visualize QC metrics as a violin plot</span></span>
-<span id="cb18-2"><a href="downstream.html#cb18-2"></a><span class="kw">VlnPlot</span>(pbmc, <span class="dt">features =</span> <span class="kw">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="dt">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>We can then using dot plot to show the relationship between <code>nCount_RNA</code>, <code>nFeature_RNA</code> and <code>percent.mt</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="downstream.html#cb19-1"></a><span class="co"># FeatureScatter is typically used to visualize feature-feature relationships, but can be used</span></span>
-<span id="cb19-2"><a href="downstream.html#cb19-2"></a><span class="co"># for anything calculated by the object, i.e. columns in object metadata, PC scores etc.</span></span>
-<span id="cb19-3"><a href="downstream.html#cb19-3"></a></span>
-<span id="cb19-4"><a href="downstream.html#cb19-4"></a>plot1 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;percent.mt&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-5"><a href="downstream.html#cb19-5"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
-<span id="cb19-6"><a href="downstream.html#cb19-6"></a>plot2 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-7"><a href="downstream.html#cb19-7"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
-<span id="cb19-8"><a href="downstream.html#cb19-8"></a>plot1 <span class="op">+</span><span class="st"> </span>plot2</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We can visualize the <code>nFeature_RNA</code>, <code>nCount_RNA</code> and <code>percent.mt</code> we used as QC metrics</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="downstream.html#cb8-1"></a><span class="co"># Visualize QC metrics as a violin plot</span></span>
+<span id="cb8-2"><a href="downstream.html#cb8-2"></a><span class="kw">VlnPlot</span>(pbmc, <span class="dt">features =</span> <span class="kw">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="dt">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can then using dot plots to show the relationship between <code>nCount_RNA</code>, <code>nFeature_RNA</code> and <code>percent.mt</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="downstream.html#cb9-1"></a><span class="co"># FeatureScatter is typically used to visualize feature-feature relationships, but can be used</span></span>
+<span id="cb9-2"><a href="downstream.html#cb9-2"></a><span class="co"># for anything calculated by the object, i.e. columns in object metadata, PC scores etc.</span></span>
+<span id="cb9-3"><a href="downstream.html#cb9-3"></a>plot1 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;percent.mt&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="downstream.html#cb9-4"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb9-5"><a href="downstream.html#cb9-5"></a>plot2 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb9-6"><a href="downstream.html#cb9-6"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb9-7"><a href="downstream.html#cb9-7"></a>plot1 <span class="op">+</span><span class="st"> </span>plot2</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Here, we filter cells that have unique feature counts over 5,000 or less than 200. We also filter cells that have &gt;15% mitochondrial counts</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="downstream.html#cb20-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">subset</span>(pbmc, <span class="dt">subset =</span> nFeature_RNA <span class="op">&gt;</span><span class="st"> </span><span class="dv">200</span> <span class="op">&amp;</span><span class="st"> </span>nFeature_RNA <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span> <span class="op">&amp;</span><span class="st"> </span>percent.mt <span class="op">&lt;</span><span class="st"> </span><span class="dv">15</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="downstream.html#cb10-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">subset</span>(pbmc, <span class="dt">subset =</span> nFeature_RNA <span class="op">&gt;</span><span class="st"> </span><span class="dv">200</span> <span class="op">&amp;</span><span class="st"> </span>nFeature_RNA <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span> <span class="op">&amp;</span><span class="st"> </span>percent.mt <span class="op">&lt;</span><span class="st"> </span><span class="dv">15</span>)</span></code></pre></div>
 <p>We can visualize QC metrics again after filtering cells</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="downstream.html#cb21-1"></a><span class="kw">VlnPlot</span>(pbmc, <span class="dt">features =</span> <span class="kw">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="dt">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="downstream.html#cb22-1"></a>plot1 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;percent.mt&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb22-2"><a href="downstream.html#cb22-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
-<span id="cb22-3"><a href="downstream.html#cb22-3"></a>plot2 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb22-4"><a href="downstream.html#cb22-4"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
-<span id="cb22-5"><a href="downstream.html#cb22-5"></a>plot1 <span class="op">+</span><span class="st"> </span>plot2</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="downstream.html#cb11-1"></a><span class="kw">VlnPlot</span>(pbmc, <span class="dt">features =</span> <span class="kw">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="dt">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="downstream.html#cb12-1"></a>plot1 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;percent.mt&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb12-2"><a href="downstream.html#cb12-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb12-3"><a href="downstream.html#cb12-3"></a>plot2 &lt;-<span class="st"> </span><span class="kw">FeatureScatter</span>(pbmc, <span class="dt">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="dt">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb12-4"><a href="downstream.html#cb12-4"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb12-5"><a href="downstream.html#cb12-5"></a>plot1 <span class="op">+</span><span class="st"> </span>plot2</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 </div>
 <div id="normalizing-the-data" class="section level3">
 <h3><span class="header-section-number">3.3.2</span> Normalizing the data</h3>
 <p>After removing unwanted cells from the dataset, the next step is to normalize the data. By default, we employ a global-scaling normalization method “LogNormalize” that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in <code>pbmc[["RNA"]]@data</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="downstream.html#cb23-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">NormalizeData</span>(pbmc, <span class="dt">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>, <span class="dt">scale.factor =</span> <span class="dv">10000</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="downstream.html#cb13-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">NormalizeData</span>(pbmc, <span class="dt">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>, <span class="dt">scale.factor =</span> <span class="dv">10000</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p>For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="downstream.html#cb24-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">NormalizeData</span>(pbmc)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="downstream.html#cb14-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">NormalizeData</span>(pbmc)</span></code></pre></div>
 </div>
 <div id="identification-of-highly-variable-features-feature-selection" class="section level3">
 <h3><span class="header-section-number">3.3.3</span> Identification of highly variable features (feature selection)</h3>
-<p>We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and others<span class="citation">(Brennecke et al. <a href="#ref-brennecke2013accounting" role="doc-biblioref">2013</a>)</span> have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.</p>
-<p>Our procedure in Seurat is described in detail here<span class="citation">(Stuart et al. <a href="#ref-stuart2019comprehensive" role="doc-biblioref">2019</a>)</span>, and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the <code>FindVariableFeatures()</code> function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="downstream.html#cb25-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">FindVariableFeatures</span>(pbmc, <span class="dt">selection.method =</span> <span class="st">&quot;vst&quot;</span>, <span class="dt">nfeatures =</span> <span class="dv">2000</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb25-2"><a href="downstream.html#cb25-2"></a></span>
-<span id="cb25-3"><a href="downstream.html#cb25-3"></a><span class="co"># Identify the 10 most highly variable genes</span></span>
-<span id="cb25-4"><a href="downstream.html#cb25-4"></a>top10 &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">VariableFeatures</span>(pbmc), <span class="dv">10</span>)</span>
-<span id="cb25-5"><a href="downstream.html#cb25-5"></a></span>
-<span id="cb25-6"><a href="downstream.html#cb25-6"></a><span class="co"># plot variable features with and without labels</span></span>
-<span id="cb25-7"><a href="downstream.html#cb25-7"></a>plot1 &lt;-<span class="st"> </span><span class="kw">VariableFeaturePlot</span>(pbmc) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb25-8"><a href="downstream.html#cb25-8"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
-<span id="cb25-9"><a href="downstream.html#cb25-9"></a>plot2 &lt;-<span class="st"> </span><span class="kw">LabelPoints</span>(<span class="dt">plot =</span> plot1, <span class="dt">points =</span> top10, <span class="dt">repel =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb25-10"><a href="downstream.html#cb25-10"></a>plot1 <span class="op">+</span><span class="st"> </span>plot2</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). It is shown that<span class="citation">(Brennecke et al. <a href="#ref-brennecke2013accounting" role="doc-biblioref">2013</a>)</span> focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.</p>
+<p>The procedure in Seurat is described in detail here<span class="citation">(Stuart et al. <a href="#ref-stuart2019comprehensive" role="doc-biblioref">2019</a>)</span>, and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the <code>FindVariableFeatures()</code> function. By default, <code>Seurat</code> returns 2,000 features per dataset and these will be used in downstream analysis, like PCA.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="downstream.html#cb15-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">FindVariableFeatures</span>(pbmc, <span class="dt">selection.method =</span> <span class="st">&quot;vst&quot;</span>, <span class="dt">nfeatures =</span> <span class="dv">2000</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb15-2"><a href="downstream.html#cb15-2"></a></span>
+<span id="cb15-3"><a href="downstream.html#cb15-3"></a><span class="co"># Identify the 10 most highly variable genes</span></span>
+<span id="cb15-4"><a href="downstream.html#cb15-4"></a>top10 &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">VariableFeatures</span>(pbmc), <span class="dv">10</span>)</span>
+<span id="cb15-5"><a href="downstream.html#cb15-5"></a></span>
+<span id="cb15-6"><a href="downstream.html#cb15-6"></a><span class="co"># plot variable features with and without labels</span></span>
+<span id="cb15-7"><a href="downstream.html#cb15-7"></a>plot1 &lt;-<span class="st"> </span><span class="kw">VariableFeaturePlot</span>(pbmc) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-8"><a href="downstream.html#cb15-8"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;top&quot;</span>)</span>
+<span id="cb15-9"><a href="downstream.html#cb15-9"></a>plot2 &lt;-<span class="st"> </span><span class="kw">LabelPoints</span>(<span class="dt">plot =</span> plot1, <span class="dt">points =</span> top10, <span class="dt">repel =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-10"><a href="downstream.html#cb15-10"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>)</span>
+<span id="cb15-11"><a href="downstream.html#cb15-11"></a>plot1 <span class="op">+</span><span class="st"> </span>plot2</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="scaling-the-data" class="section level3">
 <h3><span class="header-section-number">3.3.4</span> Scaling the data</h3>
 <p>Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The <code>ScaleData()</code> function:</p>
 <ul>
-<li>Shifts the expression of each gene, so that the mean expression across cells is 0</li>
-<li>Scales the expression of each gene, so that the variance across cells is 1
+<li>shifts the expression of each gene, so that the mean expression across cells is 0</li>
+<li>scales the expression of each gene, so that the variance across cells is 1
 <ul>
-<li>This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate</li>
+<li>this step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate</li>
 </ul></li>
-<li>The results of this are stored in <code>pbmc[["RNA"]]@scale.data</code></li>
+<li>the results of this are stored in <code>pbmc[["RNA"]]@scale.data</code></li>
 </ul>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="downstream.html#cb26-1"></a>all.genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(pbmc)</span>
-<span id="cb26-2"><a href="downstream.html#cb26-2"></a>pbmc &lt;-<span class="st"> </span><span class="kw">ScaleData</span>(pbmc, <span class="dt">features =</span> all.genes, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
-<p>Using the above command, we use all genes to scale data. Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in <code>ScaleData()</code> is only to perform scaling on the previously identified variable features (2,000 by default). And it will make this step faster.</p>
-<p>In this case, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with <code>DoHeatmap()</code>) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.</p>
-<p>To do this, omit the features argument in the previous function call, i.e.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="downstream.html#cb27-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">ScaleData</span>(pbmc)</span></code></pre></div>
-<p>In <code>Seurat v2</code> we also use the <code>ScaleData()</code> function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in <code>ScaleData()</code> in <code>Seurat v3</code>, i.e.:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="downstream.html#cb28-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">ScaleData</span>(pbmc, <span class="dt">vars.to.regress =</span> <span class="st">&quot;percent.mt&quot;</span>)</span></code></pre></div>
-<p>However, particularly for advanced users who would like to use this functionality, we strongly recommend the use of our new normalization workflow, <code>SCTransform()</code>. The method is described in Seurat paper<span class="citation">(Hafemeister and Satija <a href="#ref-hafemeister2019normalization" role="doc-biblioref">2019</a>)</span>, with a separate vignette using Seurat v3 <a href="https://satijalab.org/seurat/articles/sctransform_vignette.html">here</a>. As with <code>ScaleData()</code>, the function <code>SCTransform()</code> also includes a vars.to.regress parameter.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="downstream.html#cb16-1"></a>all.genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(pbmc)</span>
+<span id="cb16-2"><a href="downstream.html#cb16-2"></a>pbmc &lt;-<span class="st"> </span><span class="kw">ScaleData</span>(pbmc, <span class="dt">features =</span> all.genes, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>When using the above command, we use all genes to scale data. Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in <code>ScaleData()</code> is only to perform scaling on the previously identified variable features (2,000 by default). And it will make this step faster.</p>
+<p>In this case, our PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with <code>DoHeatmap()</code>) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.</p>
+<p>If we want to scale on the previously identified 2000 variable features, we can simply omit the features argument in the previous function call, i.e.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="downstream.html#cb17-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">ScaleData</span>(pbmc)</span></code></pre></div>
+<p>The <code>ScaleData()</code> function also allow us to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. This feature can be achieved by specifying <code>vars.to.regress</code>, i.e.:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="downstream.html#cb18-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">ScaleData</span>(pbmc, <span class="dt">vars.to.regress =</span> <span class="st">&quot;percent.mt&quot;</span>)</span></code></pre></div>
+<p>However, particularly for advanced users who would like to use this functionality, it is recommended by <code>Seurat</code> using their new normalization workflow, <code>SCTransform()</code>. The method is described in Seurat paper<span class="citation">(Hafemeister and Satija <a href="#ref-hafemeister2019normalization" role="doc-biblioref">2019</a>)</span>, with a separate vignette using Seurat v3 <a href="https://satijalab.org/seurat/articles/sctransform_vignette.html">here</a>. As with <code>ScaleData()</code>, the function <code>SCTransform()</code> also includes a <code>vars.to.regress</code> parameter.</p>
 </div>
 </div>
 <div id="perform-linear-dimensional-reduction" class="section level2">
 <h2><span class="header-section-number">3.4</span> Perform linear dimensional reduction</h2>
 <p>Next we perform PCA on the scaled data. By default, only the previously determined variable features are used as input, but can be defined using <code>features</code> argument if you wish to choose a different subset.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="downstream.html#cb29-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">RunPCA</span>(pbmc, <span class="dt">features =</span> <span class="kw">VariableFeatures</span>(<span class="dt">object =</span> pbmc), <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="downstream.html#cb19-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">RunPCA</span>(pbmc, <span class="dt">features =</span> <span class="kw">VariableFeatures</span>(<span class="dt">object =</span> pbmc), <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p>Seurat provides several useful ways of visualizing both cells and features that define the PCA, including <code>VizDimLoadings()</code>, <code>DimPlot()</code>, and <code>DimHeatmap()</code>.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="downstream.html#cb30-1"></a><span class="co"># Examine and visualize PCA results a few different ways</span></span>
-<span id="cb30-2"><a href="downstream.html#cb30-2"></a><span class="kw">print</span>(pbmc[[<span class="st">&quot;pca&quot;</span>]], <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">nfeatures =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="downstream.html#cb20-1"></a><span class="co"># Examine and visualize PCA results a few different ways</span></span>
+<span id="cb20-2"><a href="downstream.html#cb20-2"></a><span class="kw">print</span>(pbmc[[<span class="st">&quot;pca&quot;</span>]], <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">nfeatures =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## PC_ 1 
 ## Positive:  LTB, IL32, TRAC, CD3D, TRBC2 
 ## Negative:  FCN1, FGL2, CST3, IFI30, TYMP 
@@ -342,49 +341,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## PC_ 5 
 ## Positive:  CDKN1C, HES4, CTSL, TCF7L2, BATF3 
 ## Negative:  S100A12, ITGAM, VCAN, CES1, MGST1</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="downstream.html#cb32-1"></a><span class="kw">VizDimLoadings</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="downstream.html#cb33-1"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="downstream.html#cb22-1"></a><span class="kw">VizDimLoadings</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="downstream.html#cb23-1"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;pca&quot;</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <p>In particular <code>DimHeatmap()</code> allows for easy exploration of the primary sources of heterogeneity in a dataset, and can be useful when trying to decide which PCs to include for further downstream analyses. Both cells and features are ordered according to their PCA scores. Setting <code>cells</code> to a number plots the ‘extreme’ cells on both ends of the spectrum, which dramatically speeds plotting for large datasets. Though clearly a supervised analysis, we find this to be a valuable tool for exploring correlated feature sets.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="downstream.html#cb34-1"></a><span class="kw">DimHeatmap</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span>, <span class="dt">cells =</span> <span class="dv">500</span>, <span class="dt">balanced =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="downstream.html#cb35-1"></a><span class="kw">DimHeatmap</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dt">cells =</span> <span class="dv">500</span>, <span class="dt">balanced =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="downstream.html#cb24-1"></a><span class="kw">DimHeatmap</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span>, <span class="dt">cells =</span> <span class="dv">500</span>, <span class="dt">balanced =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="downstream.html#cb25-1"></a><span class="kw">DimHeatmap</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dt">cells =</span> <span class="dv">500</span>, <span class="dt">balanced =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 <p>To overcome the extensive technical noise in any single feature for scRNA-seq data, Seurat clusters cells based on their PCA scores, with each PC essentially representing a ‘metafeature’ that combines information across a correlated feature set. The top principal components therefore represent a robust compression of the dataset. Here, we choose first <strong>20 PCs</strong>.</p>
 </div>
 <div id="cluster-the-cells" class="section level2">
 <h2><span class="header-section-number">3.5</span> Cluster the cells</h2>
-<p><code>Seurat v3</code> applies a graph-based clustering approach, building upon initial strategies in<span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span>. Importantly, the <em>distance metric</em> which drives the clustering analysis (based on previously identified PCs) remains the same. However, our approach to partitioning the cellular distance matrix into clusters has dramatically improved. Our approach was heavily inspired by recent publications which applied graph-based clustering approaches to scRNA-seq data<span class="citation">(Xu and Su <a href="#ref-xu2015identification" role="doc-biblioref">2015</a>)</span> and CyTOF data<span class="citation">(Levine et al. <a href="#ref-levine2015data" role="doc-biblioref">2015</a>)</span>. Briefly, these methods embed cells in a graph structure - for example a K-nearest neighbor (KNN) graph, with edges drawn between cells with similar feature expression patterns, and then attempt to partition this graph into highly interconnected ‘quasi-cliques’ or ‘communities’.</p>
-<p>As in PhenoGraph, we first construct a KNN graph based on the euclidean distance in PCA space, and refine the edge weights between any two cells based on the shared overlap in their local neighborhoods (Jaccard similarity). This step is performed using the <code>FindNeighbors()</code> function, and takes as input the previously defined dimensionality of the dataset (first 10 PCs).</p>
+<p><code>Seurat v3</code> applies a graph-based clustering approach, building upon initial strategies in<span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span>. Importantly, the <em>distance metric</em> which drives the clustering analysis (based on previously identified PCs) remains the same. However, approach in <code>Seurat</code> to partitioning the cellular distance matrix into clusters has dramatically improved. This approach was heavily inspired by recent publications which applied graph-based clustering approaches to scRNA-seq data<span class="citation">(Xu and Su <a href="#ref-xu2015identification" role="doc-biblioref">2015</a>)</span> and CyTOF data<span class="citation">(Levine et al. <a href="#ref-levine2015data" role="doc-biblioref">2015</a>)</span>. Briefly, these methods embed cells in a graph structure - for example a K-nearest neighbor (KNN) graph, with edges drawn between cells with similar feature expression patterns, and then attempt to partition this graph into highly interconnected ‘quasi-cliques’ or ‘communities’.</p>
+<p>As in PhenoGraph, they first construct a KNN graph based on the euclidean distance in PCA space, and refine the edge weights between any two cells based on the shared overlap in their local neighborhoods (Jaccard similarity). This step is performed using the <code>FindNeighbors()</code> function, and takes as input the previously defined dimensionality of the dataset (first 20 PCs).</p>
 <p>To cluster the cells, we next apply modularity optimization techniques such as the Louvain algorithm (default) or SLM<span class="citation">(Blondel et al. <a href="#ref-blondel2008fast" role="doc-biblioref">2008</a>)</span>, to iteratively group cells together, with the goal of optimizing the standard modularity function. The <code>FindClusters()</code> function implements this procedure, and contains a resolution parameter that sets the ‘granularity’ of the downstream clustering, with increased values leading to a greater number of clusters. We find that setting this parameter between 0.4-1.2 typically returns good results for single-cell datasets of around 3K cells. Optimal resolution often increases for larger datasets. The clusters can be found using the <code>Idents()</code> function.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="downstream.html#cb36-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">FindNeighbors</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb36-2"><a href="downstream.html#cb36-2"></a>pbmc &lt;-<span class="st"> </span><span class="kw">FindClusters</span>(pbmc, <span class="dt">resolution =</span> <span class="fl">0.5</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="downstream.html#cb37-1"></a><span class="co"># Look at cluster IDs of the first 5 cells</span></span>
-<span id="cb37-2"><a href="downstream.html#cb37-2"></a><span class="kw">head</span>(<span class="kw">Idents</span>(pbmc), <span class="dv">5</span>)</span></code></pre></div>
-<pre><code>## AAACCCAGTATCGTAC-1 AAACCCAGTCGGTGAA-1 AAACCCAGTTAGAAAC-1 AAACCCAGTTATCTTC-1 AAACCCAGTTGCCGAC-1 
-##                  2                  4                  2                  8                  0 
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="downstream.html#cb26-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">FindNeighbors</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb26-2"><a href="downstream.html#cb26-2"></a>pbmc &lt;-<span class="st"> </span><span class="kw">FindClusters</span>(pbmc, <span class="dt">resolution =</span> <span class="fl">0.5</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="downstream.html#cb27-1"></a><span class="co"># Look at cluster IDs of the first 5 cells</span></span>
+<span id="cb27-2"><a href="downstream.html#cb27-2"></a><span class="kw">head</span>(<span class="kw">Idents</span>(pbmc), <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## AAACCCAGTATCGTAC-1 AAACCCAGTCGGTGAA-1 AAACCCAGTTAGAAAC-1 AAACCCAGTTATCTTC-1 
+##                  2                  4                  2                  8 
+## AAACCCAGTTGCCGAC-1 
+##                  0 
 ## Levels: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15</code></pre>
 </div>
 <div id="run-non-linear-dimensional-reduction-umaptsne" class="section level2">
 <h2><span class="header-section-number">3.6</span> Run non-linear dimensional reduction (UMAP/tSNE)</h2>
 <p>Seurat offers several non-linear dimensional reduction techniques, such as tSNE and UMAP, to visualize and explore these datasets. The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space. Cells within the graph-based clusters determined above should co-localize on these dimension reduction plots. As input to the UMAP and tSNE, we suggest using the same PCs as input to the clustering analysis.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="downstream.html#cb39-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">RunUMAP</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="downstream.html#cb29-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">RunUMAP</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<pre><code>## Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+## To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;
+## This message will be shown once per session</code></pre>
 <p>Then we can get the UMAP plot of the single cell clustering results.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="downstream.html#cb40-1"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="downstream.html#cb31-1"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>We can also visualize it using tSNE plot</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="downstream.html#cb41-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">RunTSNE</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb41-2"><a href="downstream.html#cb41-2"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;tsne&quot;</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="downstream.html#cb32-1"></a>pbmc &lt;-<span class="st"> </span><span class="kw">RunTSNE</span>(pbmc, <span class="dt">dims =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb32-2"><a href="downstream.html#cb32-2"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;tsne&quot;</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>We can set <code>label = TRUE</code> or use the <code>LabelClusters</code> function to help label individual clusters.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="downstream.html#cb42-1"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="downstream.html#cb43-1"></a>plot &lt;-<span class="st"> </span><span class="kw">DimPlot</span>(<span class="dt">object =</span> pbmc)</span>
-<span id="cb43-2"><a href="downstream.html#cb43-2"></a><span class="kw">LabelClusters</span>(<span class="dt">plot =</span> plot, <span class="dt">id =</span> <span class="st">&#39;ident&#39;</span>)</span></code></pre></div>
-<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="downstream.html#cb33-1"></a><span class="kw">DimPlot</span>(pbmc, <span class="dt">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="downstream.html#cb34-1"></a>plot &lt;-<span class="st"> </span><span class="kw">DimPlot</span>(<span class="dt">object =</span> pbmc)</span>
+<span id="cb34-2"><a href="downstream.html#cb34-2"></a><span class="kw">LabelClusters</span>(<span class="dt">plot =</span> plot, <span class="dt">id =</span> <span class="st">&#39;ident&#39;</span>)</span></code></pre></div>
+<p><img src="Fundamentals-of-scRNASeq-Analysis_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
 <p>Now it is time to save the object so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or easily shared with collaborators.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="downstream.html#cb44-1"></a><span class="kw">saveRDS</span>(pbmc, <span class="dt">file =</span> <span class="st">&quot;./data/pbmc_processed.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="downstream.html#cb35-1"></a><span class="kw">saveRDS</span>(pbmc, <span class="dt">file =</span> <span class="st">&quot;./data/pbmc_processed.rds&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>

@@ -6,9 +6,7 @@ In this tutorial, we will learn how to `Read 10X sequencing data and change it i
 
 ## Seurat object
 
-
-
-
+The Seurat object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. Before using Seurat to analyze scRNA-seq data, we can first have some basic understanding about the `Seurat object` from [here](https://github.com/satijalab/seurat/wiki/Seurat#object-information).
 
 ## Setup the Seurat object
 
@@ -19,14 +17,9 @@ library(patchwork)
 library(ggplot2)
 ```
 
-We start by reading in the data. Read10X_h5
+We start by reading in the data. The `Read10X_h5` reads count matrix from 10X CellRanger hdf5 file, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column). It can be used to read both scATAC-seq and scRNA-seq matrices.
 
-
-The `Read10X()` function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).
-
-We next use the count matrix to create a `Seurat` object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. For a technical discussion of the Seurat object structure, check out our [GitHub Wiki](https://github.com/satijalab/seurat/wiki).
-
-The sameple in `GSM2560248` is the control group which is human immune cells (PBMC) in a resting state, while the sameple in `GSM2560249` is the human immune cells (PBMC) in a interferon-stimulated state.
+We next use the count matrix to create a `Seurat object`.
 
 ```{r, message=FALSE, warning=FALSE}
 # Load the PBMC dataset
@@ -51,13 +44,13 @@ The steps below encompass the standard pre-processing workflow for scRNA-seq dat
 Seurat allows you to easily explore QC metrics and filter cells based on any user-defined criteria. A few QC metrics commonly used[@ilicic2016classification] by the community include
 
 * The number of unique genes detected in each cell.
-  + Low-quality cells or empty droplets will often have very few genes
-  + Cell doublets or multiplets may exhibit an aberrantly high gene count
-  + Similarly, the total number of molecules detected within a cell (correlates strongly with unique genes)
+  + low-quality cells or empty droplets will often have very few genes
+  + cell doublets or multiplets may exhibit an aberrantly high gene count
+  + similarly, the total number of molecules detected within a cell (correlates strongly with unique genes)
 * The percentage of reads that map to the mitochondrial genome
-  + Low-quality / dying cells often exhibit extensive mitochondrial contamination
-  + We calculate mitochondrial QC metrics with the PercentageFeatureSet() function, which calculates the percentage of counts originating from a set of features
-  + We use the set of all genes starting with MT- as a set of mitochondrial genes
+  + low-quality / dying cells often exhibit extensive mitochondrial contamination
+  + we calculate mitochondrial QC metrics with the PercentageFeatureSet() function, which calculates the percentage of counts originating from a set of features
+  + we use the set of all genes starting with MT- as a set of mitochondrial genes
   
 ```{r}
 # The [[ operator can add columns to object metadata. This is a great place to stash QC stats
@@ -71,19 +64,18 @@ The number of unique genes and total molecules are automatically calculated duri
 head(pbmc@meta.data, 5)
 ```
 
-We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used for QC metrics
+We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used as QC metrics
 
 ```{r}
 # Visualize QC metrics as a violin plot
 VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 ```
 
-We can then using dot plot to show the relationship between `nCount_RNA`, `nFeature_RNA` and `percent.mt`.
+We can then using dot plots to show the relationship between `nCount_RNA`, `nFeature_RNA` and `percent.mt`.
 
 ```{r}
 # FeatureScatter is typically used to visualize feature-feature relationships, but can be used
 # for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
-
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt") + 
   theme(legend.position="none")
 plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + 
@@ -124,9 +116,9 @@ pbmc <- NormalizeData(pbmc)
 
 ### Identification of highly variable features (feature selection)
 
-We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and others[@brennecke2013accounting] have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
+We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). It is shown that[@brennecke2013accounting] focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
 
-Our procedure in Seurat is described in detail here[@stuart2019comprehensive], and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures()` function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.
+The procedure in Seurat is described in detail here[@stuart2019comprehensive], and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures()` function. By default, `Seurat` returns 2,000 features per dataset and these will be used in downstream analysis, like PCA.
 
 ```{r, message=FALSE, warning=FALSE}
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000, verbose = FALSE)
@@ -136,8 +128,9 @@ top10 <- head(VariableFeatures(pbmc), 10)
 
 # plot variable features with and without labels
 plot1 <- VariableFeaturePlot(pbmc) + 
+  theme(legend.position="top")
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE) + 
   theme(legend.position="none")
-plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
 plot1 + plot2
 ```
 
@@ -145,33 +138,33 @@ plot1 + plot2
 
 Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The `ScaleData()` function:
 
-* Shifts the expression of each gene, so that the mean expression across cells is 0
-* Scales the expression of each gene, so that the variance across cells is 1
-  + This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
-* The results of this are stored in `pbmc[["RNA"]]@scale.data`
+* shifts the expression of each gene, so that the mean expression across cells is 0
+* scales the expression of each gene, so that the variance across cells is 1
+  + this step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
+* the results of this are stored in `pbmc[["RNA"]]@scale.data`
 
 ```{r}
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features = all.genes, verbose = FALSE)
 ```
 
-Using the above command, we use all genes to scale data. Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in `ScaleData()` is only to perform scaling on the previously identified variable features (2,000 by default). And it will make this step faster.
+When using the above command, we use all genes to scale data. Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in `ScaleData()` is only to perform scaling on the previously identified variable features (2,000 by default). And it will make this step faster.
 
-In this case, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with `DoHeatmap()`) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
+In this case, our PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with `DoHeatmap()`) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
-To do this, omit the features argument in the previous function call, i.e.
+If we want to scale on the previously identified 2000 variable features, we can simply omit the features argument in the previous function call, i.e.
 
 ```{r, eval=FALSE}
 pbmc <- ScaleData(pbmc)
 ```
 
-In `Seurat v2` we also use the `ScaleData()` function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in `ScaleData()` in `Seurat v3`, i.e.:
+The `ScaleData()` function also allow us to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. This feature can be achieved by specifying `vars.to.regress`, i.e.:
 
 ```{r, eval=FALSE}
 pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt")
 ```
 
-However, particularly for advanced users who would like to use this functionality, we strongly recommend the use of our new normalization workflow, `SCTransform()`. The method is described in Seurat paper[@hafemeister2019normalization], with a separate vignette using Seurat v3 [here](https://satijalab.org/seurat/articles/sctransform_vignette.html). As with `ScaleData()`, the function `SCTransform()` also includes a vars.to.regress parameter.
+However, particularly for advanced users who would like to use this functionality, it is recommended by `Seurat` using their new normalization workflow, `SCTransform()`. The method is described in Seurat paper[@hafemeister2019normalization], with a separate vignette using Seurat v3 [here](https://satijalab.org/seurat/articles/sctransform_vignette.html). As with `ScaleData()`, the function `SCTransform()` also includes a `vars.to.regress` parameter.
 
 ## Perform linear dimensional reduction
 
@@ -201,9 +194,9 @@ To overcome the extensive technical noise in any single feature for scRNA-seq da
 
 ## Cluster the cells
 
-`Seurat v3` applies a graph-based clustering approach, building upon initial strategies in[@macosko2015highly]. Importantly, the *distance metric* which drives the clustering analysis (based on previously identified PCs) remains the same. However, our approach to partitioning the cellular distance matrix into clusters has dramatically improved. Our approach was heavily inspired by recent publications which applied graph-based clustering approaches to scRNA-seq data[@xu2015identification] and CyTOF data[@levine2015data]. Briefly, these methods embed cells in a graph structure - for example a K-nearest neighbor (KNN) graph, with edges drawn between cells with similar feature expression patterns, and then attempt to partition this graph into highly interconnected ‘quasi-cliques’ or ‘communities’.
+`Seurat v3` applies a graph-based clustering approach, building upon initial strategies in[@macosko2015highly]. Importantly, the *distance metric* which drives the clustering analysis (based on previously identified PCs) remains the same. However, approach in `Seurat` to partitioning the cellular distance matrix into clusters has dramatically improved. This approach was heavily inspired by recent publications which applied graph-based clustering approaches to scRNA-seq data[@xu2015identification] and CyTOF data[@levine2015data]. Briefly, these methods embed cells in a graph structure - for example a K-nearest neighbor (KNN) graph, with edges drawn between cells with similar feature expression patterns, and then attempt to partition this graph into highly interconnected ‘quasi-cliques’ or ‘communities’.
 
-As in PhenoGraph, we first construct a KNN graph based on the euclidean distance in PCA space, and refine the edge weights between any two cells based on the shared overlap in their local neighborhoods (Jaccard similarity). This step is performed using the `FindNeighbors()` function, and takes as input the previously defined dimensionality of the dataset (first 10 PCs).
+As in PhenoGraph, they first construct a KNN graph based on the euclidean distance in PCA space, and refine the edge weights between any two cells based on the shared overlap in their local neighborhoods (Jaccard similarity). This step is performed using the `FindNeighbors()` function, and takes as input the previously defined dimensionality of the dataset (first 20 PCs).
 
 To cluster the cells, we next apply modularity optimization techniques such as the Louvain algorithm (default) or SLM[@blondel2008fast], to iteratively group cells together, with the goal of optimizing the standard modularity function. The `FindClusters()` function implements this procedure, and contains a resolution parameter that sets the ‘granularity’ of the downstream clustering, with increased values leading to a greater number of clusters. We find that setting this parameter between 0.4-1.2 typically returns good results for single-cell datasets of around 3K cells. Optimal resolution often increases for larger datasets. The clusters can be found using the `Idents()` function.
 
