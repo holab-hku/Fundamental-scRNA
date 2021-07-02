@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   
 
-<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho" />
+<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho contact: jwkho@hku.hk" />
 
 
 
@@ -157,8 +157,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublets"><i class="fa fa-check"></i><b>2.4</b> Doublets</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
-<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat Object</a></li>
-<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat Object</a></li>
+<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat object</a></li>
+<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat object</a></li>
+<li class="chapter" data-level="3.3" data-path="downstream.html"><a href="downstream.html#standard-pre-processing-workflow"><i class="fa fa-check"></i><b>3.3</b> Standard pre-processing workflow</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="downstream.html"><a href="downstream.html#qc-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>3.3.1</b> QC and selecting cells for further analysis</a></li>
+<li class="chapter" data-level="3.3.2" data-path="downstream.html"><a href="downstream.html#normalizing-the-data"><i class="fa fa-check"></i><b>3.3.2</b> Normalizing the data</a></li>
+<li class="chapter" data-level="3.3.3" data-path="downstream.html"><a href="downstream.html#identification-of-highly-variable-features-feature-selection"><i class="fa fa-check"></i><b>3.3.3</b> Identification of highly variable features (feature selection)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="downstream.html"><a href="downstream.html#perform-integration"><i class="fa fa-check"></i><b>3.4</b> Perform integration</a></li>
+<li class="chapter" data-level="3.5" data-path="downstream.html"><a href="downstream.html#scaling-the-data"><i class="fa fa-check"></i><b>3.5</b> Scaling the data</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -183,8 +190,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Fundamentals of scRNASeq Analysis</h1>
-<p class="author"><em>Xinyi Lin, Gordon Qian, Joshua Ho</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021-06-28 (updated: 2021-07-01)</em></p>
+<p class="author"><em>Xinyi Lin, Gordon Qian, Joshua Ho contact: <a href="mailto:jwkho@hku.hk" class="email">jwkho@hku.hk</a></em></p>
+<p class="date" style="margin-top: 1.5em;"><em>2021-06-28 (updated: 2021-07-02)</em></p>
 </div>
 <div id="prerequisites" class="section level1 unnumbered">
 <h1>Prerequisites</h1>
@@ -196,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="index.html#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
 <span id="cb1-3"><a href="index.html#cb1-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&#39;satijalab/seurat-data&#39;</span>)</span>
 <span id="cb1-4"><a href="index.html#cb1-4"></a><span class="kw">install.packages</span>(<span class="st">&quot;patchwork&quot;</span>)</span>
-<span id="cb1-5"><a href="index.html#cb1-5"></a><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
+<span id="cb1-5"><a href="index.html#cb1-5"></a><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code></pre></div>
 </div>
 <div id="set-working-directory" class="section level3 unnumbered">
 <h3>Set working directory</h3>
@@ -226,14 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br/></p>
 <div id="acknowledgement" class="section level4 unnumbered">
 <h4>Acknowledgement</h4>
-<p>Thanks everyone in Ho Lab who gives great comments/suggestions and contributes to this teaching material.</p>
-</div>
-<div id="contact-information" class="section level4 unnumbered">
-<h4>Contact Information</h4>
-<p>Dr HO, Joshua Wing Kei, Associate Professor
-<br><a href="https://www.hku.hk/">The University of Hong Kong</a>
-<br><a href="https://holab-hku.github.io/">Lab page</a>
-<br>Email: <a href="mailto:%20jwkho@hku.hk">jwkho@hku.hk</a></p>
+<p>Thanks everyone in <a href="https://holab-hku.github.io/">Ho Lab</a> who gives great comments/suggestions and contributes to this teaching material.</p>
 
 </div>
 </div>

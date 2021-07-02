@@ -1,19 +1,17 @@
-# Pre-processing 10X RNA-seq Data {#raw2matrix}
+# Pre-processing and QC {#raw2matrix}
 
 ## FASTQ file
 
-Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (">") symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:
+Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with ("@") symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:
 
 ```
 >ReadID
-READ SEQUENCE
-READ SEQUENCE
 READ SEQUENCE
 +
 SEQUENCING QUALITY SCORES
 ```
 
-For more details about FASTA format: https://en.wikipedia.org/wiki/FASTA_format
+For more details about FASTQ files: https://sapac.support.illumina.com/bulletins/2016/04/fastq-files-explained.html
 
 Generally fastq files are pre-processed using quality control tools, such as [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/). This outputs a series of metrics assessing the quality of sequence reads. Some of these metrics include:
 ```
@@ -30,7 +28,9 @@ Generally fastq files are pre-processed using quality control tools, such as [Fa
 
 For more details about FastQC: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
-## Cell Ranger^[Figures and content in this sub-chapter are modified from https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger]
+## Cell Ranger^[For more information:  https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger]
+
+Figures and contents in this sub-chapter are modified from [Cell Ranger Support Pages](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger). 
 
 [Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger) is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
 
@@ -46,7 +46,7 @@ Some concepts:
 
 Single-cell data getting from Chromium 10X pipeline can be processed through following workflow using cellranger.
 
-```{r cellranger, fig.cap='Cellranger Workflow', out.width='100%', fig.align='center', echo=FALSE}
+```{r cellranger, fig.cap='Cellranger Workflow(taken from the cellranger website)', out.width='100%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/cellranger_workflow.png')
 ```
 
@@ -72,15 +72,22 @@ Above is what we can find in the `outs` folder. It contains some summary informa
 * [Loupe File (.cloupe)](https://support.10xgenomics.com/single-cell-gene-expression/software/visualization/latest/what-is-loupe-cell-browser)
 
 ##### Matrices {-}
+
+When sequencing, Chromium 10X not only sequences transcriptome, but also sequences any possible molecular. This leads to existence of `background barcodes`. **Cell associated barcodes** are those barcodes that cellranger believes are marking transcriptome coming from real cells instead of background.
+
+For different version of cellranger, different algorithms are used to detect cell associated barcodes. The general idea is that barcodes for cells should have significantly more transcript counts associated with them than the background barcodes. For more information: https://kb.10xgenomics.com/hc/en-us/articles/115003480523-How-are-barcodes-classified-as-cell-associated-.
+
 The cellranger pipeline outputs two types of feature-barcode matrices
 
 * **Unfiltered feature-barcode matrix**: is stored under `raw_feature_bc_matrix`(1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.
 
-* **Filtered feature-barcode matrix**: is stored under `filtered_feature_bc_matrix`(1-2) folder. Including only detected cellular barcodes. For Targeted Gene Expression samples, non-targeted genes are removed from the filtered matrix.
+* **Filtered feature-barcode matrix**: is stored under `filtered_feature_bc_matrix`(1-2) folder. Including only detected cell associated barcodes.
 
 Both `raw_feature_bc_matrix` and `filtered_feature_bc_matrix` contains three files^[The **desktop. ini** file is a hidden file used to store information about the arrangement of a Windows folder.].
 
-* The **features.tsv.gz** file correspond to row indices. It contains three columns:
+* The **matrix.mtx.gz** file stores reads count as sparse matrices where each row indicates one gene in scRNA-seq data and each column indicates one cell. The information of row indices is stored in the **features.tsv.gz** file while the information of column indicates is stored in the **barcodes.tsv.gz** file.
+
+* The **features.tsv.gz** file corresponds to row indices. In scRNA-seq data, features are actually genes. The features.tsv.gz file contains three columns:
 
 ```
 feature ID: gene_id in the annotation field of the reference GTF
@@ -90,19 +97,17 @@ type of feature: describe features' types, can be one of Gene Expression, Antibo
 
 * The **barcodes.tsv.gz** corresponds to column indices. It contains the barcode of each column. More details on the barcode sequence format are available in the [barcoded BAM section](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam).
 
-* The **matrix.mtx.gz** file stores reads count as sparse matrices.
+
 
 ##### Web Summary .html {-}
 
 A summary HTML file contains summary metrics and automated secondary analysis results. If an issue was detected during the pipeline run, an alert appears on this page.
 
-Here is a sample [web summary html file](./web_summary.html).
-
 This html files includes two parts, `SUMMARY` and `ANALYSIS`. You can also click the '?' in the top of each dashboard for more information on each metric.
 
-*  The **SUMMARY** metrics describe sequencing quality and various characteristics of the detected cells. It includes the number of cells detected, the mean reads per cell, and the median genes detected per cell are prominently displayed near the top of the page.
+1. The **SUMMARY** metrics describe sequencing quality and various characteristics of the detected cells. It includes the number of cells detected, the mean reads per cell, and the median genes detected per cell are prominently displayed near the top of the page.
 
-```{r cellranger4, fig.cap='Cells dashboard', out.width='60%', fig.align='center', echo=FALSE}
+```{r cellranger4, fig.cap='Cells dashboard(modified from the cellranger website)', out.width='60%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/cells_summary.png')
 ```
 
@@ -110,19 +115,11 @@ knitr::include_graphics('./figs/cells_summary.png')
 The Barcode Rank Plot under the "Cells" dashboard shows the distribution of barcode counts and which barcodes were inferred to be associated with cells. The y-axis is the number of UMI counts mapped to each barcode and the x-axis is the number of barcodes below that value. A steep drop-off is indicative of good separation between the cell-associated barcodes and the barcodes associated with empty partitions. Barcodes can be determined to be cell-associated based on their UMI count or by their RNA profiles, therefore some regions of the graph can contain both cell-associated and background-associated barcodes. The color of the graph represents the local density of barcodes that are cell-associated.
 </p>
 
-* The **ANALYSIS** metrics contains the automated secondary analysis including the following:
-```
-A dimensional reduction analysis which projects the cells into a 2-D space (t-SNE)
-An automated clustering analysis which groups together cells that have similar expression profiles
-A list of genes that are differentially expressed between the selected clusters
-A plot showing the effect of decreased sequencing depth on observed library complexity
-A plot showing the effect of decreased sequencing depth on median genes per cell detected
-```
-
-```{r cellranger5, fig.cap='Sequencing and Mapping dashboards', out.width='60%', fig.align='center', echo=FALSE}
+```{r cellranger5, fig.cap='Sequencing and Mapping dashboards(modified from the cellranger website)', out.width='60%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/seq_map.png')
 ```
 
+<p style="padding-left:2em;">
 Other numbers used for evaluation^[The information here is provided by https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf]:
 
 * `Estimated Number of Cells`: 500-10,000 
@@ -136,6 +133,18 @@ Other numbers used for evaluation^[The information here is provided by https://a
 * `Reads mapped confidently to transcriptome`: ideally greater than 30%
 
 * `Reads mapped antisense to gene`: ideally smaller than 10%
+</p>
+
+2. The **ANALYSIS** metrics contains the automated secondary analysis including the following:
+```
+A dimensional reduction analysis which projects the cells into a 2-D space (t-SNE)
+An automated clustering analysis which groups together cells that have similar expression profiles
+A list of genes that are differentially expressed between the selected clusters
+A plot showing the effect of decreased sequencing depth on observed library complexity
+A plot showing the effect of decreased sequencing depth on median genes per cell detected
+```
+
+
 
 ##### BAM {-}
 

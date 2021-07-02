@@ -24,3 +24,9 @@ doublets
 downstream
 seurat-object
 setup-the-seurat-object
+standard-pre-processing-workflow
+qc-and-selecting-cells-for-further-analysis
+normalizing-the-data
+identification-of-highly-variable-features-feature-selection
+perform-integration
+scaling-the-data

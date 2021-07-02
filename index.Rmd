@@ -1,6 +1,7 @@
 --- 
 title: "Fundamentals of scRNASeq Analysis"
-author: "Xinyi Lin, Gordon Qian, Joshua Ho"
+author: "Xinyi Lin, Gordon Qian, Joshua Ho contact: jwkho@hku.hk"
+institute: "Contact: Ho Lab, HKU"
 date: "2021-06-28 (updated: `r Sys.Date()`)"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -25,7 +26,7 @@ install.packages('Seurat')
 install.packages("devtools")
 devtools::install_github('satijalab/seurat-data')
 install.packages("patchwork")
-install.packages("dplyr")
+install.packages("tidyverse")
 ```
 
 ### Set working directory {-}
@@ -72,7 +73,7 @@ knitr::include_graphics('./figs/data_folder.png')
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'Seurat', 'devtools', 'patchwork'
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'Seurat', 'devtools', 'patchwork', 'tidyverse'
 ), 'packages.bib')
 ```
 
@@ -80,11 +81,4 @@ knitr::write_bib(c(
 
 #### Acknowledgement {-}
 
-Thanks everyone in Ho Lab who gives great comments/suggestions and contributes to this teaching material.
-
-#### Contact Information {-}
-
-Dr HO, Joshua Wing Kei, Associate Professor
-<br>[The University of Hong Kong](https://www.hku.hk/)
-<br>[Lab page](https://holab-hku.github.io/)
-<br>Email: [jwkho@hku.hk](mailto: jwkho@hku.hk)
+Thanks everyone in [Ho Lab](https://holab-hku.github.io/) who gives great comments/suggestions and contributes to this teaching material.

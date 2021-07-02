@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Pre-processing 10X RNA-seq Data | Fundamentals of scRNASeq Analysis</title>
+  <title>Chapter 2 Pre-processing and QC | Fundamentals of scRNASeq Analysis</title>
   <meta name="description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Pre-processing 10X RNA-seq Data | Fundamentals of scRNASeq Analysis" />
+  <meta property="og:title" content="Chapter 2 Pre-processing and QC | Fundamentals of scRNASeq Analysis" />
   <meta property="og:type" content="book" />
   
   
@@ -16,12 +16,12 @@
   <meta name="github-repo" content="linxy29/Fundamental-scRNA" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Pre-processing 10X RNA-seq Data | Fundamentals of scRNASeq Analysis" />
+  <meta name="twitter:title" content="Chapter 2 Pre-processing and QC | Fundamentals of scRNASeq Analysis" />
   
   <meta name="twitter:description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   
 
-<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho" />
+<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho contact: jwkho@hku.hk" />
 
 
 
@@ -54,70 +54,6 @@
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
-<style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -141,13 +77,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#set-working-directory"><i class="fa fa-check"></i>Set working directory</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#download-data"><i class="fa fa-check"></i>Download data</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background Knowledge</a><ul>
+<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Introduction to Single Cell Technology</a><ul>
 <li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
 <li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
 <li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing 10X RNA-seq Data</a><ul>
+<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing and QC</a><ul>
 <li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fastq-file"><i class="fa fa-check"></i><b>2.1</b> FASTQ file</a></li>
 <li class="chapter" data-level="2.2" data-path="raw2matrix.html"><a href="raw2matrix.html#cell-ranger"><i class="fa fa-check"></i><b>2.2</b> Cell Ranger</a><ul>
 <li class="chapter" data-level="2.2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#general-workflow"><i class="fa fa-check"></i><b>2.2.1</b> General workflow</a></li>
@@ -156,9 +92,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
 <li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublets"><i class="fa fa-check"></i><b>2.4</b> Doublets</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
-<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat Object</a></li>
-<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat Object</a></li>
+<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Analysis Using Seurat</a><ul>
+<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat object</a></li>
+<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat object</a></li>
+<li class="chapter" data-level="3.3" data-path="downstream.html"><a href="downstream.html#standard-pre-processing-workflow"><i class="fa fa-check"></i><b>3.3</b> Standard pre-processing workflow</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="downstream.html"><a href="downstream.html#qc-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>3.3.1</b> QC and selecting cells for further analysis</a></li>
+<li class="chapter" data-level="3.3.2" data-path="downstream.html"><a href="downstream.html#normalizing-the-data"><i class="fa fa-check"></i><b>3.3.2</b> Normalizing the data</a></li>
+<li class="chapter" data-level="3.3.3" data-path="downstream.html"><a href="downstream.html#identification-of-highly-variable-features-feature-selection"><i class="fa fa-check"></i><b>3.3.3</b> Identification of highly variable features (feature selection)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="downstream.html"><a href="downstream.html#perform-integration"><i class="fa fa-check"></i><b>3.4</b> Perform integration</a></li>
+<li class="chapter" data-level="3.5" data-path="downstream.html"><a href="downstream.html#scaling-the-data"><i class="fa fa-check"></i><b>3.5</b> Scaling the data</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -182,17 +125,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="raw2matrix" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Pre-processing 10X RNA-seq Data</h1>
+<h1><span class="header-section-number">Chapter 2</span> Pre-processing and QC</h1>
 <div id="fastq-file" class="section level2">
 <h2><span class="header-section-number">2.1</span> FASTQ file</h2>
-<p>Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with greater-than (“&gt;”) symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:</p>
+<p>Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with (“@”) symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:</p>
 <pre><code>&gt;ReadID
-READ SEQUENCE
-READ SEQUENCE
 READ SEQUENCE
 +
 SEQUENCING QUALITY SCORES</code></pre>
-<p>For more details about FASTA format: <a href="https://en.wikipedia.org/wiki/FASTA_format" class="uri">https://en.wikipedia.org/wiki/FASTA_format</a></p>
+<p>For more details about FASTQ files: <a href="https://sapac.support.illumina.com/bulletins/2016/04/fastq-files-explained.html" class="uri">https://sapac.support.illumina.com/bulletins/2016/04/fastq-files-explained.html</a></p>
 <p>Generally fastq files are pre-processed using quality control tools, such as <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>. This outputs a series of metrics assessing the quality of sequence reads. Some of these metrics include:</p>
 <pre><code>1. Per base sequence quality
 2. Per sequence quality scores
@@ -207,6 +148,7 @@ SEQUENCING QUALITY SCORES</code></pre>
 </div>
 <div id="cell-ranger" class="section level2">
 <h2><span class="header-section-number">2.2</span> Cell Ranger<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h2>
+<p>Figures and contents in this sub-chapter are modified from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger">Cell Ranger Support Pages</a>.</p>
 <p><a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger">Cell Ranger</a> is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.</p>
 <p>Some concepts:</p>
 <ul>
@@ -218,9 +160,9 @@ SEQUENCING QUALITY SCORES</code></pre>
 <h3><span class="header-section-number">2.2.1</span> General workflow</h3>
 <p>Single-cell data getting from Chromium 10X pipeline can be processed through following workflow using cellranger.</p>
 <div class="figure" style="text-align: center"><span id="fig:cellranger"></span>
-<img src="figs/cellranger_workflow.png" alt="Cellranger Workflow" width="100%" />
+<img src="figs/cellranger_workflow.png" alt="Cellranger Workflow(taken from the cellranger website)" width="100%" />
 <p class="caption">
-Figure 2.1: Cellranger Workflow
+Figure 2.1: Cellranger Workflow(taken from the cellranger website)
 </p>
 </div>
 </div>
@@ -250,54 +192,48 @@ Figure 2.3: Overview of the outs folder
 </ul>
 <div id="matrices" class="section level5 unnumbered">
 <h5>Matrices</h5>
+<p>When sequencing, Chromium 10X not only sequences transcriptome, but also sequences any possible molecular. This leads to existence of <code>background barcodes</code>. <strong>Cell associated barcodes</strong> are those barcodes that cellranger believes are marking transcriptome coming from real cells instead of background.</p>
+<p>For different version of cellranger, different algorithms are used to detect cell associated barcodes. The general idea is that barcodes for cells should have significantly more transcript counts associated with them than the background barcodes. For more information: <a href="https://kb.10xgenomics.com/hc/en-us/articles/115003480523-How-are-barcodes-classified-as-cell-associated-" class="uri">https://kb.10xgenomics.com/hc/en-us/articles/115003480523-How-are-barcodes-classified-as-cell-associated-</a>.</p>
 <p>The cellranger pipeline outputs two types of feature-barcode matrices</p>
 <ul>
 <li><p><strong>Unfiltered feature-barcode matrix</strong>: is stored under <code>raw_feature_bc_matrix</code>(1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.</p></li>
-<li><p><strong>Filtered feature-barcode matrix</strong>: is stored under <code>filtered_feature_bc_matrix</code>(1-2) folder. Including only detected cellular barcodes. For Targeted Gene Expression samples, non-targeted genes are removed from the filtered matrix.</p></li>
+<li><p><strong>Filtered feature-barcode matrix</strong>: is stored under <code>filtered_feature_bc_matrix</code>(1-2) folder. Including only detected cell associated barcodes.</p></li>
 </ul>
 <p>Both <code>raw_feature_bc_matrix</code> and <code>filtered_feature_bc_matrix</code> contains three files<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <ul>
-<li>The <strong>features.tsv.gz</strong> file correspond to row indices. It contains three columns:</li>
+<li><p>The <strong>matrix.mtx.gz</strong> file stores reads count as sparse matrices where each row indicates one gene in scRNA-seq data and each column indicates one cell. The information of row indices is stored in the <strong>features.tsv.gz</strong> file while the information of column indicates is stored in the <strong>barcodes.tsv.gz</strong> file.</p></li>
+<li><p>The <strong>features.tsv.gz</strong> file corresponds to row indices. In scRNA-seq data, features are actually genes. The features.tsv.gz file contains three columns:</p></li>
 </ul>
 <pre><code>feature ID: gene_id in the annotation field of the reference GTF
 name: gene_name in the annotation field of the reference GTF. If no gene_name field is present in the reference GTF, gene name is equivalent to gene ID.
 type of feature: describe features&#39; types, can be one of Gene Expression, Antibody Capture, CRISPR, or CUSTOM. For scRNA-seq data, it will be Gene Expression.</code></pre>
 <ul>
-<li><p>The <strong>barcodes.tsv.gz</strong> corresponds to column indices. It contains the barcode of each column. More details on the barcode sequence format are available in the <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam">barcoded BAM section</a>.</p></li>
-<li><p>The <strong>matrix.mtx.gz</strong> file stores reads count as sparse matrices.</p></li>
+<li>The <strong>barcodes.tsv.gz</strong> corresponds to column indices. It contains the barcode of each column. More details on the barcode sequence format are available in the <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/bam">barcoded BAM section</a>.</li>
 </ul>
 </div>
 <div id="web-summary-.html" class="section level5 unnumbered">
 <h5>Web Summary .html</h5>
 <p>A summary HTML file contains summary metrics and automated secondary analysis results. If an issue was detected during the pipeline run, an alert appears on this page.</p>
-<p>Here is a sample <a href="./web_summary.html">web summary html file</a>.</p>
 <p>This html files includes two parts, <code>SUMMARY</code> and <code>ANALYSIS</code>. You can also click the ‘?’ in the top of each dashboard for more information on each metric.</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li>The <strong>SUMMARY</strong> metrics describe sequencing quality and various characteristics of the detected cells. It includes the number of cells detected, the mean reads per cell, and the median genes detected per cell are prominently displayed near the top of the page.</li>
-</ul>
+</ol>
 <div class="figure" style="text-align: center"><span id="fig:cellranger4"></span>
-<img src="figs/cells_summary.png" alt="Cells dashboard" width="60%" />
+<img src="figs/cells_summary.png" alt="Cells dashboard(modified from the cellranger website)" width="60%" />
 <p class="caption">
-Figure 2.4: Cells dashboard
+Figure 2.4: Cells dashboard(modified from the cellranger website)
 </p>
 </div>
 <p style="padding-left:2em;">
 The Barcode Rank Plot under the “Cells” dashboard shows the distribution of barcode counts and which barcodes were inferred to be associated with cells. The y-axis is the number of UMI counts mapped to each barcode and the x-axis is the number of barcodes below that value. A steep drop-off is indicative of good separation between the cell-associated barcodes and the barcodes associated with empty partitions. Barcodes can be determined to be cell-associated based on their UMI count or by their RNA profiles, therefore some regions of the graph can contain both cell-associated and background-associated barcodes. The color of the graph represents the local density of barcodes that are cell-associated.
 </p>
-<ul>
-<li>The <strong>ANALYSIS</strong> metrics contains the automated secondary analysis including the following:</li>
-</ul>
-<pre><code>A dimensional reduction analysis which projects the cells into a 2-D space (t-SNE)
-An automated clustering analysis which groups together cells that have similar expression profiles
-A list of genes that are differentially expressed between the selected clusters
-A plot showing the effect of decreased sequencing depth on observed library complexity
-A plot showing the effect of decreased sequencing depth on median genes per cell detected</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:cellranger5"></span>
-<img src="figs/seq_map.png" alt="Sequencing and Mapping dashboards" width="60%" />
+<img src="figs/seq_map.png" alt="Sequencing and Mapping dashboards(modified from the cellranger website)" width="60%" />
 <p class="caption">
-Figure 2.5: Sequencing and Mapping dashboards
+Figure 2.5: Sequencing and Mapping dashboards(modified from the cellranger website)
 </p>
 </div>
+<p style="padding-left:2em;">
 <p>Other numbers used for evaluation<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>:</p>
 <ul>
 <li><p><code>Estimated Number of Cells</code>: 500-10,000</p></li>
@@ -307,6 +243,15 @@ Figure 2.5: Sequencing and Mapping dashboards
 <li><p><code>Reads mapped confidently to transcriptome</code>: ideally greater than 30%</p></li>
 <li><p><code>Reads mapped antisense to gene</code>: ideally smaller than 10%</p></li>
 </ul>
+</p>
+<ol start="2" style="list-style-type: decimal">
+<li>The <strong>ANALYSIS</strong> metrics contains the automated secondary analysis including the following:</li>
+</ol>
+<pre><code>A dimensional reduction analysis which projects the cells into a 2-D space (t-SNE)
+An automated clustering analysis which groups together cells that have similar expression profiles
+A list of genes that are differentially expressed between the selected clusters
+A plot showing the effect of decreased sequencing depth on observed library complexity
+A plot showing the effect of decreased sequencing depth on median genes per cell detected</code></pre>
 </div>
 <div id="bam" class="section level5 unnumbered">
 <h5>BAM</h5>
@@ -397,7 +342,7 @@ Figure 2.7: STARsolo Output
 <div class="footnotes">
 <hr />
 <ol start="2">
-<li id="fn2"><p>Figures and content in this sub-chapter are modified from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger</a><a href="raw2matrix.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>For more information: <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger</a><a href="raw2matrix.html#fnref2" class="footnote-back">↩︎</a></p></li>
 <li id="fn3"><p>For more information: <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview" class="uri">https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview</a><a href="raw2matrix.html#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>The <strong>desktop. ini</strong> file is a hidden file used to store information about the arrangement of a Windows folder.<a href="raw2matrix.html#fnref4" class="footnote-back">↩︎</a></p></li>
 <li id="fn5"><p>The information here is provided by <a href="https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf" class="uri">https://assets.ctfassets.net/an68im79xiti/163qWiQBTVi2YLbskJphQX/e90bb82151b1cdab6d7e9b6c845e6130/CG000329_TechnicalNote_InterpretingCellRangerWebSummaryFiles_RevA.pdf</a><a href="raw2matrix.html#fnref5" class="footnote-back">↩︎</a></p></li>

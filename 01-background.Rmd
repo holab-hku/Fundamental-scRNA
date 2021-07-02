@@ -1,4 +1,4 @@
-# Background Knowledge {#background}
+# Introduction to Single Cell Technology {#background}
 
 ## Single cell RNA sequencing(scRNA-seq)
 
@@ -46,23 +46,32 @@ knitr::include_graphics('./figs/seq_techs.jpg')
 
 For more information about different cell isolation techniques: [@hu2016single]
 
-## Barcodes and Unique molecular identifiers(UMI)^[This part is modified from http://data-science-sequencing.github.io/Win2018/lectures/lecture16/]
+## Barcodes and Unique molecular identifiers(UMI)^[For more information: http://data-science-sequencing.github.io/Win2018/lectures/lecture16/]
 
-The sequencing step is done using paired-end reads where the first read of the pair always coincides with the cell (barcode + UMI) part of the primer.
+This part is modified based on the lecture note, [Single Cell RNA-Seq - Introduction](http://data-science-sequencing.github.io/Win2018/lectures/lecture16/) created by David Tse et.al.
 
-```{r biasedreads, fig.cap='Biased paired-end reads', out.width='80%', fig.align='center', echo=FALSE}
+Paired-end sequencing outputs two fastq files corresponding to the 5’ and 3’ direction of sequencing. With this sequencing technology, the first read of the pair always coincides with the cell (barcode + UMI) part of the primer. 
+
+```{r biasedreads, fig.cap='Biased paired-end reads(David Tse et.al)', out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/biasedreads.png')
 ```
 
-Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. It is important to recognised the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences.
+Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences. Thus, it is important to recognize the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location.
 
 We first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.
 
-```{r biasedreads2, fig.cap='Biased paired-end reads', out.width='70%', fig.align='center', echo=FALSE}
+```{r biasedreads2, fig.cap='Grouping barcodes to assign reads to cells(David Tse et.al)', out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/biasedreads2.png')
 ```
 
 Analysis of the cell barcode and UMI is included in the alignment process, and we will introduce more in Chapter \@ref(raw2matrix).
+
+```
+**Quiz**
+1. What is the difference between a cell barcode and UMI barcode? and what are their significance?
+2. What are the lengths of the cell barcode and UMI barcode used in our dataset?
+3. Are these barcodes located on the 5' or 3' read file?
+```
 
 ## Summary of widely used scRNA-seq technologies
 

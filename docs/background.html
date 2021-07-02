@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Background Knowledge | Fundamentals of scRNASeq Analysis</title>
+  <title>Chapter 1 Introduction to Single Cell Technology | Fundamentals of scRNASeq Analysis</title>
   <meta name="description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Background Knowledge | Fundamentals of scRNASeq Analysis" />
+  <meta property="og:title" content="Chapter 1 Introduction to Single Cell Technology | Fundamentals of scRNASeq Analysis" />
   <meta property="og:type" content="book" />
   
   
@@ -16,12 +16,12 @@
   <meta name="github-repo" content="linxy29/Fundamental-scRNA" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Background Knowledge | Fundamentals of scRNASeq Analysis" />
+  <meta name="twitter:title" content="Chapter 1 Introduction to Single Cell Technology | Fundamentals of scRNASeq Analysis" />
   
   <meta name="twitter:description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   
 
-<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho" />
+<meta name="author" content="Xinyi Lin, Gordon Qian, Joshua Ho contact: jwkho@hku.hk" />
 
 
 
@@ -54,70 +54,6 @@
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
-<style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -141,13 +77,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#set-working-directory"><i class="fa fa-check"></i>Set working directory</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#download-data"><i class="fa fa-check"></i>Download data</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background Knowledge</a><ul>
+<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Introduction to Single Cell Technology</a><ul>
 <li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
 <li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
 <li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing 10X RNA-seq Data</a><ul>
+<li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing and QC</a><ul>
 <li class="chapter" data-level="2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#fastq-file"><i class="fa fa-check"></i><b>2.1</b> FASTQ file</a></li>
 <li class="chapter" data-level="2.2" data-path="raw2matrix.html"><a href="raw2matrix.html#cell-ranger"><i class="fa fa-check"></i><b>2.2</b> Cell Ranger</a><ul>
 <li class="chapter" data-level="2.2.1" data-path="raw2matrix.html"><a href="raw2matrix.html#general-workflow"><i class="fa fa-check"></i><b>2.2.1</b> General workflow</a></li>
@@ -156,9 +92,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="raw2matrix.html"><a href="raw2matrix.html#starsolo"><i class="fa fa-check"></i><b>2.3</b> STARsolo</a></li>
 <li class="chapter" data-level="2.4" data-path="raw2matrix.html"><a href="raw2matrix.html#doublets"><i class="fa fa-check"></i><b>2.4</b> Doublets</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Downstream Analysis Using Seurat</a><ul>
-<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat Object</a></li>
-<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat Object</a></li>
+<li class="chapter" data-level="3" data-path="downstream.html"><a href="downstream.html"><i class="fa fa-check"></i><b>3</b> Analysis Using Seurat</a><ul>
+<li class="chapter" data-level="3.1" data-path="downstream.html"><a href="downstream.html#seurat-object"><i class="fa fa-check"></i><b>3.1</b> Seurat object</a></li>
+<li class="chapter" data-level="3.2" data-path="downstream.html"><a href="downstream.html#setup-the-seurat-object"><i class="fa fa-check"></i><b>3.2</b> Setup the Seurat object</a></li>
+<li class="chapter" data-level="3.3" data-path="downstream.html"><a href="downstream.html#standard-pre-processing-workflow"><i class="fa fa-check"></i><b>3.3</b> Standard pre-processing workflow</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="downstream.html"><a href="downstream.html#qc-and-selecting-cells-for-further-analysis"><i class="fa fa-check"></i><b>3.3.1</b> QC and selecting cells for further analysis</a></li>
+<li class="chapter" data-level="3.3.2" data-path="downstream.html"><a href="downstream.html#normalizing-the-data"><i class="fa fa-check"></i><b>3.3.2</b> Normalizing the data</a></li>
+<li class="chapter" data-level="3.3.3" data-path="downstream.html"><a href="downstream.html#identification-of-highly-variable-features-feature-selection"><i class="fa fa-check"></i><b>3.3.3</b> Identification of highly variable features (feature selection)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="downstream.html"><a href="downstream.html#perform-integration"><i class="fa fa-check"></i><b>3.4</b> Perform integration</a></li>
+<li class="chapter" data-level="3.5" data-path="downstream.html"><a href="downstream.html#scaling-the-data"><i class="fa fa-check"></i><b>3.5</b> Scaling the data</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -182,7 +125,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="background" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Background Knowledge</h1>
+<h1><span class="header-section-number">Chapter 1</span> Introduction to Single Cell Technology</h1>
 <div id="single-cell-rna-sequencingscrna-seq" class="section level2">
 <h2><span class="header-section-number">1.1</span> Single cell RNA sequencing(scRNA-seq)</h2>
 <p>Single cell RNA sequencing(scRNA-seq) is a sequencing technology which can give us gene expression profile of more than 30,000 genes for more than 10,000 cells.</p>
@@ -224,22 +167,27 @@ Figure 1.2: Single Cell Isolation
 </div>
 <div id="barcodes-and-unique-molecular-identifiersumi" class="section level2">
 <h2><span class="header-section-number">1.3</span> Barcodes and Unique molecular identifiers(UMI)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h2>
-<p>The sequencing step is done using paired-end reads where the first read of the pair always coincides with the cell (barcode + UMI) part of the primer.</p>
+<p>This part is modified based on the lecture note, <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/">Single Cell RNA-Seq - Introduction</a> created by David Tse et.al.</p>
+<p>Paired-end sequencing outputs two fastq files corresponding to the 5’ and 3’ direction of sequencing. With this sequencing technology, the first read of the pair always coincides with the cell (barcode + UMI) part of the primer.</p>
 <div class="figure" style="text-align: center"><span id="fig:biasedreads"></span>
-<img src="figs/biasedreads.png" alt="Biased paired-end reads" width="80%" />
+<img src="figs/biasedreads.png" alt="Biased paired-end reads(David Tse et.al)" width="80%" />
 <p class="caption">
-Figure 1.3: Biased paired-end reads
+Figure 1.3: Biased paired-end reads(David Tse et.al)
 </p>
 </div>
-<p>Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. It is important to recognised the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences.</p>
+<p>Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences. Thus, it is important to recognize the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location.</p>
 <p>We first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.</p>
 <div class="figure" style="text-align: center"><span id="fig:biasedreads2"></span>
-<img src="figs/biasedreads2.png" alt="Biased paired-end reads" width="70%" />
+<img src="figs/biasedreads2.png" alt="Grouping barcodes to assign reads to cells(David Tse et.al)" width="70%" />
 <p class="caption">
-Figure 1.4: Biased paired-end reads
+Figure 1.4: Grouping barcodes to assign reads to cells(David Tse et.al)
 </p>
 </div>
 <p>Analysis of the cell barcode and UMI is included in the alignment process, and we will introduce more in Chapter <a href="raw2matrix.html#raw2matrix">2</a>.</p>
+<pre><code>**Quiz**
+1. What is the difference between a cell barcode and UMI barcode? and what are their significance?
+2. What are the lengths of the cell barcode and UMI barcode used in our dataset?
+3. Are these barcodes located on the 5&#39; or 3&#39; read file?</code></pre>
 </div>
 <div id="summary-of-widely-used-scrna-seq-technologies" class="section level2">
 <h2><span class="header-section-number">1.4</span> Summary of widely used scRNA-seq technologies</h2>
@@ -479,7 +427,7 @@ STRT/C1</td>
 <div class="footnotes">
 <hr />
 <ol start="1">
-<li id="fn1"><p>This part is modified from <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/" class="uri">http://data-science-sequencing.github.io/Win2018/lectures/lecture16/</a><a href="background.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>For more information: <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/" class="uri">http://data-science-sequencing.github.io/Win2018/lectures/lecture16/</a><a href="background.html#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
