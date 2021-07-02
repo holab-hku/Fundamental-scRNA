@@ -1,36 +1,43 @@
 # Analysis Using Seurat {#downstream}
 
-In this tutorial, we will learn how to `Read 10X sequencing data and change it into a seurat object`, `Standard pre-processing workflow`, `QC and selecting cells for further analysis`, `Create an ‘integrated’ data assay from data coming from two samples`, `Normalizing the data`, `Identification of highly variable features (feature selection)`, `Scaling the data`, `Perform linear dimensional reduction` and `Cluster the cells`.
+The contents in this chapter are adapted from [Seurat - Guided Clustering Tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html) with little modification. The data we used is a 10k PBMC data getting from [10x Genomics website](https://support.10xgenomics.com/single-cell-gene-expression/datasets)
 
-Data used here are samples of human immune cells (PBMC) in either [a resting or interferon-stimulated state](https://www.nature.com/articles/nbt.4042).
+In this tutorial, we will learn how to `Read 10X sequencing data and change it into a seurat object`, `Standard pre-processing workflow`, `QC and selecting cells for further analysis`, `Normalizing the data`, `Identification of highly variable features (feature selection)`, `Scaling the data`, `Perform linear dimensional reduction` and `Visualization`.
 
 ## Seurat object
 
+
+
 ```{r, warning=FALSE, message=FALSE}
+library(dplyr)
 library(Seurat)
-library(SeuratData)
 library(patchwork)
-library(tidyverse)
+library(ggplot2)
 ```
 
 ## Setup the Seurat object
 
-We start by reading in the data. The `Read10X()` function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).
+We start by reading in the data. Read10X_h5
+
+
+The `Read10X()` function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).
 
 We next use the count matrix to create a `Seurat` object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. For a technical discussion of the Seurat object structure, check out our [GitHub Wiki](https://github.com/satijalab/seurat/wiki).
 
 The sameple in `GSM2560248` is the control group which is human immune cells (PBMC) in a resting state, while the sameple in `GSM2560249` is the human immune cells (PBMC) in a interferon-stimulated state.
 
 ```{r, message=FALSE, warning=FALSE}
-data_dir1 = "./data/Exp6_Kang/GSM2560248"
-expression_matrix1 <- Read10X(data.dir = data_dir1)
-ctrl = CreateSeuratObject(counts = expression_matrix1)
-ctrl = AddMetaData(object = ctrl, metadata = rep("ctrl", dim(ctrl)[2]), col.name = 'sample')
+# Load the PBMC dataset
+pbmc.data <- Read10X_h5("./data/10k_PBMC.h5")
+# Initialize the Seurat object with the raw (non-normalized data).
+pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc10k", min.cells = 3, min.features = 200)
+pbmc
+```
 
-data_dir2 = "./data/Exp6_Kang/GSM2560249"
-expression_matrix2 <- Read10X(data.dir = data_dir2)
-stim = CreateSeuratObject(counts = expression_matrix2)
-stim = AddMetaData(object = stim, metadata = rep("stim", dim(stim)[2]), col.name = 'sample')
+If we want to read data using the output of the cellranger pipeline from 10X directly, we can use `Read10X()`
+
+```{r, eval=FALSE}
+Read10X(data.dir)
 ```
 
 ## Standard pre-processing workflow
@@ -39,7 +46,7 @@ The steps below encompass the standard pre-processing workflow for scRNA-seq dat
 
 ### QC and selecting cells for further analysis
 
-Seurat allows you to easily explore QC metrics and filter cells based on any user-defined criteria. A few QC metrics commonly used by the community include
+Seurat allows you to easily explore QC metrics and filter cells based on any user-defined criteria. A few QC metrics commonly used[@ilicic2016classification] by the community include
 
 * The number of unique genes detected in each cell.
   + Low-quality cells or empty droplets will often have very few genes
@@ -52,135 +59,194 @@ Seurat allows you to easily explore QC metrics and filter cells based on any use
   
 ```{r}
 # The [[ operator can add columns to object metadata. This is a great place to stash QC stats
-ctrl[["percent.mt"]] <- PercentageFeatureSet(ctrl, pattern = "^MT-")
-stim[["percent.mt"]] <- PercentageFeatureSet(stim, pattern = "^MT-")
+pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 ```
 
 The number of unique genes and total molecules are automatically calculated during `CreateSeuratObject()`. They are stored in the object meta data.
 
 ```{r}
 # Show QC metrics for the first 5 cells in the control group
-head(ctrl@meta.data, 5)
+head(pbmc@meta.data, 5)
 ```
 
 We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used for QC metrics
 
 ```{r}
 # Visualize QC metrics as a violin plot
-VlnPlot(ctrl, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, pt.size = 0.00001)
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 ```
 
-In this data, we the reads counts of mitochondrial genes are zero, thus the `percent.mt` is zero for all cells.
-
-```{r}
-mtgenes = grep("^MT-", rownames(ctrl[["RNA"]]),value = T)
-ctrl@assays$RNA[mtgenes,] %>% as.matrix() %>% rowSums()
-```
-
-If reads counts of mitochondrial genes are not equal to zero, we might get a plot look like this.
-
-```{r qc, out.width='100%', fig.align='center', echo=FALSE}
-knitr::include_graphics('./figs/qc2-1.png')
-```
-
-We can then using dot plot to show the relationship between `nCount_RNA` and `nFeature_RNA`.
+We can then using dot plot to show the relationship between `nCount_RNA`, `nFeature_RNA` and `percent.mt`.
 
 ```{r}
 # FeatureScatter is typically used to visualize feature-feature relationships, but can be used
 # for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
 
-FeatureScatter(ctrl, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt") + 
+  theme(legend.position="none")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + 
+  theme(legend.position="none")
+plot1 + plot2
 ```
 
-Here, we filter cells that have unique feature counts over 2,000 or less than 300
+Here, we filter cells that have unique feature counts over 5,000 or less than 200. We also filter cells that have >15% mitochondrial counts
 
 ```{r}
-ctrl <- subset(ctrl, subset = nFeature_RNA > 300 & nFeature_RNA < 2000)
-stim <- subset(stim, subset = nFeature_RNA > 300 & nFeature_RNA < 2000)
-# We can also do the filtering based on percent.mt
-# ctrl <- subset(ctrl, subset = percent.mt < 5)
+pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 5000 & percent.mt < 15)
 ```
 
+We can visualize QC metrics again after filtering cells
+
 ```{r}
-p1 = VlnPlot(ctrl, features = c("nFeature_RNA", "nCount_RNA"), ncol = 3, pt.size = 0.00001)
-p2 = FeatureScatter(ctrl, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
-p1 + p2
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt") + 
+  theme(legend.position="none")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + 
+  theme(legend.position="none")
+plot1 + plot2
 ```
 
 ### Normalizing the data
 
-After removing unwanted cells from the dataset, the next step is to normalize the data. By default, we employ a global-scaling normalization method “LogNormalize” that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in `object[["RNA"]]@data`.
+After removing unwanted cells from the dataset, the next step is to normalize the data. By default, we employ a global-scaling normalization method “LogNormalize” that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in `pbmc[["RNA"]]@data`.
 
 ```{r}
-ifnb.list <- c(ctrl = ctrl, stim = stim)
-
-ifnb.list <- lapply(X = ifnb.list, FUN = function(x) {
-    x <- NormalizeData(x, normalization.method = "LogNormalize", scale.factor = 10000)
-})
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000, verbose = FALSE)
 ```
 
 For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
 
 ```{r, eval=FALSE}
-x <- NormalizeData(x)
+pbmc <- NormalizeData(pbmc)
 ```
 
 ### Identification of highly variable features (feature selection)
 
-We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and [others](https://www.nature.com/articles/nmeth.2645) have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
+We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and others[@brennecke2013accounting] have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
 
-Our procedure in Seurat is described in detail [here](https://www.sciencedirect.com/science/article/pii/S0092867419305598?via%3Dihub), and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures()` function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.
+Our procedure in Seurat is described in detail here[@stuart2019comprehensive], and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures()` function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.
 
-```{r}
-ifnb.list <- lapply(X = ifnb.list, FUN = function(x) {
-    x <- FindVariableFeatures(x, selection.method = "vst", nfeatures = 2000, verbose = FALSE)
-})
+```{r, message=FALSE, warning=FALSE}
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000, verbose = FALSE)
 
 # Identify the 10 most highly variable genes
-top10 <- head(VariableFeatures(ifnb.list$ctrl), 10)
+top10 <- head(VariableFeatures(pbmc), 10)
 
 # plot variable features with and without labels
-plot1 <- VariableFeaturePlot(ifnb.list$ctrl)
-LabelPoints(plot = plot1, points = top10, repel = TRUE, max.overlaps = 30)
+plot1 <- VariableFeaturePlot(pbmc) + 
+  theme(legend.position="none")
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
+plot1 + plot2
 ```
+
+### Scaling the data
+
+Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The `ScaleData()` function:
+
+* Shifts the expression of each gene, so that the mean expression across cells is 0
+* Scales the expression of each gene, so that the variance across cells is 1
+  + This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
+* The results of this are stored in `pbmc[["RNA"]]@scale.data`
 
 ```{r}
-# select features that are repeatedly variable across datasets for integration
-features <- SelectIntegrationFeatures(object.list = ifnb.list)
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features = all.genes, verbose = FALSE)
 ```
 
-## Perform integration
+Using the above command, we use all genes to scale data. Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in `ScaleData()` is only to perform scaling on the previously identified variable features (2,000 by default). And it will make this step faster.
 
-`Scaling the data` is 
+In this case, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with `DoHeatmap()`) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
-We then identify anchors using the `FindIntegrationAnchors()` function, which takes a list of Seurat objects as input, and use these anchors to integrate the two datasets together with `IntegrateData()`.
+To do this, omit the features argument in the previous function call, i.e.
 
 ```{r, eval=FALSE}
-immune.anchors <- FindIntegrationAnchors(object.list = ifnb.list, anchor.features = features)
-# this command creates an 'integrated' data assay
-immune.combined <- IntegrateData(anchorset = immune.anchors)
-
-# specify that we will perform downstream analysis on the corrected data note that the
-# original unmodified data still resides in the 'RNA' assay
-DefaultAssay(immune.combined) <- "integrated"
+pbmc <- ScaleData(pbmc)
 ```
 
-The above step will take around 10 minutes. To save time, let's load the processed data directory.
+In `Seurat v2` we also use the `ScaleData()` function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in `ScaleData()` in `Seurat v3`, i.e.:
 
-```{r}
-load("./data/immune.combined.Rdata")
+```{r, eval=FALSE}
+pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt")
 ```
 
-## Scaling the data
+However, particularly for advanced users who would like to use this functionality, we strongly recommend the use of our new normalization workflow, `SCTransform()`. The method is described in Seurat paper[@hafemeister2019normalization], with a separate vignette using Seurat v3 [here](https://satijalab.org/seurat/articles/sctransform_vignette.html). As with `ScaleData()`, the function `SCTransform()` also includes a vars.to.regress parameter.
 
-Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The ScaleData() function:
+## Perform linear dimensional reduction
 
-Shifts the expression of each gene, so that the mean expression across cells is 0
-Scales the expression of each gene, so that the variance across cells is 1
-This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
-The results of this are stored in pbmc[["RNA"]]@scale.data
+Next we perform PCA on the scaled data. By default, only the previously determined variable features are used as input, but can be defined using `features` argument if you wish to choose a different subset.
 
 ```{r}
+pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), verbose = FALSE)
+```
 
+Seurat provides several useful ways of visualizing both cells and features that define the PCA, including `VizDimLoadings()`, `DimPlot()`, and `DimHeatmap()`.
+
+```{r}
+# Examine and visualize PCA results a few different ways
+print(pbmc[["pca"]], dims = 1:5, nfeatures = 5)
+VizDimLoadings(pbmc, dims = 1:2, reduction = "pca")
+DimPlot(pbmc, reduction = "pca")
+```
+
+In particular `DimHeatmap()` allows for easy exploration of the primary sources of heterogeneity in a dataset, and can be useful when trying to decide which PCs to include for further downstream analyses. Both cells and features are ordered according to their PCA scores. Setting `cells` to a number plots the ‘extreme’ cells on both ends of the spectrum, which dramatically speeds plotting for large datasets. Though clearly a supervised analysis, we find this to be a valuable tool for exploring correlated feature sets.
+
+```{r}
+DimHeatmap(pbmc, dims = 1, cells = 500, balanced = TRUE)
+DimHeatmap(pbmc, dims = 1:9, cells = 500, balanced = TRUE)
+```
+
+To overcome the extensive technical noise in any single feature for scRNA-seq data, Seurat clusters cells based on their PCA scores, with each PC essentially representing a ‘metafeature’ that combines information across a correlated feature set. The top principal components therefore represent a robust compression of the dataset. Here, we choose first **20 PCs**.
+
+## Cluster the cells
+
+`Seurat v3` applies a graph-based clustering approach, building upon initial strategies in[@macosko2015highly]. Importantly, the *distance metric* which drives the clustering analysis (based on previously identified PCs) remains the same. However, our approach to partitioning the cellular distance matrix into clusters has dramatically improved. Our approach was heavily inspired by recent publications which applied graph-based clustering approaches to scRNA-seq data[@xu2015identification] and CyTOF data[@levine2015data]. Briefly, these methods embed cells in a graph structure - for example a K-nearest neighbor (KNN) graph, with edges drawn between cells with similar feature expression patterns, and then attempt to partition this graph into highly interconnected ‘quasi-cliques’ or ‘communities’.
+
+As in PhenoGraph, we first construct a KNN graph based on the euclidean distance in PCA space, and refine the edge weights between any two cells based on the shared overlap in their local neighborhoods (Jaccard similarity). This step is performed using the `FindNeighbors()` function, and takes as input the previously defined dimensionality of the dataset (first 10 PCs).
+
+To cluster the cells, we next apply modularity optimization techniques such as the Louvain algorithm (default) or SLM[@blondel2008fast], to iteratively group cells together, with the goal of optimizing the standard modularity function. The `FindClusters()` function implements this procedure, and contains a resolution parameter that sets the ‘granularity’ of the downstream clustering, with increased values leading to a greater number of clusters. We find that setting this parameter between 0.4-1.2 typically returns good results for single-cell datasets of around 3K cells. Optimal resolution often increases for larger datasets. The clusters can be found using the `Idents()` function.
+
+```{r}
+pbmc <- FindNeighbors(pbmc, dims = 1:20, verbose = FALSE)
+pbmc <- FindClusters(pbmc, resolution = 0.5, verbose = FALSE)
+```
+
+```{r}
+# Look at cluster IDs of the first 5 cells
+head(Idents(pbmc), 5)
+```
+
+## Run non-linear dimensional reduction (UMAP/tSNE)
+
+Seurat offers several non-linear dimensional reduction techniques, such as tSNE and UMAP, to visualize and explore these datasets. The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space. Cells within the graph-based clusters determined above should co-localize on these dimension reduction plots. As input to the UMAP and tSNE, we suggest using the same PCs as input to the clustering analysis.
+
+```{r}
+pbmc <- RunUMAP(pbmc, dims = 1:20, verbose = FALSE)
+```
+
+Then we can get the UMAP plot of the single cell clustering results.
+
+```{r}
+DimPlot(pbmc, reduction = "umap")
+```
+
+We can also visualize it using tSNE plot
+
+```{r}
+pbmc <- RunTSNE(pbmc, dims = 1:20, verbose = FALSE)
+DimPlot(pbmc, reduction = "tsne")
+```
+
+We can set `label = TRUE` or use the `LabelClusters` function to help label individual clusters.
+
+```{r}
+DimPlot(pbmc, reduction = "umap", label = TRUE)
+plot <- DimPlot(object = pbmc)
+LabelClusters(plot = plot, id = 'ident')
+```
+
+Now it is time to save the object so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or easily shared with collaborators.
+
+```{r, eval=FALSE}
+saveRDS(pbmc, file = "./data/pbmc_processed.rds")
 ```
 

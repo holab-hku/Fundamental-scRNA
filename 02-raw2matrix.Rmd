@@ -176,7 +176,7 @@ To do trajectory analysis based on RNA velocity, bam file is needed.
 
 It is an HDF5 file containing per-molecule information for all molecules that contain a valid barcode and valid UMI and were assigned with high confidence to a gene or Feature Barcode. This HDF5 file contains data corresponding to the observed molecules, as well as data about the libraries and feature set(s) used. The structure of this file is:
 
-```{r cellranger6, fig.cap='HDF5 File Hierarchy', out.width='80%', fig.align='center', echo=FALSE}
+```{r cellranger6, fig.cap='HDF5 File Hierarchy(taken from the cellranger website)', out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/hdf5.png')
 ```
 

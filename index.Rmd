@@ -23,10 +23,9 @@ Some packages used in this material can be installed from CRAN or Github:
 
 ```{r eval=FALSE}
 install.packages('Seurat')
-install.packages("devtools")
-devtools::install_github('satijalab/seurat-data')
 install.packages("patchwork")
-install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("ggplot2")
 ```
 
 ### Set working directory {-}
@@ -73,7 +72,7 @@ knitr::include_graphics('./figs/data_folder.png')
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'Seurat', 'devtools', 'patchwork', 'tidyverse'
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'Seurat', 'patchwork', 'dplyr', 'ggplot2'
 ), 'packages.bib')
 ```
 
