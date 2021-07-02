@@ -142,9 +142,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#download-data"><i class="fa fa-check"></i>Download data</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Introduction to Single Cell Technology</a><ul>
-<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
+<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencing-scrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing (scRNA-seq)</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
-<li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
+<li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiers-umi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers (UMI)</a></li>
 <li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing and QC</a><ul>
@@ -192,15 +192,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="background" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction to Single Cell Technology</h1>
-<div id="single-cell-rna-sequencingscrna-seq" class="section level2">
-<h2><span class="header-section-number">1.1</span> Single cell RNA sequencing(scRNA-seq)</h2>
-<p>Single cell RNA sequencing(scRNA-seq) is a sequencing technology which can give us gene expression profile of more than 30,000 genes for more than 10,000 cells.</p>
+<div id="single-cell-rna-sequencing-scrna-seq" class="section level2">
+<h2><span class="header-section-number">1.1</span> Single cell RNA sequencing (scRNA-seq)</h2>
+<p>Single cell RNA sequencing (scRNA-seq) encompasses a range of technology to generate genome-wide expression of many individual single cells.</p>
 <p>Starting from tissue samples we get, we will get the analysis results after following processes.</p>
 <p><br/></p>
 <div class="figure" style="text-align: center"><span id="fig:workflow"></span>
-<img src="figs/workflow.jpg" alt="Single Cell Genome Sequencing Workflow(taken from Wiki). MDA: multiple displacement amplification" width="80%" />
+<img src="figs/workflow.jpg" alt="Single Cell Genome Sequencing Workflow (taken from Wiki). MDA: multiple displacement amplification" width="80%" />
 <p class="caption">
-Figure 1.1: Single Cell Genome Sequencing Workflow(taken from Wiki). MDA: multiple displacement amplification
+Figure 1.1: Single Cell Genome Sequencing Workflow (taken from Wiki). MDA: multiple displacement amplification
 </p>
 </div>
 <p><br/></p>
@@ -212,41 +212,41 @@ Figure 1.1: Single Cell Genome Sequencing Workflow(taken from Wiki). MDA: multip
 <li><p>tissue sample must be dissociated into suspension</p></li>
 <li><p>cells will be encapsulated into a water-in-oildroplet individually</p></li>
 <li><p>high-throughput and low cost</p></li>
-<li><p>related technologies: Drop-seq<span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span>, inDrop<span class="citation">(Klein et al. <a href="#ref-klein2015droplet" role="doc-biblioref">2015</a>)</span>, Chromium 10X<span class="citation">(Zheng et al. <a href="#ref-zheng2017massively" role="doc-biblioref">2017</a>)</span></p></li>
+<li><p>related technologies: Drop-seq <span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span>, inDrop <span class="citation">(Klein et al. <a href="#ref-klein2015droplet" role="doc-biblioref">2015</a>)</span>, Chromium 10X <span class="citation">(Zheng et al. <a href="#ref-zheng2017massively" role="doc-biblioref">2017</a>)</span></p></li>
 </ul>
 <p><br/></p>
 <p>Non droplet-based:</p>
 <ul>
-<li><p>Smart-seq2<span class="citation">(Ramsköld et al. <a href="#ref-ramskold2012full" role="doc-biblioref">2012</a>)</span>: manual cell picking with micro capillary pipettes</p></li>
-<li><p>CEL-seq<span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2012cel" role="doc-biblioref">2012</a>)</span>: individual cells are added to tubes; the first one introducing barcodes and pooling of RNA</p></li>
-<li><p>MARS-seq<span class="citation">(Jaitin et al. <a href="#ref-jaitin2014massively" role="doc-biblioref">2014</a>)</span> is the first one using FACS to isolate single cells into individual wells, and the optimized version MARS-seq2<span class="citation">(Keren-Shaul et al. <a href="#ref-keren2019mars" role="doc-biblioref">2019</a>)</span> came out with lower cost, improved reproducibility, reduced well-to-well contamination</p></li>
+<li><p>Smart-seq2 <span class="citation">(Ramsköld et al. <a href="#ref-ramskold2012full" role="doc-biblioref">2012</a>)</span>: manual cell picking with micro capillary pipettes</p></li>
+<li><p>CEL-seq <span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2012cel" role="doc-biblioref">2012</a>)</span>: individual cells are added to tubes; the first one introducing barcodes and pooling of RNA</p></li>
+<li><p>MARS-seq <span class="citation">(Jaitin et al. <a href="#ref-jaitin2014massively" role="doc-biblioref">2014</a>)</span> is the first one using FACS to isolate single cells into individual wells, and the optimized version MARS-seq2 <span class="citation">(Keren-Shaul et al. <a href="#ref-keren2019mars" role="doc-biblioref">2019</a>)</span> came out with lower cost, improved reproducibility, reduced well-to-well contamination</p></li>
 </ul>
 <p><br/></p>
-<p>The following figure shows some common single cell isolaion techniques<span class="citation">(Hwang, Lee, and Bang <a href="#ref-hwang2018single" role="doc-biblioref">2018</a>)</span>.</p>
+<p>The following figure shows some common single cell isolaion techniques <span class="citation">(Hwang, Lee, and Bang <a href="#ref-hwang2018single" role="doc-biblioref">2018</a>)</span>.</p>
 <div class="figure" style="text-align: center"><span id="fig:seq-techs"></span>
-<img src="figs/seq_techs.jpg" alt="Single Cell Isolation(modified from Hwang, Lee, and Bang 2018)" width="80%" />
+<img src="figs/seq_techs.jpg" alt="Single Cell Isolation (modified from Hwang, Lee, and Bang 2018)" width="80%" />
 <p class="caption">
-Figure 1.2: Single Cell Isolation(modified from Hwang, Lee, and Bang 2018)
+Figure 1.2: Single Cell Isolation (modified from Hwang, Lee, and Bang 2018)
 </p>
 </div>
 <p>For more information about different cell isolation techniques: <span class="citation">Hu et al. (<a href="#ref-hu2016single" role="doc-biblioref">2016</a>)</span></p>
 </div>
-<div id="barcodes-and-unique-molecular-identifiersumi" class="section level2">
-<h2><span class="header-section-number">1.3</span> Barcodes and Unique molecular identifiers(UMI)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h2>
-<p>This part is modified based on the lecture note, <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/">Single Cell RNA-Seq - Introduction</a> created by David Tse et.al.</p>
+<div id="barcodes-and-unique-molecular-identifiers-umi" class="section level2">
+<h2><span class="header-section-number">1.3</span> Barcodes and Unique molecular identifiers (UMI)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h2>
+<p>This part is modified based on the lecture note, <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/">Single Cell RNA-Seq - Introduction</a> created by David <span class="citation">Tse (<a href="#ref-tse" role="doc-biblioref">n.d.</a>)</span>.</p>
 <p>Paired-end sequencing outputs two fastq files corresponding to the 5’ and 3’ direction of sequencing. With this sequencing technology, the first read of the pair always coincides with the cell (barcode + UMI) part of the primer.</p>
 <div class="figure" style="text-align: center"><span id="fig:biasedreads"></span>
-<img src="figs/biasedreads.png" alt="Biased paired-end reads(David Tse et.al)" width="80%" />
+<img src="figs/biasedreads.png" alt="Biased paired-end reads (David Tse et.al)" width="80%" />
 <p class="caption">
-Figure 1.3: Biased paired-end reads(David Tse et.al)
+Figure 1.3: Biased paired-end reads (David Tse et.al)
 </p>
 </div>
 <p>Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences. Thus, it is important to recognize the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location.</p>
 <p>To get the UMIS’ couns, we can first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.</p>
 <div class="figure" style="text-align: center"><span id="fig:biasedreads2"></span>
-<img src="figs/biasedreads2.png" alt="Grouping barcodes to assign reads to cells(modified from David Tse et.al)" width="70%" />
+<img src="figs/biasedreads2.png" alt="Grouping barcodes to assign reads to cells (modified from David Tse et.al)" width="70%" />
 <p class="caption">
-Figure 1.4: Grouping barcodes to assign reads to cells(modified from David Tse et.al)
+Figure 1.4: Grouping barcodes to assign reads to cells (modified from David Tse et.al)
 </p>
 </div>
 <p>Analysis of the cell barcodes and UMIs is included in the alignment process, and we will introduce more in Chapter <a href="raw2matrix.html#raw2matrix">2</a>.</p>
@@ -284,42 +284,42 @@ specific</th>
 <td>Nearly full-length</td>
 <td>No</td>
 <td>No</td>
-<td><span class="citation">(Tang et al. <a href="#ref-tang2009mrna" role="doc-biblioref">2009</a>)</span></td>
+<td><span class="citation">Tang et al. (<a href="#ref-tang2009mrna" role="doc-biblioref">2009</a>)</span></td>
 </tr>
 <tr class="even">
 <td>Quartz-Seq</td>
 <td>Full-length</td>
 <td>No</td>
 <td>No</td>
-<td><span class="citation">(Sasagawa et al. <a href="#ref-sasagawa2013quartz" role="doc-biblioref">2013</a>)</span></td>
+<td><span class="citation">Sasagawa et al. (<a href="#ref-sasagawa2013quartz" role="doc-biblioref">2013</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>SUPeR-seq</td>
 <td>Full-length</td>
 <td>No</td>
 <td>No</td>
-<td><span class="citation">(X. Fan et al. <a href="#ref-fan2015single" role="doc-biblioref">2015</a>)</span></td>
+<td><span class="citation">X. Fan et al. (<a href="#ref-fan2015single" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="even">
 <td>Smart-seq</td>
 <td>Full-length</td>
 <td>No</td>
 <td>No</td>
-<td><span class="citation">(Ramsköld et al. <a href="#ref-ramskold2012full" role="doc-biblioref">2012</a>)</span></td>
+<td><span class="citation">Ramsköld et al. (<a href="#ref-ramskold2012full" role="doc-biblioref">2012</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>Smart-seq2</td>
 <td>Full-length</td>
 <td>No</td>
 <td>No</td>
-<td><span class="citation">(Picelli et al. <a href="#ref-picelli2013smart" role="doc-biblioref">2013</a>)</span></td>
+<td><span class="citation">Picelli et al. (<a href="#ref-picelli2013smart" role="doc-biblioref">2013</a>)</span></td>
 </tr>
 <tr class="even">
 <td>MATQ-seq</td>
 <td>Full-length</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Sheng et al. <a href="#ref-sheng2017effective" role="doc-biblioref">2017</a>)</span></td>
+<td><span class="citation">Sheng et al. (<a href="#ref-sheng2017effective" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>STRT-seq
@@ -327,91 +327,91 @@ STRT/C1</td>
 <td>5′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Islam et al. <a href="#ref-islam2011characterization" role="doc-biblioref">2011</a>)</span></td>
+<td><span class="citation">Islam et al. (<a href="#ref-islam2011characterization" role="doc-biblioref">2011</a>)</span></td>
 </tr>
 <tr class="even">
 <td>CEL-seq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2012cel" role="doc-biblioref">2012</a>)</span></td>
+<td><span class="citation">Hashimshony et al. (<a href="#ref-hashimshony2012cel" role="doc-biblioref">2012</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>CEL-seq2</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Hashimshony et al. <a href="#ref-hashimshony2016cel" role="doc-biblioref">2016</a>)</span></td>
+<td><span class="citation">Hashimshony et al. (<a href="#ref-hashimshony2016cel" role="doc-biblioref">2016</a>)</span></td>
 </tr>
 <tr class="even">
 <td>MARS-seq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Jaitin et al. <a href="#ref-jaitin2014massively" role="doc-biblioref">2014</a>)</span></td>
+<td><span class="citation">Jaitin et al. (<a href="#ref-jaitin2014massively" role="doc-biblioref">2014</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>CytoSeq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(H. C. Fan, Fu, and Fodor <a href="#ref-fan2015combinatorial" role="doc-biblioref">2015</a>)</span></td>
+<td><span class="citation">H. C. Fan, Fu, and Fodor (<a href="#ref-fan2015combinatorial" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="even">
 <td>Drop-seq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Macosko et al. <a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span></td>
+<td><span class="citation">Macosko et al. (<a href="#ref-macosko2015highly" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>InDrop</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Klein et al. <a href="#ref-klein2015droplet" role="doc-biblioref">2015</a>)</span></td>
+<td><span class="citation">Klein et al. (<a href="#ref-klein2015droplet" role="doc-biblioref">2015</a>)</span></td>
 </tr>
 <tr class="even">
 <td>Chromium</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Zheng et al. <a href="#ref-zheng2017massively" role="doc-biblioref">2017</a>)</span></td>
+<td><span class="citation">Zheng et al. (<a href="#ref-zheng2017massively" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>SPLiT-seq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Rosenberg et al. <a href="#ref-rosenberg2018single" role="doc-biblioref">2018</a>)</span></td>
+<td><span class="citation">Rosenberg et al. (<a href="#ref-rosenberg2018single" role="doc-biblioref">2018</a>)</span></td>
 </tr>
 <tr class="even">
 <td>sci-RNA-seq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Cao et al. <a href="#ref-cao2017comprehensive" role="doc-biblioref">2017</a>)</span></td>
+<td><span class="citation">Cao et al. (<a href="#ref-cao2017comprehensive" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>Seq-Well</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Gierahn et al. <a href="#ref-gierahn2017seq" role="doc-biblioref">2017</a>)</span></td>
+<td><span class="citation">Gierahn et al. (<a href="#ref-gierahn2017seq" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="even">
 <td>DroNC-seq</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Habib et al. <a href="#ref-habib2017massively" role="doc-biblioref">2017</a>)</span></td>
+<td><span class="citation">Habib et al. (<a href="#ref-habib2017massively" role="doc-biblioref">2017</a>)</span></td>
 </tr>
 <tr class="odd">
 <td>Quartz-Seq2</td>
 <td>3′-only</td>
 <td>Yes</td>
 <td>Yes</td>
-<td><span class="citation">(Sasagawa et al. <a href="#ref-sasagawa2018quartz" role="doc-biblioref">2018</a>)</span></td>
+<td><span class="citation">Sasagawa et al. (<a href="#ref-sasagawa2018quartz" role="doc-biblioref">2018</a>)</span></td>
 </tr>
 </tbody>
 </table>
@@ -485,6 +485,9 @@ STRT/C1</td>
 </div>
 <div id="ref-tang2009mrna">
 <p>Tang, Fuchou, Catalin Barbacioru, Yangzhou Wang, Ellen Nordman, Clarence Lee, Nanlan Xu, Xiaohui Wang, et al. 2009. “MRNA-Seq Whole-Transcriptome Analysis of a Single Cell.” <em>Nature Methods</em> 6 (5): 377–82.</p>
+</div>
+<div id="ref-tse">
+<p>Tse, David. n.d. “Lecture 16: Single Cell Rna-Seq - Introduction.” <em>Data Science for High-Throughput Sequencing</em>. <a href="http://data-science-sequencing.github.io/Win2018/lectures/lecture16/">http://data-science-sequencing.github.io/Win2018/lectures/lecture16/</a>.</p>
 </div>
 <div id="ref-zheng2017massively">
 <p>Zheng, Grace XY, Jessica M Terry, Phillip Belgrader, Paul Ryvkin, Zachary W Bent, Ryan Wilson, Solongo B Ziraldo, et al. 2017. “Massively Parallel Digital Transcriptional Profiling of Single Cells.” <em>Nature Communications</em> 8 (1): 1–12.</p>

@@ -38,7 +38,7 @@ Some concepts:
 
 * **GEM well** (formerly **GEM group**): A set of partitioned cells (Gelbeads-in-Emulsion) from a single 10x Chromium™ Chip channel. One or more sequencing **libraries** can be derived from a **GEM well**.
 
-* **Library** (or **Sequencing Library**): A 10x-barcoded sequencing library prepared from a single **GEM well**. With Feature Barcode or V(D)J assays, it is possible to create multiple libraries from the same **GEM well**. The library types may include Gene Expression, Antibody Capture, CRISPR Guide Capture, TCR-enrichment, etc.
+* **Library** (or **Sequencing Library**): A 10x-barcoded sequencing library prepared from a single **GEM well**. With Feature Barcode or V (D) J assays, it is possible to create multiple libraries from the same **GEM well**. The library types may include Gene Expression, Antibody Capture, CRISPR Guide Capture, TCR-enrichment, etc.
 
 * **Sequencing Run** (or **Flowcell**): A flowcell containing data from one sequencing instrument run.
 
@@ -46,7 +46,7 @@ Some concepts:
 
 Single-cell data getting from Chromium 10X pipeline can be processed through following workflow using cellranger.
 
-```{r cellranger, fig.cap='Cellranger Workflow(taken from the cellranger website)', out.width='100%', fig.align='center', echo=FALSE}
+```{r cellranger, fig.cap='Cellranger Workflow (taken from the cellranger website)', out.width='100%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/cellranger_workflow.png')
 ```
 
@@ -79,9 +79,9 @@ For different version of cellranger, different algorithms are used to detect cel
 
 The cellranger pipeline outputs two types of feature-barcode matrices
 
-* **Unfiltered feature-barcode matrix**: is stored under `raw_feature_bc_matrix`(1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.
+* **Unfiltered feature-barcode matrix**: is stored under `raw_feature_bc_matrix` (1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.
 
-* **Filtered feature-barcode matrix**: is stored under `filtered_feature_bc_matrix`(1-2) folder. Including only detected cell associated barcodes.
+* **Filtered feature-barcode matrix**: is stored under `filtered_feature_bc_matrix` (1-2) folder. Including only detected cell associated barcodes.
 
 Both `raw_feature_bc_matrix` and `filtered_feature_bc_matrix` contains three files^[The **desktop. ini** file is a hidden file used to store information about the arrangement of a Windows folder.].
 
@@ -107,7 +107,7 @@ This html files includes two parts, `SUMMARY` and `ANALYSIS`. You can also click
 
 1. The **SUMMARY** metrics describe sequencing quality and various characteristics of the detected cells. It includes the number of cells detected, the mean reads per cell, and the median genes detected per cell are prominently displayed near the top of the page.
 
-```{r cellranger4, fig.cap='Cells dashboard(modified from the cellranger website)', out.width='60%', fig.align='center', echo=FALSE}
+```{r cellranger4, fig.cap='Cells dashboard (modified from the cellranger website)', out.width='60%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/cells_summary.png')
 ```
 
@@ -115,7 +115,7 @@ knitr::include_graphics('./figs/cells_summary.png')
 The Barcode Rank Plot under the "Cells" dashboard shows the distribution of barcode counts and which barcodes were inferred to be associated with cells. The y-axis is the number of UMI counts mapped to each barcode and the x-axis is the number of barcodes below that value. A steep drop-off is indicative of good separation between the cell-associated barcodes and the barcodes associated with empty partitions. Barcodes can be determined to be cell-associated based on their UMI count or by their RNA profiles, therefore some regions of the graph can contain both cell-associated and background-associated barcodes. The color of the graph represents the local density of barcodes that are cell-associated.
 </p>
 
-```{r cellranger5, fig.cap='Sequencing and Mapping dashboards(modified from the cellranger website)', out.width='60%', fig.align='center', echo=FALSE}
+```{r cellranger5, fig.cap='Sequencing and Mapping dashboards (modified from the cellranger website)', out.width='60%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/seq_map.png')
 ```
 
@@ -186,7 +186,7 @@ Several CSV files which contain automated secondary analysis results. It contain
 
 ##### Loupe File (.cloupe) {-}
 
-Loupe Browser is a desktop application that provides interactive visualization functionality to analyze data from different 10x Genomics solutions. It can help to `Finding Cells of Interest`, `Finding Significant Genes`, `Identifying Cell Types`, `Exploring Substructure`, `Exploring Cell Subtypes`, `Integrated Gene Expression and V(D)J Analysis`, `Sharing Results`.
+Loupe Browser is a desktop application that provides interactive visualization functionality to analyze data from different 10x Genomics solutions. It can help to `Finding Cells of Interest`, `Finding Significant Genes`, `Identifying Cell Types`, `Exploring Substructure`, `Exploring Cell Subtypes`, `Integrated Gene Expression and V (D) J Analysis`, `Sharing Results`.
 
 A Loupe file can be viewed through Loupe Browser. It is embedded with the following information:
 
@@ -198,7 +198,7 @@ A Loupe file can be viewed through Loupe Browser. It is embedded with the follow
 
 ## STARsolo
 
-The STARsolo[@kaminow2021starsolo] is a analysis toool designed for droplet single cell RNA sequencing data (e.g. 10X Genomics Chromium System) built directly into STAR code. The inputs of STARsolo is a FASTQ file, and it can gives nearly identical gene counts in the same format as Cell Ranger but ~10 times faster. 
+The STARsolo [@kaminow2021starsolo] is a analysis toool designed for droplet single cell RNA sequencing data (e.g. 10X Genomics Chromium System) built directly into STAR code. The inputs of STARsolo is a FASTQ file, and it can gives nearly identical gene counts in the same format as Cell Ranger but ~10 times faster. 
 
 The STARsolo program outputs a large amount of files reflecting details of the read alignment process. We will only discuss some of the key files here.
 
@@ -220,8 +220,8 @@ Doublets are artificial libraries generated from two cells even though it is des
 
 Several experimental strategies can be used to remove doublets:
 
-* based on natural genetic variation between different donor individuals[@kang2018multiplexed]. 
+* based on natural genetic variation between different donor individuals [@kang2018multiplexed]. 
 
-* mark a subset of cells (e.g., all cells from one sample) with an antibody conjugated to a different oligonucleotide. Upon pooling, libraries that are observed to have different oligonucleotides are considered to be doublets and removed[@bach2017differentiation].
+* mark a subset of cells (e.g., all cells from one sample) with an antibody conjugated to a different oligonucleotide. Upon pooling, libraries that are observed to have different oligonucleotides are considered to be doublets and removed [@bach2017differentiation].
 
 *  infer doublets from the expression profiles alone based on computational approaches like simulation.

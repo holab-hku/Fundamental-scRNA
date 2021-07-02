@@ -142,9 +142,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#download-data"><i class="fa fa-check"></i>Download data</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Introduction to Single Cell Technology</a><ul>
-<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencingscrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing(scRNA-seq)</a></li>
+<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#single-cell-rna-sequencing-scrna-seq"><i class="fa fa-check"></i><b>1.1</b> Single cell RNA sequencing (scRNA-seq)</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#cell-isolation"><i class="fa fa-check"></i><b>1.2</b> Cell isolation</a></li>
-<li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiersumi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers(UMI)</a></li>
+<li class="chapter" data-level="1.3" data-path="background.html"><a href="background.html#barcodes-and-unique-molecular-identifiers-umi"><i class="fa fa-check"></i><b>1.3</b> Barcodes and Unique molecular identifiers (UMI)</a></li>
 <li class="chapter" data-level="1.4" data-path="background.html"><a href="background.html#summary-of-widely-used-scrna-seq-technologies"><i class="fa fa-check"></i><b>1.4</b> Summary of widely used scRNA-seq technologies</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="raw2matrix.html"><a href="raw2matrix.html"><i class="fa fa-check"></i><b>2</b> Pre-processing and QC</a><ul>
@@ -219,16 +219,16 @@ SEQUENCING QUALITY SCORES</code></pre>
 <p>Some concepts:</p>
 <ul>
 <li><p><strong>GEM well</strong> (formerly <strong>GEM group</strong>): A set of partitioned cells (Gelbeads-in-Emulsion) from a single 10x Chromium™ Chip channel. One or more sequencing <strong>libraries</strong> can be derived from a <strong>GEM well</strong>.</p></li>
-<li><p><strong>Library</strong> (or <strong>Sequencing Library</strong>): A 10x-barcoded sequencing library prepared from a single <strong>GEM well</strong>. With Feature Barcode or V(D)J assays, it is possible to create multiple libraries from the same <strong>GEM well</strong>. The library types may include Gene Expression, Antibody Capture, CRISPR Guide Capture, TCR-enrichment, etc.</p></li>
+<li><p><strong>Library</strong> (or <strong>Sequencing Library</strong>): A 10x-barcoded sequencing library prepared from a single <strong>GEM well</strong>. With Feature Barcode or V (D) J assays, it is possible to create multiple libraries from the same <strong>GEM well</strong>. The library types may include Gene Expression, Antibody Capture, CRISPR Guide Capture, TCR-enrichment, etc.</p></li>
 <li><p><strong>Sequencing Run</strong> (or <strong>Flowcell</strong>): A flowcell containing data from one sequencing instrument run.</p></li>
 </ul>
 <div id="general-workflow" class="section level3">
 <h3><span class="header-section-number">2.2.1</span> General workflow</h3>
 <p>Single-cell data getting from Chromium 10X pipeline can be processed through following workflow using cellranger.</p>
 <div class="figure" style="text-align: center"><span id="fig:cellranger"></span>
-<img src="figs/cellranger_workflow.png" alt="Cellranger Workflow(taken from the cellranger website)" width="100%" />
+<img src="figs/cellranger_workflow.png" alt="Cellranger Workflow (taken from the cellranger website)" width="100%" />
 <p class="caption">
-Figure 2.1: Cellranger Workflow(taken from the cellranger website)
+Figure 2.1: Cellranger Workflow (taken from the cellranger website)
 </p>
 </div>
 </div>
@@ -262,8 +262,8 @@ Figure 2.3: Overview of the outs folder
 <p>For different version of cellranger, different algorithms are used to detect cell associated barcodes. The general idea is that barcodes for cells should have significantly more transcript counts associated with them than the background barcodes. For more information: <a href="https://kb.10xgenomics.com/hc/en-us/articles/115003480523-How-are-barcodes-classified-as-cell-associated-" class="uri">https://kb.10xgenomics.com/hc/en-us/articles/115003480523-How-are-barcodes-classified-as-cell-associated-</a>.</p>
 <p>The cellranger pipeline outputs two types of feature-barcode matrices</p>
 <ul>
-<li><p><strong>Unfiltered feature-barcode matrix</strong>: is stored under <code>raw_feature_bc_matrix</code>(1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.</p></li>
-<li><p><strong>Filtered feature-barcode matrix</strong>: is stored under <code>filtered_feature_bc_matrix</code>(1-2) folder. Including only detected cell associated barcodes.</p></li>
+<li><p><strong>Unfiltered feature-barcode matrix</strong>: is stored under <code>raw_feature_bc_matrix</code> (1-1) folder. Including every barcode from the fixed list of known-good barcode sequences that has at least 1 read, which means it includes background and cell associated barcodes.</p></li>
+<li><p><strong>Filtered feature-barcode matrix</strong>: is stored under <code>filtered_feature_bc_matrix</code> (1-2) folder. Including only detected cell associated barcodes.</p></li>
 </ul>
 <p>Both <code>raw_feature_bc_matrix</code> and <code>filtered_feature_bc_matrix</code> contains three files<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <ul>
@@ -285,18 +285,18 @@ type of feature: describe features&#39; types, can be one of Gene Expression, An
 <li>The <strong>SUMMARY</strong> metrics describe sequencing quality and various characteristics of the detected cells. It includes the number of cells detected, the mean reads per cell, and the median genes detected per cell are prominently displayed near the top of the page.</li>
 </ol>
 <div class="figure" style="text-align: center"><span id="fig:cellranger4"></span>
-<img src="figs/cells_summary.png" alt="Cells dashboard(modified from the cellranger website)" width="60%" />
+<img src="figs/cells_summary.png" alt="Cells dashboard (modified from the cellranger website)" width="60%" />
 <p class="caption">
-Figure 2.4: Cells dashboard(modified from the cellranger website)
+Figure 2.4: Cells dashboard (modified from the cellranger website)
 </p>
 </div>
 <p style="padding-left:2em;">
 The Barcode Rank Plot under the “Cells” dashboard shows the distribution of barcode counts and which barcodes were inferred to be associated with cells. The y-axis is the number of UMI counts mapped to each barcode and the x-axis is the number of barcodes below that value. A steep drop-off is indicative of good separation between the cell-associated barcodes and the barcodes associated with empty partitions. Barcodes can be determined to be cell-associated based on their UMI count or by their RNA profiles, therefore some regions of the graph can contain both cell-associated and background-associated barcodes. The color of the graph represents the local density of barcodes that are cell-associated.
 </p>
 <div class="figure" style="text-align: center"><span id="fig:cellranger5"></span>
-<img src="figs/seq_map.png" alt="Sequencing and Mapping dashboards(modified from the cellranger website)" width="60%" />
+<img src="figs/seq_map.png" alt="Sequencing and Mapping dashboards (modified from the cellranger website)" width="60%" />
 <p class="caption">
-Figure 2.5: Sequencing and Mapping dashboards(modified from the cellranger website)
+Figure 2.5: Sequencing and Mapping dashboards (modified from the cellranger website)
 </p>
 </div>
 <p style="padding-left:2em;">
@@ -354,7 +354,7 @@ Figure 2.6: HDF5 File Hierarchy(taken from the cellranger website)
 </div>
 <div id="loupe-file-.cloupe" class="section level5 unnumbered">
 <h5>Loupe File (.cloupe)</h5>
-<p>Loupe Browser is a desktop application that provides interactive visualization functionality to analyze data from different 10x Genomics solutions. It can help to <code>Finding Cells of Interest</code>, <code>Finding Significant Genes</code>, <code>Identifying Cell Types</code>, <code>Exploring Substructure</code>, <code>Exploring Cell Subtypes</code>, <code>Integrated Gene Expression and V(D)J Analysis</code>, <code>Sharing Results</code>.</p>
+<p>Loupe Browser is a desktop application that provides interactive visualization functionality to analyze data from different 10x Genomics solutions. It can help to <code>Finding Cells of Interest</code>, <code>Finding Significant Genes</code>, <code>Identifying Cell Types</code>, <code>Exploring Substructure</code>, <code>Exploring Cell Subtypes</code>, <code>Integrated Gene Expression and V (D) J Analysis</code>, <code>Sharing Results</code>.</p>
 <p>A Loupe file can be viewed through Loupe Browser. It is embedded with the following information:</p>
 <ul>
 <li><p>Gene expression information for cells in the sample.</p></li>
@@ -366,7 +366,7 @@ Figure 2.6: HDF5 File Hierarchy(taken from the cellranger website)
 </div>
 <div id="starsolo" class="section level2">
 <h2><span class="header-section-number">2.3</span> STARsolo</h2>
-<p>The STARsolo<span class="citation">(Kaminow, Yunusov, and Dobin <a href="#ref-kaminow2021starsolo" role="doc-biblioref">2021</a>)</span> is a analysis toool designed for droplet single cell RNA sequencing data (e.g. 10X Genomics Chromium System) built directly into STAR code. The inputs of STARsolo is a FASTQ file, and it can gives nearly identical gene counts in the same format as Cell Ranger but ~10 times faster.</p>
+<p>The STARsolo <span class="citation">(Kaminow, Yunusov, and Dobin <a href="#ref-kaminow2021starsolo" role="doc-biblioref">2021</a>)</span> is a analysis toool designed for droplet single cell RNA sequencing data (e.g. 10X Genomics Chromium System) built directly into STAR code. The inputs of STARsolo is a FASTQ file, and it can gives nearly identical gene counts in the same format as Cell Ranger but ~10 times faster.</p>
 <p>The STARsolo program outputs a large amount of files reflecting details of the read alignment process. We will only discuss some of the key files here.</p>
 <div class="figure" style="text-align: center"><span id="fig:starsolo"></span>
 <img src="figs/starsolo.png" alt="STARsolo Output" width="100%" />
@@ -386,8 +386,8 @@ Figure 2.7: STARsolo Output
 <p>Doublets are artificial libraries generated from two cells even though it is designed to be generated from only one cell. It usually arise due to errors in cell sorting or capture.</p>
 <p>Several experimental strategies can be used to remove doublets:</p>
 <ul>
-<li><p>based on natural genetic variation between different donor individuals<span class="citation">(Kang et al. <a href="#ref-kang2018multiplexed" role="doc-biblioref">2018</a>)</span>.</p></li>
-<li><p>mark a subset of cells (e.g., all cells from one sample) with an antibody conjugated to a different oligonucleotide. Upon pooling, libraries that are observed to have different oligonucleotides are considered to be doublets and removed<span class="citation">(Bach et al. <a href="#ref-bach2017differentiation" role="doc-biblioref">2017</a>)</span>.</p></li>
+<li><p>based on natural genetic variation between different donor individuals <span class="citation">(Kang et al. <a href="#ref-kang2018multiplexed" role="doc-biblioref">2018</a>)</span>.</p></li>
+<li><p>mark a subset of cells (e.g., all cells from one sample) with an antibody conjugated to a different oligonucleotide. Upon pooling, libraries that are observed to have different oligonucleotides are considered to be doublets and removed <span class="citation">(Bach et al. <a href="#ref-bach2017differentiation" role="doc-biblioref">2017</a>)</span>.</p></li>
 <li><p>infer doublets from the expression profiles alone based on computational approaches like simulation.</p></li>
 </ul>
 

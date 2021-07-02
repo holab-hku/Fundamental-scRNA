@@ -10,9 +10,9 @@ fig:cellranger5
 fig:cellranger6
 fig:starsolo
 background
-single-cell-rna-sequencingscrna-seq
+single-cell-rna-sequencing-scrna-seq
 cell-isolation
-barcodes-and-unique-molecular-identifiersumi
+barcodes-and-unique-molecular-identifiers-umi
 summary-of-widely-used-scrna-seq-technologies
 raw2matrix
 fastq-file

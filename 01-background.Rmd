@@ -1,14 +1,14 @@
 # Introduction to Single Cell Technology {#background}
 
-## Single cell RNA sequencing(scRNA-seq)
+## Single cell RNA sequencing (scRNA-seq)
 
-Single cell RNA sequencing(scRNA-seq) is a sequencing technology which can give us gene expression profile of more than 30,000 genes for more than 10,000 cells.
+Single cell RNA sequencing (scRNA-seq) encompasses a range of technology to generate genome-wide expression of many individual single cells.
 
 Starting from tissue samples we get, we will get the analysis results after following processes.
 
 <br/>
 
-```{r workflow, fig.cap='Single Cell Genome Sequencing Workflow(taken from Wiki). MDA: multiple displacement amplification', out.width='80%', fig.align='center', echo=FALSE}
+```{r workflow, fig.cap='Single Cell Genome Sequencing Workflow (taken from Wiki). MDA: multiple displacement amplification', out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/workflow.jpg')
 ```
 
@@ -24,35 +24,35 @@ Droplet-based:
 
 * high-throughput and low cost
 
-* related technologies: Drop-seq[@macosko2015highly], inDrop[@klein2015droplet], Chromium 10X[@zheng2017massively]
+* related technologies: Drop-seq [@macosko2015highly], inDrop [@klein2015droplet], Chromium 10X [@zheng2017massively]
 
 <br/>
 
 Non droplet-based:
 
-* Smart-seq2[@ramskold2012full]: manual cell picking with micro capillary pipettes
+* Smart-seq2 [@ramskold2012full]: manual cell picking with micro capillary pipettes
 
-* CEL-seq[@hashimshony2012cel]: individual cells are added to tubes; the first one introducing barcodes and pooling of RNA
+* CEL-seq [@hashimshony2012cel]: individual cells are added to tubes; the first one introducing barcodes and pooling of RNA
 
-* MARS-seq[@jaitin2014massively] is the first one using FACS to isolate single cells into individual wells, and the optimized version MARS-seq2[@keren2019mars] came out with lower cost, improved reproducibility, reduced well-to-well contamination
+* MARS-seq [@jaitin2014massively] is the first one using FACS to isolate single cells into individual wells, and the optimized version MARS-seq2 [@keren2019mars] came out with lower cost, improved reproducibility, reduced well-to-well contamination
 
 <br/>
 
-The following figure shows some common single cell isolaion techniques[@hwang2018single].
+The following figure shows some common single cell isolaion techniques [@hwang2018single].
 
-```{r seq-techs, fig.cap='Single Cell Isolation(modified from Hwang, Lee, and Bang 2018)', out.width='80%', fig.align='center', echo=FALSE}
+```{r seq-techs, fig.cap='Single Cell Isolation (modified from Hwang, Lee, and Bang 2018)', out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/seq_techs.jpg')
 ```
 
 For more information about different cell isolation techniques: @hu2016single
 
-## Barcodes and Unique molecular identifiers(UMI)^[For more information: http://data-science-sequencing.github.io/Win2018/lectures/lecture16/]
+## Barcodes and Unique molecular identifiers (UMI)^[For more information: http://data-science-sequencing.github.io/Win2018/lectures/lecture16/]
 
-This part is modified based on the lecture note, [Single Cell RNA-Seq - Introduction](http://data-science-sequencing.github.io/Win2018/lectures/lecture16/) created by David Tse et.al.
+This part is modified based on the lecture note, [Single Cell RNA-Seq - Introduction](http://data-science-sequencing.github.io/Win2018/lectures/lecture16/) created by David @tse.
 
 Paired-end sequencing outputs two fastq files corresponding to the 5’ and 3’ direction of sequencing. With this sequencing technology, the first read of the pair always coincides with the cell (barcode + UMI) part of the primer. 
 
-```{r biasedreads, fig.cap='Biased paired-end reads(David Tse et.al)', out.width='80%', fig.align='center', echo=FALSE}
+```{r biasedreads, fig.cap='Biased paired-end reads (David Tse et.al)', out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/biasedreads.png')
 ```
 
@@ -60,7 +60,7 @@ Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can est
 
 To get the UMIS' couns, we can first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.
 
-```{r biasedreads2, fig.cap='Grouping barcodes to assign reads to cells(modified from David Tse et.al)', out.width='70%', fig.align='center', echo=FALSE}
+```{r biasedreads2, fig.cap='Grouping barcodes to assign reads to cells (modified from David Tse et.al)', out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/biasedreads2.png')
 ```
 
@@ -81,44 +81,44 @@ Following is a summary table from [@chen2019single]. It shows different features
 | Methods     | Transcript        | UMI          | Strand   | References                  |    
 |             | coverage          | possibility  | specific |                             |
 +=============+===================+==============+==========+=============================+
-| Tang method | Nearly full-length| No           | No       | [@tang2009mrna]             |
+| Tang method | Nearly full-length| No           | No       | @tang2009mrna             |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Quartz-Seq  | Full-length	      | No           | No       | [@sasagawa2013quartz]       |
+| Quartz-Seq  | Full-length	      | No           | No       | @sasagawa2013quartz       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| SUPeR-seq   | Full-length	      | No           | No       | [@fan2015single]            |
+| SUPeR-seq   | Full-length	      | No           | No       | @fan2015single            |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Smart-seq   | Full-length       | No           | No       | [@ramskold2012full]         |
+| Smart-seq   | Full-length       | No           | No       | @ramskold2012full         |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Smart-seq2  | Full-length       | No           | No       | [@picelli2013smart]         |
+| Smart-seq2  | Full-length       | No           | No       | @picelli2013smart         |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| MATQ-seq    | Full-length       | Yes          | Yes      | [@sheng2017effective]       |
+| MATQ-seq    | Full-length       | Yes          | Yes      | @sheng2017effective       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| STRT-seq    | 5′-only           | Yes          | Yes      | [@islam2011characterization]|
+| STRT-seq    | 5′-only           | Yes          | Yes      | @islam2011characterization|
 | STRT/C1     |                   |              |          |                             |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| CEL-seq     | 3′-only           | Yes          | Yes      | [@hashimshony2012cel]       |
+| CEL-seq     | 3′-only           | Yes          | Yes      | @hashimshony2012cel       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| CEL-seq2    | 3′-only           | Yes          | Yes      | [@hashimshony2016cel]       |
+| CEL-seq2    | 3′-only           | Yes          | Yes      | @hashimshony2016cel       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| MARS-seq    | 3′-only           | Yes          | Yes      | [@jaitin2014massively]      |
+| MARS-seq    | 3′-only           | Yes          | Yes      | @jaitin2014massively      |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| CytoSeq     | 3′-only           | Yes          | Yes      | [@fan2015combinatorial]     |
+| CytoSeq     | 3′-only           | Yes          | Yes      | @fan2015combinatorial     |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Drop-seq    | 3′-only           | Yes          | Yes      | [@macosko2015highly]        |
+| Drop-seq    | 3′-only           | Yes          | Yes      | @macosko2015highly        |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| InDrop      | 3′-only           | Yes          | Yes      | [@klein2015droplet]         |
+| InDrop      | 3′-only           | Yes          | Yes      | @klein2015droplet       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Chromium    | 3′-only           | Yes          | Yes      | [@zheng2017massively]       |
+| Chromium    | 3′-only           | Yes          | Yes      | @zheng2017massively       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| SPLiT-seq   | 3′-only           | Yes          | Yes      | [@rosenberg2018single]      |
+| SPLiT-seq   | 3′-only           | Yes          | Yes      | @rosenberg2018single      |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| sci-RNA-seq | 3′-only           | Yes          | Yes      | [@cao2017comprehensive]     |
+| sci-RNA-seq | 3′-only           | Yes          | Yes      | @cao2017comprehensive     |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Seq-Well    | 3′-only           | Yes          | Yes      | [@gierahn2017seq]           |
+| Seq-Well    | 3′-only           | Yes          | Yes      | @gierahn2017seq           |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| DroNC-seq   | 3′-only           | Yes          | Yes      | [@habib2017massively]       |
+| DroNC-seq   | 3′-only           | Yes          | Yes      | @habib2017massively       |
 +-------------+-------------------+--------------+----------+-----------------------------+
-| Quartz-Seq2 | 3′-only           | Yes          | Yes      | [@sasagawa2018quartz]       |
+| Quartz-Seq2 | 3′-only           | Yes          | Yes      | @sasagawa2018quartz       |
 +-------------+-------------------+--------------+----------+-----------------------------+
 
 
