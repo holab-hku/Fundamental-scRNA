@@ -55,17 +55,21 @@ setwd("c:/yourdirectory/R-workshop")
 
 ### Download data {-}
 
-Data used in this workshop are samples of human immune cells (PBMC) in either a resting or interferon-stimulated state[@kang2018multiplexed]. The original data comes from: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96583.
+Data used in this workshop is a 10k PBMC data getting from [10x Genomics website](https://support.10xgenomics.com/single-cell-gene-expression/datasets). 
 
 To prepare data for this workshop:
 
-* download the `Exp6_Kang.zip` from: https://drive.google.com/drive/folders/1LuFpvH_LIZnzNYcITFuFP27WaggJZga1?usp=sharing 
+* download the `10k_PBMC.h5` from: https://github.com/holab-hku/Fundamental-scRNA/blob/master/data/10k_PBMC.h5
 
-* unzip the file and put it in the `data` folder we create before.
+```{r data1, out.width='80%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/get_data.png')
+```
 
-* the structure of the `data` folder should be look like this:
+* put it in the `data` folder we create before.
 
-```{r data, out.width='80%', fig.align='center', echo=FALSE}
+* the `data` folder should be look like this:
+
+```{r data2, out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/data_folder.png')
 ```
 
