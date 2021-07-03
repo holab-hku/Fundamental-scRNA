@@ -52,7 +52,7 @@ knitr::include_graphics('./figs/cellranger_workflow.png')
 
 ### Output file^[For more information: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/overview]
 
-Following the output folder we will get from cellranger. The `outs` folder contains the final pipeline output files which including what we want for downstream analysis.
+Following is the output folder we will get from cellranger. The `outs` folder contains the final pipeline output files which including what we want for downstream analysis.
 
 ```{r cellranger2, fig.cap='Overview of the folder generate from cellranger', out.width='100%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/cellranger_output.png')
@@ -206,13 +206,13 @@ The STARsolo program outputs a large amount of files reflecting details of the r
 knitr::include_graphics('./figs/starsolo.png')
 ```
 
-1. The **BAM file**, contains information about mapped reads wichi is quiet similari to the BAM file generated through Cell Ranger.
+1. The **BAM file**, contains information about mapped reads which is quiet similar to the BAM file generated through Cell Ranger.
 
-2. **Alignment summary files**, Features.stat and Summary.csv, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.
+2. **Alignment summary files**, `Features.stats` and `Summary.csv`, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.
 
-3. The **feature matrix file**, matrix.mtx, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.
+3. The **feature matrix file**, `matrix.mtx`, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.
 
-4. **Auxiliary files**, barcodes.tsv and features.tsv, provide extra metadata important for downstream analysis. These files along with the matrix file serve the same role as `Matrices` part in Cell Ranger output and are required for analysis in gold standard scRNA-seq data analysis package, seurat.
+4. **Auxiliary files**, `barcodes.tsv` and `features.tsv`, provide extra metadata important for downstream analysis. These files along with the matrix file serve the same role as `Matrices` part in Cell Ranger output and are required for analysis in gold standard scRNA-seq data analysis package, seurat.
 
 ## Doublets^[For more information: https://bioconductor.org/books/release/OSCA/doublet-detection.html]
 

@@ -193,7 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Fundamentals of scRNASeq Analysis</h1>
 <p class="author"><em>Xinyi Lin, Gordon Qian, Joshua Ho contact: <a href="mailto:jwkho@hku.hk" class="email">jwkho@hku.hk</a></em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021-06-28 (updated: 2021-07-02)</em></p>
+<p class="date" style="margin-top: 1.5em;"><em>2021-06-28 (updated: 2021-07-03)</em></p>
 </div>
 <div id="prerequisites" class="section level1 unnumbered">
 <h1>Prerequisites</h1>
@@ -205,6 +205,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="index.html#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;patchwork&quot;</span>)</span>
 <span id="cb1-3"><a href="index.html#cb1-3"></a><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
 <span id="cb1-4"><a href="index.html#cb1-4"></a><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<p>The R package <code>hdf5r</code> is also needed. For <code>Windows</code> user, you can simply install it from CRAN:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
+<p>For <code>Mac</code> user:</p>
+<ol style="list-style-type: decimal">
+<li>open the <code>Terminal</code> application and type following two command one by one:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1"></a><span class="op">/</span>bin<span class="op">/</span>bash <span class="op">-</span>c <span class="st">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span></span>
+<span id="cb3-2"><a href="index.html#cb3-2"></a></span>
+<span id="cb3-3"><a href="index.html#cb3-3"></a>brew install hdf5</span></code></pre></div>
+<p><img src="figs/hdf5r1.png" width="80%" style="display: block; margin: auto;" /><img src="figs/hdf5r2.png" width="80%" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>open your R studio and install the R package <code>hdf5r</code> from CRAN:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
 </div>
 <div id="set-working-directory" class="section level3 unnumbered">
 <h3>Set working directory</h3>

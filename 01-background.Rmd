@@ -48,7 +48,7 @@ For more information about different cell isolation techniques: @hu2016single
 
 ## Barcodes and Unique molecular identifiers (UMI)^[For more information: http://data-science-sequencing.github.io/Win2018/lectures/lecture16/]
 
-This part is modified based on the lecture note, [Single Cell RNA-Seq - Introduction](http://data-science-sequencing.github.io/Win2018/lectures/lecture16/) created by David @tse.
+This part is modified based on the lecture note, [Single Cell RNA-Seq - Introduction](http://data-science-sequencing.github.io/Win2018/lectures/lecture16/) created by David @tse_2018.
 
 Paired-end sequencing outputs two fastq files corresponding to the 5’ and 3’ direction of sequencing. With this sequencing technology, the first read of the pair always coincides with the cell (barcode + UMI) part of the primer. 
 

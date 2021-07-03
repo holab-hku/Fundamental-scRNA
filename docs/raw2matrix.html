@@ -234,7 +234,7 @@ Figure 2.1: Cellranger Workflow (taken from the cellranger website)
 </div>
 <div id="output-file" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Output file<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></h3>
-<p>Following the output folder we will get from cellranger. The <code>outs</code> folder contains the final pipeline output files which including what we want for downstream analysis.</p>
+<p>Following is the output folder we will get from cellranger. The <code>outs</code> folder contains the final pipeline output files which including what we want for downstream analysis.</p>
 <div class="figure" style="text-align: center"><span id="fig:cellranger2"></span>
 <img src="figs/cellranger_output.png" alt="Overview of the folder generate from cellranger" width="100%" />
 <p class="caption">
@@ -375,10 +375,10 @@ Figure 2.7: STARsolo Output
 </p>
 </div>
 <ol style="list-style-type: decimal">
-<li><p>The <strong>BAM file</strong>, contains information about mapped reads wichi is quiet similari to the BAM file generated through Cell Ranger.</p></li>
-<li><p><strong>Alignment summary files</strong>, Features.stat and Summary.csv, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.</p></li>
-<li><p>The <strong>feature matrix file</strong>, matrix.mtx, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.</p></li>
-<li><p><strong>Auxiliary files</strong>, barcodes.tsv and features.tsv, provide extra metadata important for downstream analysis. These files along with the matrix file serve the same role as <code>Matrices</code> part in Cell Ranger output and are required for analysis in gold standard scRNA-seq data analysis package, seurat.</p></li>
+<li><p>The <strong>BAM file</strong>, contains information about mapped reads which is quiet similar to the BAM file generated through Cell Ranger.</p></li>
+<li><p><strong>Alignment summary files</strong>, <code>Features.stats</code> and <code>Summary.csv</code>, contains information about basic mapping details. This can serve as an easy preliminary quality control check of the alignment process.</p></li>
+<li><p>The <strong>feature matrix file</strong>, <code>matrix.mtx</code>, contains information about the counts of genes mapped in each individual cell. The column names corresponds to each individual cell barcode, and the row names corresponds to all annotated genes. Due to the large size of this data, it is stored as a sparse matrix.</p></li>
+<li><p><strong>Auxiliary files</strong>, <code>barcodes.tsv</code> and <code>features.tsv</code>, provide extra metadata important for downstream analysis. These files along with the matrix file serve the same role as <code>Matrices</code> part in Cell Ranger output and are required for analysis in gold standard scRNA-seq data analysis package, seurat.</p></li>
 </ol>
 </div>
 <div id="doublets" class="section level2">

@@ -21,11 +21,38 @@ This is the teaching material for **Session 2: Fundamentals of scRNASeq Analysis
 
 Some packages used in this material can be installed from CRAN:
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 install.packages('Seurat')
 install.packages("patchwork")
 install.packages("dplyr")
 install.packages("ggplot2")
+```
+
+The R package `hdf5r` is also needed. For `Windows` user, you can simply install it from CRAN:
+
+```{r, eval=FALSE}
+install.packages('hdf5r')
+```
+
+For `Mac` user:
+
+1. open the `Terminal` application and type following two command one by one:
+
+```{r, eval=FALSE}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+brew install hdf5
+```
+
+```{r hdf5r, out.width='80%', fig.align='center', echo=FALSE}
+knitr::include_graphics('./figs/hdf5r1.png')
+knitr::include_graphics('./figs/hdf5r2.png')
+```
+
+2. open your R studio and install the R package `hdf5r` from CRAN:
+
+```{r, eval=FALSE}
+install.packages('hdf5r')
 ```
 
 ### Set working directory {-}
