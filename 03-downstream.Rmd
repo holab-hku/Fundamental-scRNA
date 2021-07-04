@@ -126,7 +126,24 @@ After removing unwanted cells from the dataset, the next step is to normalize th
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000, verbose = FALSE)
 ```
 
-For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
+Here we sample 10,000 reads counts from the large gene expression matrix to visualize the gene expression distribution before and after normalization separately (zeros are not included).
+
+```{r}
+# set seed and put two plots in one figure
+set.seed(123)
+par(mfrow=c(1,2))
+# original expression distribution
+raw_geneExp = as.vector(pbmc[['RNA']]@counts) %>% sample(10000)
+raw_geneExp = raw_geneExp[raw_geneExp != 0]
+hist(raw_geneExp)
+# expression distribution after normalization
+logNorm_geneExp = as.vector(pbmc[['RNA']]@data) %>% sample(10000)
+logNorm_geneExp = logNorm_geneExp[logNorm_geneExp != 0]
+hist(logNorm_geneExp)
+```
+
+
+In this previous line of code (and in future commands), `Seurat` provides the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
 
 ```{r, eval=FALSE}
 # same as the above command, skip here

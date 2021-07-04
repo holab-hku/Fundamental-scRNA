@@ -58,7 +58,7 @@ knitr::include_graphics('./figs/biasedreads.png')
 
 Based on the obtained reads consisting of cell barcode, UMI and cDNA, we can estimate the transcript abundances. This allows the mapping algorithm to distinguish which sequences are barcodes and which are transcript sequences. Thus, it is important to recognize the library preparation chemistry used for sequencing in order to determine cell barcode and UMI barcode sequence length and location.
 
-To get the UMIS' couns, we can first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.
+To get the UMIs' counts, we can first group reads by cell barcode before aligning cDNA reads and counting unique molecules per cell per gene using the UMIs.
 
 ```{r biasedreads2, fig.cap='Grouping barcodes to assign reads to cells (modified from David Tse et.al)', out.width='70%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/biasedreads2.png')

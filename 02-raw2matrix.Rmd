@@ -2,10 +2,10 @@
 
 ## FASTQ file
 
-Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTA format begins with a readID started with ("@") symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:
+Raw RNA-sequencing data might be in a fastq file. It is a text-based format used for storing read sequences represented by single-letter codes. A sequence in FASTQ file begins with a readID started with ("@") symbol, then lines of sequence data, a separator which is simply a plus (+) sign, and the base call quality scores. It is represented in the following format:
 
 ```
->ReadID
+@ReadID
 READ SEQUENCE
 +
 SEQUENCING QUALITY SCORES
