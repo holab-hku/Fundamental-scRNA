@@ -29,11 +29,7 @@ pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc10k", min.cells = 
 pbmc
 ```
 
-If we want to read data using the output of the cellranger pipeline from 10X directly, we can use `Read10X()`
-
-```{r, eval=FALSE}
-Read10X(data.dir)
-```
+If we want to read data using the output of the cellranger pipeline from 10X directly, we can use `Read10X()`.
 
 ## Standard pre-processing workflow
 

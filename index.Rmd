@@ -36,7 +36,7 @@ install.packages('hdf5r')
 
 For `Mac` user:
 
-1. open the `Terminal` application and type following two command one by one:
+1. open the `Terminal` application and type following `two` commands one by one:
 
 ```{r, eval=FALSE}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -47,6 +47,16 @@ brew install hdf5
 ```{r hdf5r, out.width='80%', fig.align='center', echo=FALSE}
 knitr::include_graphics('./figs/hdf5r1.png')
 knitr::include_graphics('./figs/hdf5r2.png')
+```
+
+* If you got the error `command not found`, you might need to add an extra command. In another word, instead of previous two command, you should type following `three` commands one by one:
+
+```{r, eval=FALSE}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+echo "export PATH=/opt/homebrew/bin:$PATH" >> ~/.bash_profile && source ~/.bash_profile
+
+brew install hdf5
 ```
 
 2. open your R studio and install the R package `hdf5r` from CRAN:

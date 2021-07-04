@@ -209,16 +209,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
 <p>For <code>Mac</code> user:</p>
 <ol style="list-style-type: decimal">
-<li>open the <code>Terminal</code> application and type following two command one by one:</li>
+<li>open the <code>Terminal</code> application and type following <code>two</code> commands one by one:</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1"></a><span class="op">/</span>bin<span class="op">/</span>bash <span class="op">-</span>c <span class="st">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span></span>
 <span id="cb3-2"><a href="index.html#cb3-2"></a></span>
 <span id="cb3-3"><a href="index.html#cb3-3"></a>brew install hdf5</span></code></pre></div>
 <p><img src="figs/hdf5r1.png" width="80%" style="display: block; margin: auto;" /><img src="figs/hdf5r2.png" width="80%" style="display: block; margin: auto;" /></p>
+<ul>
+<li>If you got the error <code>command not found</code>, you might need to add an extra command. In another word, instead of previous two command, you should type following <code>three</code> commands one by one:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1"></a><span class="op">/</span>bin<span class="op">/</span>bash <span class="op">-</span>c <span class="st">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span></span>
+<span id="cb4-2"><a href="index.html#cb4-2"></a></span>
+<span id="cb4-3"><a href="index.html#cb4-3"></a>echo <span class="st">&quot;export PATH=/opt/homebrew/bin:$PATH&quot;</span> <span class="op">&gt;</span><span class="er">&gt;</span><span class="st"> </span><span class="er">~/</span>.bash_profile <span class="op">&amp;&amp;</span><span class="st"> </span>source <span class="op">~</span><span class="er">/</span>.bash_profile</span>
+<span id="cb4-4"><a href="index.html#cb4-4"></a></span>
+<span id="cb4-5"><a href="index.html#cb4-5"></a>brew install hdf5</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>open your R studio and install the R package <code>hdf5r</code> from CRAN:</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
 </div>
 <div id="set-working-directory" class="section level3 unnumbered">
 <h3>Set working directory</h3>
