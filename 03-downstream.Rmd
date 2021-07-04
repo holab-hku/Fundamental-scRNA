@@ -37,7 +37,7 @@ Read10X(data.dir)
 
 ## Standard pre-processing workflow
 
-The steps below encompass the standard pre-processing workflow for scRNA-seq data in Seurat. These represent the selection and filtration of cells based on QC metrics, data normalization and scaling, and the detection of highly variable features.
+The steps below encompass the standard pre-processing workflow for scRNA-seq data in Seurat. They are based on the RNA reads count matrix we will get from `Cell Ranger` or `STARsolo` output. The standard pre-processing workflow represents the selection and filtration of cells based on QC metrics, data normalization and scaling, and the detection of highly variable features.
 
 ### QC and selecting cells for further analysis
 
@@ -64,14 +64,18 @@ The number of unique genes and total molecules are automatically calculated duri
 head(pbmc@meta.data, 5)
 ```
 
-We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used as QC metrics
+We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used as QC metrics. 
+
+\* Just like `Cell Ranger` output, `feature` in the following results represents gene, and each dot in the following plots represents a cell.
 
 ```{r}
 # Visualize QC metrics as a violin plot
-VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, pt.size = 0.0001)
 ```
 
 We can then using dot plots to show the relationship between `nCount_RNA`, `nFeature_RNA` and `percent.mt`.
+
+\* The number `-0.35` and `0.94` above each plot denotes the correlations between x-axis and y-axis.
 
 ```{r}
 # FeatureScatter is typically used to visualize feature-feature relationships, but can be used
@@ -83,7 +87,7 @@ plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA"
 plot1 + plot2
 ```
 
-Here, we filter cells that have unique feature counts over 5,000 or less than 200. We also filter cells that have >15% mitochondrial counts
+Here, we filter away cells that have unique feature counts(genes) over 5,000 or less than 200. We also filter away cells that have > 15% mitochondrial counts
 
 ```{r}
 pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 5000 & percent.mt < 15)
@@ -92,13 +96,27 @@ pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 5000 & percent
 We can visualize QC metrics again after filtering cells
 
 ```{r}
-VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, pt.size = 0.001)
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt") + 
   theme(legend.position="none")
 plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + 
   theme(legend.position="none")
 plot1 + plot2
 ```
+
+\* Depend on the data we analyze, we can use different cutoff for `nFeature_RNA` and `percent.mt`. For example, we can filter away cells that have unique feature counts(genes) over 5,000 or less than 300, or cells that have > 10% mitochondrial counts, and see how QC metrics looks like.
+
+```{r}
+temp <- subset(pbmc, subset = nFeature_RNA > 300 & nFeature_RNA < 5000 & percent.mt < 10)
+VlnPlot(temp, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3, pt.size = 0.001)
+plot1 <- FeatureScatter(temp, feature1 = "nCount_RNA", feature2 = "percent.mt") + 
+  theme(legend.position="none")
+plot2 <- FeatureScatter(temp, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + 
+  theme(legend.position="none")
+plot1 + plot2
+rm(temp)
+```
+
 
 ### Normalizing the data
 
@@ -111,6 +129,7 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
 
 ```{r, eval=FALSE}
+# same as the above command, skip here
 pbmc <- NormalizeData(pbmc)
 ```
 
@@ -155,12 +174,14 @@ In this case, our PCA and clustering results will be unaffected. However, Seurat
 If we want to scale on the previously identified 2000 variable features, we can simply omit the features argument in the previous function call, i.e.
 
 ```{r, eval=FALSE}
+# use the above one, skip here
 pbmc <- ScaleData(pbmc)
 ```
 
 The `ScaleData()` function also allow us to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. This feature can be achieved by specifying `vars.to.regress`, i.e.:
 
 ```{r, eval=FALSE}
+# skip here
 pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt")
 ```
 

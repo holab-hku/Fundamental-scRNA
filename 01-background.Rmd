@@ -67,7 +67,7 @@ knitr::include_graphics('./figs/biasedreads2.png')
 Analysis of the cell barcodes and UMIs is included in the alignment process, and we will introduce more in Chapter \@ref(raw2matrix).
 
 ```
-**Quiz**
+**Learning Assessment**
 1. What is the difference between a cell barcode and UMI barcode? and what are their significance?
 2. What are the lengths of the cell barcode and UMI barcode used in our dataset?
 3. Are these barcodes located on the 5' or 3' read file?

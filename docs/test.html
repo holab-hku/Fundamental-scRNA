@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Fundamentals of scRNASeq Analysis</title>
+  <title>Chapter 4 test | Fundamentals of scRNASeq Analysis</title>
   <meta name="description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Fundamentals of scRNASeq Analysis" />
+  <meta property="og:title" content="Chapter 4 test | Fundamentals of scRNASeq Analysis" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="linxy29/Fundamental-scRNA" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Fundamentals of scRNASeq Analysis" />
+  <meta name="twitter:title" content="Chapter 4 test | Fundamentals of scRNASeq Analysis" />
   
   <meta name="twitter:description" content="This is the teaching materials for Session 2: Fundamentals of scRNASeq Analysis of 2021 Single Cell Workshop" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="references.html"/>
 
-<link rel="next" href="background.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -170,6 +170,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6" data-path="downstream.html"><a href="downstream.html#run-non-linear-dimensional-reduction-umaptsne"><i class="fa fa-check"></i><b>3.6</b> Run non-linear dimensional reduction (UMAP/tSNE)</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="4" data-path="test.html"><a href="test.html"><i class="fa fa-check"></i><b>4</b> test</a><ul>
+<li class="chapter" data-level="4.1" data-path="test.html"><a href="test.html#r-markdown"><i class="fa fa-check"></i><b>4.1</b> R Markdown</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -190,79 +193,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Fundamentals of scRNASeq Analysis</h1>
-<p class="author"><em>Xinyi Lin, Gordon Qian, Joshua Ho contact: <a href="mailto:jwkho@hku.hk" class="email">jwkho@hku.hk</a></em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021-06-28 (updated: 2021-07-04)</em></p>
-</div>
-<div id="prerequisites" class="section level1 unnumbered">
-<h1>Prerequisites</h1>
-<p>This is the teaching material for <strong>Session 2: Fundamentals of scRNASeq Analysis</strong> of <strong>2021 Single Cell Workshop</strong>.</p>
-<div id="install-packages" class="section level3 unnumbered">
-<h3>Install packages</h3>
-<p>Some packages used in this material can be installed from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;Seurat&#39;</span>)</span>
-<span id="cb1-2"><a href="index.html#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;patchwork&quot;</span>)</span>
-<span id="cb1-3"><a href="index.html#cb1-3"></a><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
-<span id="cb1-4"><a href="index.html#cb1-4"></a><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
-<p>The R package <code>hdf5r</code> is also needed. For <code>Windows</code> user, you can simply install it from CRAN:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
-<p>For <code>Mac</code> user:</p>
-<ol style="list-style-type: decimal">
-<li>open the <code>Terminal</code> application and type following two command one by one:</li>
-</ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1"></a><span class="op">/</span>bin<span class="op">/</span>bash <span class="op">-</span>c <span class="st">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span></span>
-<span id="cb3-2"><a href="index.html#cb3-2"></a></span>
-<span id="cb3-3"><a href="index.html#cb3-3"></a>brew install hdf5</span></code></pre></div>
-<p><img src="figs/hdf5r1.png" width="80%" style="display: block; margin: auto;" /><img src="figs/hdf5r2.png" width="80%" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>open your R studio and install the R package <code>hdf5r</code> from CRAN:</li>
-</ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1"></a><span class="kw">install.packages</span>(<span class="st">&#39;hdf5r&#39;</span>)</span></code></pre></div>
-</div>
-<div id="set-working-directory" class="section level3 unnumbered">
-<h3>Set working directory</h3>
-<p>Setting a working directory first helps us read and save data in an easier way. To set a working directory:</p>
-<ul>
-<li><p>create a folder named “R-workshop” in your preferred directory</p></li>
-<li><p>create a “data” folder in the <code>R-workshop</code></p></li>
-<li><p>from RStudio, use the menu to change your working directory under Session &gt; Set Working Directory &gt; Choose Directory</p></li>
-<li><p>choose the directory to <code>R-workshop</code></p></li>
-</ul>
-<p><img src="figs/workpath.png" width="80%" style="display: block; margin: auto;" /></p>
-<p>Or you can type in the console:</p>
-<pre><code>setwd(&quot;/yourdirectory/R-workshop&quot;)</code></pre>
-<p>For Windows, the command might look like :</p>
-<pre><code>setwd(&quot;c:/yourdirectory/R-workshop&quot;)</code></pre>
-</div>
-<div id="download-data" class="section level3 unnumbered">
-<h3>Download data</h3>
-<p>Data used in this material is a 10k PBMC data getting from <a href="https://support.10xgenomics.com/single-cell-gene-expression/datasets">10x Genomics website</a>.</p>
-<p>To prepare data for this workshop:</p>
-<ul>
-<li>download the <code>10k_PBMC.h5</code> from: <a href="https://github.com/holab-hku/Fundamental-scRNA/blob/master/data/10k_PBMC.h5" class="uri">https://github.com/holab-hku/Fundamental-scRNA/blob/master/data/10k_PBMC.h5</a></li>
-</ul>
-<p><img src="figs/get_data.png" width="80%" style="display: block; margin: auto;" /></p>
-<ul>
-<li><p>put it in the <code>data</code> folder we create before.</p></li>
-<li><p>the <code>data</code> folder should be look like this:</p></li>
-</ul>
-<p><img src="figs/data_folder.png" width="80%" style="display: block; margin: auto;" /></p>
-<p><br/></p>
-<div id="acknowledgement" class="section level4 unnumbered">
-<h4>Acknowledgement</h4>
-<p>Thanks everyone in <a href="https://holab-hku.github.io/">Ho Lab</a> who gives great comments/suggestions and contributes to this teaching material.</p>
+<div id="test" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> test</h1>
+<p>Stackoverflow question
+<a href="https://stackoverflow.com/questions/45360998/code-folding-in-bookdown" class="uri">https://stackoverflow.com/questions/45360998/code-folding-in-bookdown</a></p>
+<div id="r-markdown" class="section level2">
+<h2><span class="header-section-number">4.1</span> R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="test.html#cb1-1"></a><span class="kw">summary</span>(cars)</span></code></pre></div>
+<pre><code>##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00</code></pre>
 
 </div>
 </div>
-</div>
+
+
+
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
+<a href="references.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="background.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

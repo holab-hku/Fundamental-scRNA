@@ -32,7 +32,7 @@ For more details about FastQC: https://www.bioinformatics.babraham.ac.uk/project
 
 Figures and contents in this sub-chapter are modified from [Cell Ranger Support Pages](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger). 
 
-[Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger) is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+[Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger) is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more. It help us to generate the RNA reads count matrix we will used in chapter \@ref(downstream).
 
 Some concepts:
 
