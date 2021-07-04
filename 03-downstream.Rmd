@@ -64,9 +64,9 @@ The number of unique genes and total molecules are automatically calculated duri
 head(pbmc@meta.data, 5)
 ```
 
-We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used as QC metrics. 
+We can visualize the `nFeature_RNA`, `nCount_RNA` and `percent.mt` we used as QC metrics.
 
-\* Just like `Cell Ranger` output, `feature` in the following results represents gene, and each dot in the following plots represents a cell.
+\* Just like `Cell Ranger` output, `feature` in the following results represents gene. `nFeature_RNA` is the number of genes detected in each cell. `nCount_RNA` is the total number of molecules detected within a cell. And each dot in the following plots represents a cell. 
 
 ```{r}
 # Visualize QC metrics as a violin plot
